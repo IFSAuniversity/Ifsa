@@ -1251,6 +1251,18 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 @media(max-width:900px){.hx{min-height:auto;padding-top:112px}.hx-in{grid-template-columns:1fr;gap:28px}.hx-bt{justify-content:center}.hx-st div{padding:10px 16px}}
 @media(max-width:480px){.hx h1{font-size:2.1rem}.hx .cta .btn{width:100%;justify-content:center}.hx-st{width:100%}.hx-st div{flex:1;padding:10px 6px}.hx-ctl{width:100%;justify-content:center}}
 @media(prefers-reduced-motion:reduce){.hx-s.on{animation:none}}
+
+/* ===== ACCUEIL AVANCÉ ===== */
+.hx-bt{justify-content:space-between}.hx-call{display:flex;align-items:center;gap:14px;padding:12px 20px 12px 14px;border-radius:18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;font:700 1.15rem Fraunces,serif;transition:.25s}.hx-call:hover{background:rgba(255,255,255,.2)}.hx-call .ic{width:44px;height:44px;padding:11px;border-radius:50%;background:var(--gold);color:var(--navy)}.hx-call small{display:block;font:500 .72rem 'Plus Jakarta Sans',sans-serif;color:#C3CFEA}
+.row-h{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:34px}
+.st4{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:22px;position:relative;counter-reset:x}.st4::before{content:"";position:absolute;top:34px;left:12%;right:12%;height:2px;background:repeating-linear-gradient(90deg,var(--gold) 0 8px,transparent 8px 16px)}
+.st4 li{position:relative;text-align:center;padding:0 8px}.st4 .n{position:absolute;top:-6px;left:50%;margin-left:14px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:var(--gold2);font:700 .8rem 'Plus Jakarta Sans';display:grid;place-items:center;z-index:2}.st4 .ico{width:68px;height:68px;border-radius:50%;margin:0 auto 14px;background:var(--bg);box-shadow:6px 6px 14px #d3d8e6,-6px -6px 14px #fff;color:var(--navy);position:relative;z-index:1}.st4 .ico .ic{width:28px;height:28px}.st4 h3{font-size:1.1rem;margin-bottom:6px}.st4 p{font-size:.88rem;color:var(--mut)}
+.mos{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,200px);gap:14px}.mos a{position:relative;border-radius:var(--r);overflow:hidden;display:grid;place-items:center;background:linear-gradient(150deg,var(--navy2),var(--navy));color:rgba(255,255,255,.55);transition:.3s}.mos a:hover{transform:scale(1.02)}.mos .ic{width:34px;height:34px}.mos span{position:absolute;left:14px;bottom:12px;font-size:.78rem;font-weight:600;color:#fff}.mos .m1{grid-column:span 2;grid-row:span 2}
+.ag{display:flex;gap:18px;align-items:center;padding:20px;border-radius:var(--r);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:#fff;transition:.25s}.ag:hover{background:rgba(255,255,255,.14);transform:translateY(-4px)}.ag .d{flex:none;text-align:center;background:var(--gold);color:var(--navy);border-radius:14px;padding:10px 14px;line-height:1.1}.ag .d b{display:block;font:700 1.7rem Fraunces,serif}.ag .d span{font-size:.7rem;font-weight:700;text-transform:uppercase}.ag h3{color:#fff;font-size:1.05rem}.ag p{font-size:.84rem;color:#C3CFEA;display:flex;gap:6px;align-items:center;margin-top:4px}
+a.card{display:block;transition:.25s}a.card:hover{transform:translateY(-5px);box-shadow:0 16px 36px rgba(11,31,75,.14)}
+.cc{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px}.cc a{display:inline-flex;gap:8px;align-items:center;padding:10px 18px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:.9rem;font-weight:500}.cc a:hover{background:rgba(255,255,255,.2)}
+@media(max-width:900px){.st4{grid-template-columns:1fr 1fr;row-gap:34px}.st4::before{display:none}.mos{grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,160px)}.mos .m1{grid-column:span 2;grid-row:span 1}}
+@media(max-width:520px){.st4{grid-template-columns:1fr}.hx-bt{justify-content:center}.hx-call{width:100%}}
 </style>
 <meta name="theme-color" content="#071A45"><meta property="og:type" content="website"><meta property="og:site_name" content="IFSA University"><meta property="og:title" content="Accueil — IFSA University"><meta property="og:description" content="IFSA University : formation supérieure en sciences administratives et appliquées en Haïti."><meta property="og:image" content="https://i.postimg.cc/8zMT8g8M/No-background.png"><meta property="og:locale" content="fr_FR">
 </head>
@@ -1266,7 +1278,7 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
         <a href="facultes.html">Facultés</a><button class="dd-t" type="button" aria-expanded="false" aria-label="Afficher la liste des facultés"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>
         <div class="dd-m"><a href="agronomie.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></span> Sciences agronomiques</a><a href="infirmieres.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg></span> Sciences infirmières</a><a href="pharmacologie.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></span> Pharmacologie</a><a href="administration.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span> Sciences administratives</a></div>
       </div>
-      <a href="actualites.html">Actualités</a> <a href="contact.html">Contact</a> <a class="btn btn-gold nav-cta" href="admissions.html">Admissions</a>
+      <a href="cours.html">Cours en ligne</a> <a href="actualites.html">Actualités</a> <a href="contact.html">Contact</a> <a class="btn btn-gold nav-cta" href="admissions.html">Admissions</a>
     </nav>
     <div class="hd-end"><button id="themeT" class="theme-t" type="button" aria-pressed="false" aria-label="Passer au thème sombre"><svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button><a class="btn btn-gold hd-cta" href="admissions.html">Admissions</a><button id="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav"><span class="bars"></span></button></div>
   </header>
@@ -1274,8 +1286,8 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
   <!-- ===== CONTENU DE LA PAGE ===== -->
   <main id="main">
     <section class="hx" aria-label="Présentation d'IFSA University">
-      <!-- Photos du diaporama : décommentez/ajoutez --img:url(images/hero-1.jpg) dans le style de chaque .hx-s (sans photo, un dégradé s'affiche) -->
-      <div class="hx-sl" aria-hidden="true"><div class="hx-s on" style="--img:url(images/hero-1.jpg)"></div><div class="hx-s s2" style="--img:url(images/hero-2.jpg)"></div><div class="hx-s s3" style="--img:url(images/hero-3.jpg)"></div></div>
+      <!-- Photo du hero : placez images/hero.jpg (sans photo, un dégradé s'affiche) -->
+      <div class="hx-sl" aria-hidden="true"><div class="hx-s on" style="--img:url(images/hero.jpg)"></div></div>
       <div class="hx-ov" aria-hidden="true"></div>
       <div class="wrap hx-in">
         <div class="hx-t">
@@ -1289,7 +1301,7 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
       </div>
       <div class="wrap hx-bt">
         <div class="hx-st"><div><b data-n="2007">2007</b><span>Année de fondation</span></div><div><b data-n="4">4</b><span>Sites de formation</span></div><div><b data-n="4">4</b><span>Disciplines</span></div></div>
-        <div class="hx-ctl"><button type="button" id="hxP" aria-label="Diapositive précédente"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><div class="hx-d" id="hxD"><button type="button" class="on" aria-label="Diapositive 1"></button><button type="button" aria-label="Diapositive 2"></button><button type="button" aria-label="Diapositive 3"></button></div><button type="button" id="hxN" aria-label="Diapositive suivante"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+        <a class="hx-call" href="tel:+50933532415"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg><span><small>Une question ? Appelez-nous</small>33 53 24 15</span></a>
       </div>
     </section>
     <div class="strip" aria-hidden="true"><div>Savoir <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z" fill="currentColor"/></svg> Excellence <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z" fill="currentColor"/></svg> Impact <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z" fill="currentColor"/></svg> Intégrité <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z" fill="currentColor"/></svg> Innovation <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z" fill="currentColor"/></svg> Engagement <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z" fill="currentColor"/></svg> </div></div>
@@ -1370,7 +1382,8 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
         </div>
       </div>
     </section>
-    <section class="dark">
+    <section style="background:#fff"><div class="wrap"><div class="sec-h rv"><h2>Vous inscrire en 4 étapes</h2><p>Un parcours simple, de votre choix de faculté à votre premier cours.</p></div><ol class="st4"><li class="rv"><span class="n">1</span><div class="ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/></svg></div><h3>Choisir sa faculté</h3><p>Parcourez les 4 disciplines et leurs options.</p></li><li class="rv"><span class="n">2</span><div class="ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div><h3>Remplir la fiche</h3><p>Pré-inscrivez-vous en ligne en quelques minutes.</p></li><li class="rv"><span class="n">3</span><div class="ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></div><h3>Déposer le dossier</h3><p>Pièces demandées et frais d'inscription.</p></li><li class="rv"><span class="n">4</span><div class="ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/><path d="M22 10v6"/></svg></div><h3>Commencer les cours</h3><p>Rejoignez votre promotion sur le site choisi.</p></li></ol><p style="text-align:center;margin-top:34px"><a class="btn btn-gold" href="inscription.html">S'inscrire en ligne</a> <a class="btn btn-navy" href="admissions.html">Voir les conditions</a></p></div></section>
+<section class="dark">
       <div class="wrap">
         <div class="sec-h rv">
           <h2>Pourquoi choisir IFSA ?</h2>
@@ -1434,19 +1447,7 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
         </div>
       </div>
     </section>
-    <section>
-      <div class="wrap">
-        <div class="sec-h rv">
-          <h2>La vie à IFSA</h2>
-          <p>Nos étudiants, nos salles de classe, nos campus.</p>
-        </div>
-        <div class="grid3">
-          <div class="ph-img rv" style="min-height:280px"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Photo étudiants 1<br><small>Remplacer par &lt;img class="ph-img" src="images/....jpg" alt="..."&gt;</small></div>
-          <div class="ph-img rv" style="min-height:280px"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Photo étudiants 2<br><small>Remplacer par &lt;img class="ph-img" src="images/....jpg" alt="..."&gt;</small></div>
-          <div class="ph-img rv" style="min-height:280px"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Photo étudiants 3<br><small>Remplacer par &lt;img class="ph-img" src="images/....jpg" alt="..."&gt;</small></div>
-        </div>
-      </div>
-    </section>
+    <section><div class="wrap"><div class="row-h rv"><div class="sec-h" style="margin:0"><h2>La vie à IFSA</h2><p>Nos étudiants, nos salles de classe, nos sites.</p></div><div><a class="btn btn-navy" href="galerie.html">Voir la galerie</a> <a class="btn btn-gold" href="vie-universitaire.html">Vie universitaire</a></div></div><div class="mos rv"><a href="galerie.html" class="m1" aria-label="Voir la galerie"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg><span>Photo étudiants</span></a><a href="galerie.html" class="m2" aria-label="Voir la galerie"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg><span>Photo étudiants</span></a><a href="galerie.html" class="m3" aria-label="Voir la galerie"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg><span>Photo étudiants</span></a><a href="galerie.html" class="m4" aria-label="Voir la galerie"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg><span>Photo étudiants</span></a><a href="galerie.html" class="m5" aria-label="Voir la galerie"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg><span>Photo étudiants</span></a></div></div></section>
     <section>
       <div class="wrap">
         <div class="sec-h rv">
@@ -1481,7 +1482,8 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
         </div>
       </div>
     </section>
-    <section>
+    <section class="dark"><div class="wrap"><div class="row-h rv"><div class="sec-h" style="margin:0"><h2>À l'agenda</h2><p>Les prochains rendez-vous (exemples à remplacer).</p></div><a class="btn btn-gold" href="evenements.html">Tous les événements</a></div><div class="grid3"><a class="ag rv" href="evenements.html"><div class="d"><b>07</b><span>nov.</span></div><div><h3>Journée portes ouvertes</h3><p><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Carrefour</p></div></a><a class="ag rv" href="evenements.html"><div class="d"><b>21</b><span>nov.</span></div><div><h3>Conférence sur l'entrepreneuriat</h3><p><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Port-de-Paix</p></div></a><a class="ag rv" href="evenements.html"><div class="d"><b>05</b><span>déc.</span></div><div><h3>Cérémonie de fin d'année</h3><p><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Miragoâne</p></div></a></div></div></section>
+<section>
       <div class="wrap">
         <div class="sec-h rv">
           <h2>Ils parlent d'IFSA</h2>
@@ -1526,11 +1528,13 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
         </div>
       </div>
     </section>
-    <section class="dark cta-band">
+    <section><div class="wrap"><div class="row-h rv"><div class="sec-h" style="margin:0"><h2>Un accompagnement complet</h2><p>Des services pour vous épauler du premier jour au diplôme.</p></div><a class="btn btn-navy" href="services-etudiants.html">Tous les services</a></div><div class="grid4"><a class="card rv" href="services-etudiants.html"><div class="ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></div><h3>Scolarité et paiements</h3><p style="display:flex;gap:6px;align-items:center;color:var(--navy);font-weight:600;font-size:.85rem">En savoir plus <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></p></a><a class="card rv" href="services-etudiants.html"><div class="ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div><h3>Registrariat</h3><p style="display:flex;gap:6px;align-items:center;color:var(--navy);font-weight:600;font-size:.85rem">En savoir plus <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></p></a><a class="card rv" href="bibliotheque.html"><div class="ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><h3>Bibliothèque</h3><p style="display:flex;gap:6px;align-items:center;color:var(--navy);font-weight:600;font-size:.85rem">En savoir plus <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></p></a><a class="card rv" href="vie-universitaire.html"><div class="ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg></div><h3>Vie étudiante</h3><p style="display:flex;gap:6px;align-items:center;color:var(--navy);font-weight:600;font-size:.85rem">En savoir plus <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></p></a></div></div></section>
+<section class="band-l"><div class="wrap grid2"><div class="rv"><h2 style="font-size:clamp(1.8rem,3.4vw,2.6rem)">Questions fréquentes</h2><p style="color:var(--mut);margin:12px 0 20px">Vous ne trouvez pas votre réponse ? Notre assistant (en bas à droite) ou notre équipe vous répondent.</p><a class="btn btn-gold" href="contact.html">Nous contacter</a></div><div class="rv"><details><summary>Quand ouvrent les inscriptions ?</summary><p>Les dates sont publiées sur la page Admissions. Contactez-nous pour connaître la prochaine rentrée.</p></details><details><summary>Quelles pièces dois-je fournir ?</summary><p>Fiches et certificats Bac I et II, trois photos d'identité, acte de naissance ou extrait des archives.</p></details><details><summary>Puis-je étudier près de chez moi ?</summary><p>Oui : IFSA est présente à Carrefour, Port-de-Paix, Miragoâne et Petit-Goâve.</p></details><details><summary>Existe-t-il une demi-bourse ?</summary><p>Oui, une formule demi-bourse existe. Les conditions sont précisées par l'administration.</p></details></div></div></section>
+<section class="dark cta-band">
       <div class="wrap">
         <h2>Prêt à rejoindre IFSA University ?</h2>
         <p>Votre ambition, notre mission.</p>
-        <a class="btn btn-gold" href="admissions.html">Commencer mon inscription</a>
+        <a class="btn btn-gold" href="admissions.html">Commencer mon inscription</a><div class="cc"><a href="tel:+50933532415"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>33 53 24 15</a><a href="tel:+50947664845"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>47 66 48 45</a><a href="mailto:info@ifsauniversity.edu.ht"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>info@ifsauniversity.edu.ht</a></div>
       </div>
     </section>
   </main>
@@ -1545,7 +1549,7 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
         </div>
         <nav aria-label="Pied de page">
           <p class="ft-h">Navigation</p>
-          <a href="index.html">Accueil</a><a href="universite.html">L'Université</a><a href="facultes.html">Facultés & Programmes</a><a href="admissions.html">Admissions</a><a href="actualites.html">Actualités</a><a href="vie-universitaire.html">Vie universitaire</a><a href="evenements.html">Événements</a><a href="galerie.html">Galerie</a><a href="services-etudiants.html">Services aux étudiants</a><a href="contact.html">Contact</a>
+          <a href="index.html">Accueil</a><a href="universite.html">L'Université</a><a href="facultes.html">Facultés & Programmes</a><a href="admissions.html">Admissions</a><a href="actualites.html">Actualités</a><a href="vie-universitaire.html">Vie universitaire</a><a href="evenements.html">Événements</a><a href="galerie.html">Galerie</a><a href="cours.html">Cours en ligne</a><a href="services-etudiants.html">Services aux étudiants</a><a href="direction.html">Direction</a><a href="faq.html">FAQ</a><a href="bibliotheque.html">Bibliothèque</a><a href="recherche.html">Recherche</a><a href="contact.html">Contact</a>
         </nav>
         <nav aria-label="Facultés">
           <p class="ft-h">Facultés</p>
@@ -1673,6 +1677,11 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 [['evenement','portes ouvertes','conference','ceremonie'],'<p>Consultez le calendrier sur la page <a href="evenements.html">Événements</a>.</p>'],
 [['service','scolarite','attestation','releve','registrariat'],'<p>Retrouvez les démarches sur la page <a href="services-etudiants.html">Services aux étudiants</a>.</p>'],
 [['mention','legal','confidentialite','donnees'],'<p>Voir les <a href="mentions-legales.html">mentions légales</a>.</p>'],
+[['biblio','livre','emprunt','manuel'],'<p>Voir la page <a href="bibliotheque.html">Bibliothèque</a>.</p>'],
+[['recherche','laboratoire','publication','memoire'],'<p>Voir la page <a href="recherche.html">Recherche</a>.</p>'],
+[['cours','video','youtube','replay','lecon'],'<p>Suivez nos cours en vidéo sur la page <a href="cours.html">Cours en ligne</a>.</p>'],
+[['direction','recteur','gouvernance','organigramme','doyen'],'<p>Découvrez la <a href="direction.html">direction et la gouvernance</a>.</p>'],
+[['faq','question frequente'],'<p>Consultez la <a href="faq.html">foire aux questions</a>.</p>'],
 [['slogan','devise','motto'],'<p><b>L\'éducation aujourd\'hui, le succès demain, car votre réussite est notre succès.</b></p>'],
 [['mission','vision','valeur'],'<p>Mission : former des jeunes professionnels et cadres, au meilleur coût, selon les normes nationales et internationales. Valeurs : excellence, intégrité, innovation, engagement.</p>']];
   const norm = t => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -1733,11 +1742,5 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 
   </script>
 <script>/* ===== AJOUTS : progression de lecture + retour en haut ===== */(function(){var p=document.getElementById("prog"),t=document.getElementById("totop");function u(){var h=document.documentElement,m=h.scrollHeight-h.clientHeight;p.style.width=(m>0?h.scrollTop/m*100:0)+"%";t.classList.toggle("on",h.scrollTop>500)}addEventListener("scroll",u,{passive:true});u();t.onclick=function(){scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}})();</script>
-<script>/* ===== HERO : diaporama ===== */(function(){var S=document.querySelectorAll(".hx-s"),D=document.querySelectorAll("#hxD button"),i=0,t,R=matchMedia("(prefers-reduced-motion: reduce)").matches,h=document.querySelector(".hx");if(!S.length)return;
-function go(n){S[i].classList.remove("on");D[i].classList.remove("on");i=(n+S.length)%S.length;S[i].classList.add("on");D[i].classList.add("on")}
-function st(){if(R)return;clearInterval(t);t=setInterval(function(){go(i+1)},6500)}
-document.getElementById("hxN").onclick=function(){go(i+1);st()};document.getElementById("hxP").onclick=function(){go(i-1);st()};
-D.forEach(function(b,k){b.onclick=function(){go(k);st()}});
-h.addEventListener("mouseenter",function(){clearInterval(t)});h.addEventListener("mouseleave",st);document.addEventListener("visibilitychange",function(){document.hidden?clearInterval(t):st()});st()})();</script>
 </body>
 </html>
