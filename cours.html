@@ -1533,5 +1533,6 @@ function close(){$("pv").hidden=true;if(pl&&pl.pauseVideo)try{pl.pauseVideo()}ca
 $("pbk").onclick=close;addEventListener("keydown",e=>{if(e.key=="Escape"&&!$("pv").hidden)close()});
 if(S)$("cta").hidden=true;tb();R();if(location.hash.indexOf("#cours-")==0)open(location.hash.slice(7));
 })();</script>
+<script>/* ===== COMPTE CONNECTÉ : adapte le lien Connexion ===== */(function(){try{var a=JSON.parse(sessionStorage.getItem("ifsa_auth")||"null");if(!a)return;var f=(a.name||"").split(" ")[0],D={student:["Mon espace","espace-etudiant.html"],teacher:["Mon espace","espace-enseignant.html"],user:["Bonjour, "+f+" · Quitter","connexion.html?logout=1"],manager:["Espace direction","manager.html"],admin:["Espace direction","manager.html"]}[a.role];if(!D)return;document.querySelectorAll('a[href="connexion.html"]').forEach(function(l){l.textContent=D[0];l.href=D[1]})}catch(e){}})();</script>
 </body>
 </html>
