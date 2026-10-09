@@ -1237,12 +1237,14 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 .foot2{text-align:center;font-size:.88rem;color:var(--mut);margin-top:20px}.foot2 a{color:var(--navy);font-weight:700}footer{display:none}
 @media(max-width:900px){.lg{grid-template-columns:1fr}.lg-l{padding:120px 6% 40px;min-height:auto}.lg-l ul{display:none}.lg-r{padding:30px 5% 60px}}
 
+
 .rt3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--bg);border-radius:16px;padding:5px;box-shadow:inset 3px 3px 8px #d3d8e6,inset -3px -3px 8px #fff;margin-bottom:22px}.rt3 button{border:0;border-radius:12px;padding:11px 4px;font:600 .84rem inherit;font-family:inherit;background:none;color:var(--mut);cursor:pointer;transition:.25s}.rt3 button[aria-selected=true]{background:var(--navy);color:var(--gold2);box-shadow:0 6px 16px rgba(7,26,69,.3)}
-.stf{display:inline-flex;gap:6px;align-items:center;background:var(--navy);color:var(--gold2);border-radius:99px;padding:5px 14px;font-size:.78rem;font-weight:700;margin-bottom:16px}.stf .ic{width:14px;height:14px}
 .tn{font-size:.84rem;color:var(--mut);background:var(--bg);border-radius:12px;padding:11px 14px;margin-bottom:18px;line-height:1.55}
+.bk0{display:inline-flex;gap:6px;align-items:center;font:600 .84rem 'Plus Jakarta Sans';color:var(--mut);margin-bottom:18px}.bk0 .ic{width:15px;height:15px}.bk0:hover{color:var(--navy)}
 .mdl{position:fixed;inset:0;background:rgba(7,26,69,.78);backdrop-filter:blur(6px);display:grid;place-items:center;z-index:200;padding:18px}.mdl[hidden]{display:none}.mdl .box{width:min(460px,100%);animation:f .35s}.mdl h2{font-size:1.5rem}
 .stg{height:6px;border-radius:9px;background:#E1E6F2;overflow:hidden;margin:-6px 0 6px}.stg i{display:block;height:100%;width:0;transition:.3s;background:#D64545}.stl{font-size:.78rem;color:var(--mut);margin-bottom:16px}
-.okb{text-align:center}.okb .ic{width:54px;height:54px;color:var(--green);margin-bottom:10px}.okb p{color:var(--mut);margin:8px 0 18px}.warn{background:rgba(201,162,75,.16);border:1px solid rgba(201,162,75,.5);color:#6B5316;border-radius:12px;padding:12px 14px;font-size:.86rem;margin-bottom:18px}
+.okb{text-align:center}.okb .ic{width:54px;height:54px;color:var(--green);margin-bottom:10px}.okb p{color:var(--mut);margin:8px 0 18px}
+.fld .eye:hover{color:var(--navy)}.fld input[type=password],.fld input[type=text].pwv{padding-right:48px}
 </style>
 <meta name="theme-color" content="#071A45"><meta property="og:type" content="website"><meta property="og:site_name" content="IFSA University"><meta property="og:title" content="Connexion — IFSA University"><meta property="og:description" content="Connexion aux espaces étudiant, enseignant et utilisateur d'IFSA University."><meta property="og:image" content="https://i.postimg.cc/8zMT8g8M/No-background.png"><meta property="og:locale" content="fr_FR">
 <meta name="robots" content="noindex">
@@ -1270,25 +1272,25 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
       <div class="lg-l"><div><h1>Votre espace <em>IFSA</em></h1></div><p>Étudiants, enseignants et visiteurs : chacun son espace, sécurisé et personnel.</p>
         <ul><li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z"/></svg>Cours en vidéo et suivi de progression</li><li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></svg>Notes, présences et relevés</li><li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>Paiements et reçus</li><li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/></svg>Accès réservé aux personnes approuvées</li></ul></div>
       <div class="lg-r"><div class="box">
-        <span class="stf" id="stf" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/></svg>Administration</span>
+        <a class="bk0" href="index.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Retour au site</a>
         <h2 id="ttl">Espace étudiant</h2><p class="sub" id="sb2"></p>
         <div id="rtabs" class="rt3" role="tablist" aria-label="Type de compte"><button type="button" role="tab" data-t="student" aria-selected="true">Étudiant</button><button type="button" role="tab" data-t="teacher" aria-selected="false">Enseignant</button><button type="button" role="tab" data-t="user" aria-selected="false">Utilisateur</button></div>
         <p class="tn" id="tn"></p>
         <div class="msg" id="msg" role="alert" hidden></div>
-        <form id="fl" novalidate><div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><input id="em" type="email" autocomplete="username" aria-label="Email" required></div>
-          <div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="pw" type="password" autocomplete="current-password" placeholder="Mot de passe" aria-label="Mot de passe" required><button type="button" class="eye" id="eye" aria-label="Afficher le mot de passe"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+        <form id="fl" novalidate><div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><input id="em" type="email" autocomplete="username" placeholder="Votre email" aria-label="Email" required></div>
+          <div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="pw" type="password" autocomplete="current-password" placeholder="Mot de passe" aria-label="Mot de passe" required><button type="button" class="eye" data-eye aria-label="Afficher le mot de passe"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
           <div class="opt"><span></span><a href="#" data-a="reset">Mot de passe oublié ?</a></div>
           <button class="btn btn-gold sub-b" id="go" type="submit"><span class="sp"></span>Se connecter</button></form>
         <form id="fr" hidden novalidate><div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><input id="em2" type="email" placeholder="Votre email" aria-label="Email" required></div><button class="btn btn-gold sub-b" type="submit">Envoyer le lien</button><p class="foot2"><a href="#" data-a="back">← Retour à la connexion</a></p></form>
-        <form id="fs" hidden novalidate><div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg><input id="sn" placeholder="Nom complet" autocomplete="name" aria-label="Nom complet" required></div><div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><input id="se" type="email" placeholder="Email" autocomplete="email" aria-label="Email" required></div><div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="s1" type="password" placeholder="Mot de passe (8 caractères minimum)" autocomplete="new-password" aria-label="Mot de passe" required></div><div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="s2" type="password" placeholder="Confirmer le mot de passe" autocomplete="new-password" aria-label="Confirmer le mot de passe" required></div><button class="btn btn-gold sub-b" type="submit">Créer mon compte</button><p class="foot2"><a href="#" data-a="back">← Retour à la connexion</a></p></form>
+        <form id="fs" hidden novalidate><div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg><input id="sn" placeholder="Nom complet" autocomplete="name" aria-label="Nom complet" required></div><div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><input id="se" type="email" placeholder="Email" autocomplete="email" aria-label="Email" required></div><div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="s1" type="password" placeholder="Mot de passe (8 caractères minimum)" autocomplete="new-password" aria-label="Mot de passe" required><button type="button" class="eye" data-eye aria-label="Afficher le mot de passe"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="s2" type="password" placeholder="Confirmer le mot de passe" autocomplete="new-password" aria-label="Confirmer le mot de passe" required><button type="button" class="eye" data-eye aria-label="Afficher le mot de passe"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><button class="btn btn-gold sub-b" id="gs" type="submit"><span class="sp"></span>Créer mon compte</button><p class="foot2"><a href="#" data-a="back">← Retour à la connexion</a></p></form>
         <p class="foot2" id="ft"></p>
       </div></div></div>
     <div class="mdl" id="pwm" hidden role="dialog" aria-modal="true" aria-labelledby="pwt"><div class="box">
-      <form id="pwf" novalidate><h2 id="pwt">Bienvenue à IFSA University</h2><p class="sub" id="pws"></p>
+      <form id="pwf" novalidate><h2 id="pwt">Nouveau mot de passe</h2><p class="sub" id="pws"></p>
         <div class="msg err" id="pwe" role="alert" hidden></div>
-        <div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="n1" type="password" placeholder="Nouveau mot de passe" autocomplete="new-password" aria-label="Nouveau mot de passe" required></div>
+        <div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="n1" type="password" placeholder="Nouveau mot de passe" autocomplete="new-password" aria-label="Nouveau mot de passe" required><button type="button" class="eye" data-eye aria-label="Afficher le mot de passe"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
         <div class="stg" id="sg"><i></i></div><p class="stl" id="sl">8 caractères minimum, avec lettres et chiffres.</p>
-        <div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="n2" type="password" placeholder="Confirmer le mot de passe" autocomplete="new-password" aria-label="Confirmer le mot de passe" required></div>
+        <div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="n2" type="password" placeholder="Confirmer le mot de passe" autocomplete="new-password" aria-label="Confirmer le mot de passe" required><button type="button" class="eye" data-eye aria-label="Afficher le mot de passe"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
         <button class="btn btn-gold sub-b" id="pwb" type="submit"><span class="sp"></span>Enregistrer mon mot de passe</button></form>
       <div class="okb" id="pwd" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><h2>Mot de passe enregistré</h2><p>Mémorisez-le bien : il vous servira à accéder à votre espace personnel.</p><button class="btn btn-gold sub-b" id="pwg" type="button">Accéder à mon espace</button></div>
     </div></div>
@@ -1502,61 +1504,60 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
   
 <script>/* ===== AJOUTS : progression de lecture + retour en haut ===== */(function(){var p=document.getElementById("prog"),t=document.getElementById("totop");function u(){var h=document.documentElement,m=h.scrollHeight-h.clientHeight;p.style.width=(m>0?h.scrollTop/m*100:0)+"%";t.classList.toggle("on",h.scrollTop>500)}addEventListener("scroll",u,{passive:true});u();t.onclick=function(){scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}})();</script>
 <script>(function(){
-/* ===== SUPABASE : collez l'URL du projet (Project Settings > API) ===== */
 const SUPABASE_URL="https://feahvqexnoozmpkseate.supabase.co",SUPABASE_ANON_KEY="sb_publishable_ivXCWsho2PYO1JH-1sUpRg_p-S91Z9X";
-const DEV=new URLSearchParams(location.search).has("demo");/* aperçu interne uniquement : ?demo=1 */
+const DEV=new URLSearchParams(location.search).has("demo");
 const sb=(SUPABASE_URL&&SUPABASE_ANON_KEY&&window.supabase)?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
 const $=i=>document.getElementById(i);
 const HP=new URLSearchParams(location.hash.replace(/^#/,"")),HT=HP.get("type"),HE=HP.get("error_description");
-const LBL={student:"Étudiant",teacher:"Enseignant",user:"Utilisateur",manager:"Manager",admin:"Administrateur"};
-const DEST={student:"espace-etudiant.html",teacher:"espace-enseignant.html",user:"index.html",manager:"manager.html",admin:"manager.html"};
 const CONTACT="Pour toute question, contactez l'administration au 33 53 24 15 ou à info@ifsauniversity.edu.ht.";
-const TXT={student:["Espace étudiant","Accédez à vos cours, vos notes et votre emploi du temps.","Votre accès est envoyé par email après l'approbation de votre dossier d'inscription."],teacher:["Espace enseignant","Gérez vos classes, vos présences et vos notes.","Votre compte est créé par la direction de l'université."],user:["Espace utilisateur","Commentez, aimez et suivez la vie de l'université.","Aucun dossier d'inscription n'est nécessaire pour un compte utilisateur."],staff:["Accès administration","Réservé à la direction de l'université.","Cet espace est réservé aux managers et aux administrateurs."]};
+const EYE="<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg>",EYEOFF="<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M17.9 17.9A10.1 10.1 0 0 1 12 19c-6.5 0-10-7-10-7a18.5 18.5 0 0 1 5.1-5.9\"/><path d=\"M9.9 4.2A9.1 9.1 0 0 1 12 4c6.5 0 10 7 10 7a18.5 18.5 0 0 1-2.2 3.2\"/><path d=\"m2 2 20 20\"/></svg>";
+document.querySelectorAll("[data-eye]").forEach(b=>b.onclick=()=>{const i=b.parentElement.querySelector("input"),s=i.type==="password";i.type=s?"text":"password";b.innerHTML=s?EYEOFF:EYE;b.setAttribute("aria-label",s?"Masquer le mot de passe":"Afficher le mot de passe")});
+const lvl=p=>{let s=0;if(p.length>=8)s++;if(p.length>=12)s++;if(/[A-Z]/.test(p)&&/[a-z]/.test(p))s++;if(/\d/.test(p))s++;if(/[^\w]/.test(p))s++;return s};
+$("n1").oninput=()=>{const s=lvl($("n1").value),b=$("sg").firstChild;b.style.width=Math.max(8,s*20)+"%";b.style.background=s<2?"#D64545":s<4?"#E0A41E":"#2E9E5B";$("sl").textContent=["","Très faible","Faible","Moyen","Bon","Excellent"][s]||""};
+const LBL={student:"Étudiant",teacher:"Enseignant",user:"Utilisateur"};
+const DEST={student:"espace-etudiant.html",teacher:"espace-enseignant.html",user:"index.html"};
+const TXT={student:["Espace étudiant","Accédez à vos cours, vos notes et votre emploi du temps.","Votre accès est envoyé par email après l'approbation de votre dossier d'inscription."],teacher:["Espace enseignant","Gérez vos classes, vos présences et vos notes.","Votre compte est créé par la direction de l'université."],user:["Espace utilisateur","Commentez, aimez et suivez la vie de l'université.","Connectez-vous, ou créez un compte gratuit en quelques secondes."]};
 let tab="student",mode="login";
 function say(t,k){const m=$("msg");m.className="msg "+k;m.textContent=t;m.hidden=!t}
-function foot(){const f={student:'Pas encore admis ? <a href="inscription.html">Faire une pré-inscription</a>',teacher:"",user:'Pas encore de compte ? <a href="#" data-a="signup">Créer un compte</a>',staff:'<a href="#" data-a="tab" data-t="student">← Retour à la connexion</a>'}[tab];
-return (f||"")+(tab!=="staff"?'<br><a href="#" data-a="tab" data-t="staff" style="font-weight:500;color:var(--mut)">Accès administration</a>':"")}
-function draw(){const t=TXT[tab];$("rtabs").hidden=tab==="staff"||mode!=="login";$("stf").hidden=tab!=="staff";
-$("ttl").textContent=mode==="login"?t[0]:mode==="reset"?"Mot de passe oublié":"Créer un compte utilisateur";
-$("sb2").textContent=mode==="login"?t[1]:mode==="reset"?"Entrez votre email : si un compte existe, vous recevrez un lien pour choisir un nouveau mot de passe.":"Rejoignez la communauté IFSA pour commenter et aimer nos contenus.";
+function foot(){return {student:'Pas encore admis ? <a href="inscription.html">Faire une pré-inscription</a>',teacher:"",user:'Pas encore de compte ? <a href="#" data-a="signup">Créer un compte</a>'}[tab]}
+function draw(){const t=TXT[tab];$("rtabs").hidden=mode!=="login";
+$("ttl").textContent=mode==="login"?t[0]:mode==="reset"?"Mot de passe oublié":"Créer mon compte";
+$("sb2").textContent=mode==="login"?t[1]:mode==="reset"?"Entrez votre email : si un compte existe, vous recevrez un lien pour choisir un nouveau mot de passe.":"Gratuit et immédiat : vous êtes connecté(e) dès la création de votre compte.";
 $("tn").textContent=t[2];$("tn").hidden=mode!=="login";$("fl").hidden=mode!=="login";$("fr").hidden=mode!=="reset";$("fs").hidden=mode!=="signup";
 document.querySelectorAll("#rtabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===tab));
-$("em").placeholder=tab==="staff"?"Email professionnel":"Votre email";$("ft").innerHTML=mode==="login"?foot():"";say("","")}
+$("ft").innerHTML=mode==="login"?foot():"";say("","")}
 document.querySelectorAll("#rtabs button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;mode="login";draw()});
-document.addEventListener("click",e=>{const a=e.target.closest("[data-a]");if(!a)return;e.preventDefault();const k=a.dataset.a;if(k==="tab"){tab=a.dataset.t;mode="login"}if(k==="signup"){tab="user";mode="signup"}if(k==="reset")mode="reset";if(k==="back")mode="login";draw()});
-$("eye").onclick=()=>{const p=$("pw"),s=p.type=="password";p.type=s?"text":"password";$("eye").innerHTML=s?"<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M17.9 17.9A10.1 10.1 0 0 1 12 19c-6.5 0-10-7-10-7a18.5 18.5 0 0 1 5.1-5.9\"/><path d=\"M9.9 4.2A9.1 9.1 0 0 1 12 4c6.5 0 10 7 10 7a18.5 18.5 0 0 1-2.2 3.2\"/><path d=\"m2 2 20 20\"/></svg>":"<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg>";$("eye").setAttribute("aria-label",s?"Masquer le mot de passe":"Afficher le mot de passe")};
-function why(e){const m=e&&e.message||"";const R=e&&e.role;
+document.addEventListener("click",e=>{const a=e.target.closest("[data-a]");if(!a)return;e.preventDefault();const k=a.dataset.a;if(k==="signup"){tab="user";mode="signup"}if(k==="reset")mode="reset";if(k==="back")mode="login";draw()});
+function why(e){const m=e&&e.message||"",R=e&&e.role;
 if(m==="suspended")return "Votre compte est temporairement suspendu. "+CONTACT;
 if(m==="disabled")return "Votre compte a été désactivé. "+CONTACT;
 if(m==="noaccount")return "Aucun compte actif n'est associé à cette adresse. "+CONTACT;
-if(m==="wrongtab")return tab==="staff"?"Ce compte n'a pas accès à l'administration.":"Ce compte est un compte « "+(LBL[R]||"autre")+" ». Sélectionnez l'onglet correspondant pour vous connecter.";
+if(m==="wrongtab")return "Ce compte est un compte « "+(LBL[R]||"autre")+" ». Sélectionnez l'onglet correspondant pour vous connecter.";
 if(/Invalid login/i.test(m))return "Email ou mot de passe incorrect.";if(/not confirmed/i.test(m))return "Confirmez d'abord votre adresse email grâce au lien que nous vous avons envoyé.";
 if(/rate limit|too many/i.test(m))return "Trop de tentatives. Patientez quelques minutes avant de réessayer.";
 return e&&e.name==="TypeError"?"Connexion impossible. Vérifiez votre réseau.":"Une erreur est survenue. Réessayez dans un instant."}
 async function check(user,expect){const {data:p,error}=await sb.from("profiles").select("role,status,full_name").eq("id",user.id).single();
 if(error||!p){await sb.auth.signOut();throw new Error("noaccount")}
+if(p.role==="manager"||p.role==="admin"){await sb.auth.signOut();throw new Error("Invalid login credentials")}
 if(p.status==="suspended"){await sb.auth.signOut();throw new Error("suspended")}if(p.status==="disabled"){await sb.auth.signOut();throw new Error("disabled")}
-if(expect){const ok=expect==="staff"?(p.role==="manager"||p.role==="admin"):p.role===expect;if(!ok){await sb.auth.signOut();const e=new Error("wrongtab");e.role=p.role;throw e}}
+if(expect&&p.role!==expect){await sb.auth.signOut();const e=new Error("wrongtab");e.role=p.role;throw e}
 sb.from("profiles").update({last_seen:new Date().toISOString()}).eq("id",user.id).then(()=>{});
-/* Drapeau d'affichage seulement : la vraie sécurité repose sur la session Supabase et les règles RLS */
 sessionStorage.setItem("ifsa_auth",JSON.stringify({role:p.role,name:p.full_name,email:user.email}));return p}
-function go(role){say("Connexion réussie. Redirection en cours…","ok");setTimeout(()=>{location.href=DEST[role]||"index.html"},500)}
+function go(role,msg){say(msg||"Connexion réussie. Redirection en cours…","ok");setTimeout(()=>{location.href=DEST[role]||"index.html"},600)}
 const avail=()=>{if(sb||DEV)return true;say("Le service de connexion est en cours d'activation. Merci de revenir très bientôt.","info");return false};
 $("fl").onsubmit=async e=>{e.preventDefault();say("","");if(!avail())return;const em=$("em").value.trim(),pw=$("pw").value;if(!em||pw.length<6){say("Entrez votre email et votre mot de passe.","err");return}
-$("go").disabled=true;try{if(!sb){const r=tab==="staff"?"manager":tab;sessionStorage.setItem("ifsa_auth",JSON.stringify({demo:true,role:r,name:"Compte de démonstration",email:em}));return go(r)}
+$("go").disabled=true;try{if(!sb){sessionStorage.setItem("ifsa_auth",JSON.stringify({demo:true,role:tab,name:"Compte de démonstration",email:em}));return go(tab)}
 const {data,error}=await sb.auth.signInWithPassword({email:em,password:pw});if(error)throw error;const p=await check(data.user,tab);go(p.role)}catch(x){say(why(x),"err")}finally{$("go").disabled=false}};
 $("fr").onsubmit=async e=>{e.preventDefault();if(!avail())return;const em=$("em2").value.trim();if(!em){say("Entrez votre email.","err");return}
 if(sb){await sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname})}
 say("Si un compte existe pour cette adresse, un email avec un lien de réinitialisation vient d'être envoyé. Pensez à vérifier vos courriers indésirables.","ok")};
 $("fs").onsubmit=async e=>{e.preventDefault();say("","");if(!avail())return;const n=$("sn").value.trim(),em=$("se").value.trim(),p1=$("s1").value,p2=$("s2").value;
-if(n.length<3||!em||p1.length<8){say("Entrez votre nom complet, un email valide et un mot de passe de 8 caractères minimum.","err");return}if(p1!==p2){say("Les deux mots de passe ne sont pas identiques.","err");return}
-if(!sb){say("Compte créé (aperçu interne).","ok");return}
+if(n.length<3||!/^\S+@\S+\.\S+$/.test(em)){say("Entrez votre nom complet et un email valide.","err");return}if(p1.length<8){say("Votre mot de passe doit contenir au moins 8 caractères.","err");return}if(p1!==p2){say("Les deux mots de passe ne sont pas identiques.","err");return}
+$("gs").disabled=true;try{if(!sb){sessionStorage.setItem("ifsa_auth",JSON.stringify({demo:true,role:"user",name:n,email:em}));return go("user","Compte créé. Bienvenue !")}
 const {data,error}=await sb.auth.signUp({email:em,password:p1,options:{data:{full_name:n},emailRedirectTo:location.origin+location.pathname}});
 if(error){say(/registered|already/i.test(error.message)?"Cet email a déjà un compte. Connectez-vous.":why(error),"err");return}
-say(data.session?"Votre compte est créé. Vous pouvez vous connecter.":"Votre compte est créé. Ouvrez l'email de confirmation que nous venons de vous envoyer.","ok");$("fs").reset()};
-/* ===== Création du mot de passe (invitation) ou réinitialisation ===== */
-const lvl=p=>{let s=0;if(p.length>=8)s++;if(p.length>=12)s++;if(/[A-Z]/.test(p)&&/[a-z]/.test(p))s++;if(/\d/.test(p))s++;if(/[^\w]/.test(p))s++;return s};
-$("n1").oninput=()=>{const s=lvl($("n1").value),b=$("sg").firstChild;b.style.width=Math.max(8,s*20)+"%";b.style.background=s<2?"#D64545":s<4?"#E0A41E":"#2E9E5B";$("sl").textContent=["","Très faible","Faible","Moyen","Bon","Excellent"][s]||""};
+if(data.session){await check(data.user,"user");go("user","Votre compte est créé. Bienvenue "+n.split(" ")[0]+" !")}
+else say("Votre compte est créé. Ouvrez l'email de confirmation que nous venons de vous envoyer.","ok")}catch(x){say(why(x),"err")}finally{$("gs").disabled=false}};
 function openPw(kind){$("pwm").hidden=false;$("pwt").textContent=kind==="invite"?"Bienvenue à IFSA University":"Nouveau mot de passe";$("pws").textContent=kind==="invite"?"Votre dossier a été approuvé. Créez votre mot de passe pour accéder à votre espace.":"Choisissez un nouveau mot de passe pour votre compte.";history.replaceState(null,"",location.pathname)}
 $("pwf").onsubmit=async e=>{e.preventDefault();const a=$("n1").value,b=$("n2").value,m=$("pwe");m.hidden=true;
 if(a.length<8){m.textContent="Votre mot de passe doit contenir au moins 8 caractères.";m.hidden=false;return}if(a!==b){m.textContent="Les deux mots de passe ne sont pas identiques.";m.hidden=false;return}
@@ -1564,10 +1565,12 @@ $("pwb").disabled=true;const r=await sb.auth.updateUser({password:a});$("pwb").d
 if(r.error){m.textContent=/same|different/i.test(r.error.message)?"Choisissez un mot de passe différent de l'ancien.":"Impossible d'enregistrer le mot de passe. Le lien a peut-être expiré : demandez-en un nouveau.";m.hidden=false;return}
 $("pwf").hidden=true;$("pwd").hidden=false};
 $("pwg").onclick=async()=>{try{const u=(await sb.auth.getUser()).data.user;const p=await check(u,null);location.href=DEST[p.role]||"index.html"}catch(x){$("pwm").hidden=true;say(why(x),"err")}};
-if(sb){sb.auth.onAuthStateChange((ev)=>{if(ev==="PASSWORD_RECOVERY")openPw("recovery")});
+if(sb){sb.auth.onAuthStateChange(ev=>{if(ev==="PASSWORD_RECOVERY")openPw("recovery")});
 if(HT==="invite"||HT==="recovery"){sb.auth.getSession().then(r=>{if(r.data.session)openPw(HT)})}}
 if(HE){say("Ce lien a expiré ou a déjà été utilisé. Utilisez « Mot de passe oublié » pour recevoir un nouveau lien.","err");history.replaceState(null,"",location.pathname)}
-draw();if(!sb&&!DEV)say("Le service de connexion est en cours d'activation. Merci de revenir très bientôt.","info");
+draw();
+if(new URLSearchParams(location.search).has("logout")){(async()=>{try{if(sb)await sb.auth.signOut()}catch(e){}sessionStorage.removeItem("ifsa_auth");history.replaceState(null,"",location.pathname);say("Vous êtes déconnecté(e). À bientôt !","ok")})()}
+else if(!sb&&!DEV)say("Le service de connexion est en cours d'activation. Merci de revenir très bientôt.","info");
 })();</script>
 </body>
 </html>
