@@ -1477,5 +1477,6 @@ g.onclick=function(e){var b=e.target.closest(".gi");if(!b)return;show(+b.dataset
 function close(){lb.classList.remove("on");document.documentElement.classList.remove("lock")}
 lb.querySelector(".x").onclick=close;lb.querySelector(".pv").onclick=function(){show(k-1)};lb.querySelector(".nx").onclick=function(){show(k+1)};lb.onclick=function(e){if(e.target==lb)close()};
 addEventListener("keydown",function(e){if(!lb.classList.contains("on"))return;if(e.key=="Escape")close();if(e.key=="ArrowLeft")show(k-1);if(e.key=="ArrowRight")show(k+1)});R()})();</script>
+<script>/* ===== COMPTE CONNECTÉ : adapte le lien Connexion ===== */(function(){try{var a=JSON.parse(sessionStorage.getItem("ifsa_auth")||"null");if(!a)return;var f=(a.name||"").split(" ")[0],D={student:["Mon espace","espace-etudiant.html"],teacher:["Mon espace","espace-enseignant.html"],user:["Bonjour, "+f+" · Quitter","connexion.html?logout=1"],manager:["Espace direction","manager.html"],admin:["Espace direction","manager.html"]}[a.role];if(!D)return;document.querySelectorAll('a[href="connexion.html"]').forEach(function(l){l.textContent=D[0];l.href=D[1]})}catch(e){}})();</script>
 </body>
 </html>
