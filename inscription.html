@@ -1226,6 +1226,23 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 .soc{display:flex;gap:10px;margin-top:16px}.soc a{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;padding:0;transition:.25s}.soc a:hover{background:var(--gold);color:var(--navy);transform:translateY(-3px)}.soc .ic{width:18px;height:18px}.ft-slogan{font:italic 600 1rem Fraunces,serif;color:var(--gold2);margin-top:14px}
 @media(max-width:860px){.rec{grid-template-columns:1fr}.rec .ph-img{min-height:260px}.totop{left:12px;bottom:16px}}
 @media print{.totop,#prog,.cb-fab,.cb,#hdr{display:none!important}}
+
+.senderr{background:#FDECEC;color:#A12B2B;border:1px solid #F4C6C6;border-radius:12px;padding:12px 14px;font-size:.88rem;margin:10px 0}
+.refno{display:inline-block;background:var(--navy);color:var(--gold2);border-radius:10px;padding:4px 12px;font-family:Fraunces,serif;letter-spacing:.04em}
+.nxt{margin:16px 0 18px 20px;color:var(--mut);font-size:.92rem;line-height:1.7}.nxt li{margin-bottom:6px}
+#fiche{display:none}
+@media print{
+  body *{visibility:hidden!important}
+  #fiche,#fiche *{visibility:visible!important}
+  #fiche{display:block!important;position:absolute;left:0;top:0;width:100%;padding:0 12mm;font-family:Arial,Helvetica,sans-serif;color:#111}
+  #fiche .fh{display:flex;align-items:center;gap:20px;border-bottom:4px solid #C9A24B;padding-bottom:14px;margin-bottom:18px}
+  #fiche .fh img{height:80px}#fiche h1{font:700 22px Georgia,serif;color:#071A45;margin:0 0 4px}#fiche .ft p{margin:2px 0;font-size:13px}
+  #fiche table{width:100%;border-collapse:collapse;font-size:13px}#fiche th{width:32%;text-align:left;background:#F1F3F9;padding:8px 10px;border:1px solid #D5DBEA;color:#071A45}#fiche td{padding:8px 10px;border:1px solid #D5DBEA}
+  #fiche .fn{margin-top:20px;font-size:13px;line-height:1.6}#fiche .fn h2{font:700 15px Georgia,serif;color:#071A45;margin:0 0 6px}#fiche .fn p{margin:3px 0}
+  #fiche .fg{display:flex;gap:30px;margin-top:46px;font-size:12px}#fiche .fg div{flex:1;border-top:1px solid #111;padding-top:6px;text-align:center}
+  #fiche .fz{margin-top:30px;border-top:2px solid #C9A24B;padding-top:8px;text-align:center;font-size:11px;color:#555}
+  @page{margin:14mm}
+}
 </style>
 <meta name="theme-color" content="#071A45"><meta property="og:type" content="website"><meta property="og:site_name" content="IFSA University"><meta property="og:title" content="Inscription — IFSA University"><meta property="og:description" content="Pré-inscription en ligne à IFSA University."><meta property="og:image" content="https://i.postimg.cc/8zMT8g8M/No-background.png"><meta property="og:locale" content="fr_FR">
 </head>
@@ -1305,18 +1322,21 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
               <div class="sum" id="sum"></div>
               <div class="fld"><label class="chk" for="ag"><input type="checkbox" id="ag" required aria-describedby="e-ag"> Je certifie que ces informations sont exactes.</label><small class="em" id="e-ag"></small></div>
             </div>
+            <p class="senderr" id="sendErr" role="alert" hidden></p>
             <!-- ===== BOUTONS RETOUR / CONTINUER (sticky sur mobile) ===== -->
             <div class="nav2"><button type="button" class="btn btn-navy" id="pv" hidden>← Retour</button><button type="button" class="btn btn-gold" id="nx">Continuer →</button></div>
           </form>
           <!-- ===== CONFIRMATION ===== -->
           <div id="done" hidden>
             <div class="ok-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
-            <h2 class="fs-t" id="doneT" tabindex="-1">Dossier prêt</h2>
-            <p class="hint">Votre application email va s'ouvrir avec le récapitulatif. Envoyez-le pour finaliser, ou imprimez-le.</p>
+            <h2 class="fs-t" id="doneT" tabindex="-1">Votre demande a bien été envoyée</h2>
+            <p class="hint">Conservez votre numéro de référence : <b id="refNo" class="refno"></b></p>
+            <ol class="nxt"><li>Notre équipe vous contacte au numéro indiqué pour un entretien.</li><li>Après l'entretien, vous réglez les frais d'inscription (300 $HT).</li><li>Dès l'approbation de votre dossier, vous recevez un <b>email avec un lien personnel</b> pour créer votre mot de passe et accéder à votre espace.</li></ol>
             <div class="sum" id="sum2"></div>
-            <div class="done-btns"><a class="btn btn-gold" id="mailA" href="mailto:info@ifsauniversity.edu.ht">Ouvrir l'email</a><button class="btn btn-navy" type="button" id="prt">Imprimer</button><button class="btn btn-ghost-dark" type="button" id="edt">Modifier</button></div>
+            <div class="done-btns"><button class="btn btn-gold" type="button" id="prt">Imprimer ma fiche</button><a class="btn btn-navy" href="index.html">Retour à l'accueil</a></div>
           </div>
         </div>
+        <div id="fiche" aria-hidden="true"></div>
         <!-- ===== CARTE D'AIDE (sticky sur desktop) ===== -->
         <aside class="side" aria-label="Aide à l'inscription">
           <div class="side-card">
@@ -1540,7 +1560,8 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 })();
 
   </script>
-  <script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 /* ===== INSCRIPTION : formulaire en 4 étapes ===== */
 (function () {
   'use strict';
@@ -1634,23 +1655,50 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
     card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
     S[n].querySelector('.fs-t').focus({ preventScroll: true });
   }
-  nx.addEventListener('click', () => {
+  /* ===== ENVOI DE LA DEMANDE ===== */
+  /* Collez l'URL du projet Supabase (Project Settings > API). Même valeur que dans connexion.html */
+  const SUPABASE_URL = 'https://feahvqexnoozmpkseate.supabase.co', SUPABASE_ANON_KEY = 'sb_publishable_ivXCWsho2PYO1JH-1sUpRg_p-S91Z9X';
+  const DEV = new URLSearchParams(location.search).has('demo'); /* aperçu interne uniquement */
+  const sb = (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+  const LOGO = 'https://i.postimg.cc/8zMT8g8M/No-background.png';
+  function fail(m) { const e = $('sendErr'); e.textContent = m; e.hidden = !m; }
+  function fiche(ref) {
+    const f = $('fiche'); f.textContent = '';
+    const el = (t, c, x) => { const n = document.createElement(t); if (c) n.className = c; if (x != null) n.textContent = x; return n; };
+    const head = el('div', 'fh'); const img = document.createElement('img'); img.src = LOGO; img.alt = 'IFSA University'; head.appendChild(img);
+    const ht = el('div', 'ft'); ht.append(el('h1', '', 'Fiche de pré-inscription'), el('p', '', 'Référence : ' + ref), el('p', '', 'Date : ' + new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })));
+    head.appendChild(ht); f.appendChild(head);
+    const t = el('table'); rows().forEach(r => { const tr = el('tr'); tr.append(el('th', '', r[0]), el('td', '', r[1])); t.appendChild(tr); }); f.appendChild(t);
+    const n = el('div', 'fn'); n.append(el('h2', '', 'Prochaines étapes'), el('p', '', '1. Notre équipe vous contacte pour un entretien.'), el('p', '', '2. Après l\'entretien, règlement des frais d\'inscription (300 $HT).'), el('p', '', '3. Dès l\'approbation de votre dossier, vous recevez un email avec un lien personnel pour créer votre mot de passe.'));
+    f.appendChild(n);
+    const sg = el('div', 'fg'); sg.append(el('div', '', 'Signature du candidat'), el('div', '', 'Cachet et signature de l\'administration')); f.appendChild(sg);
+    f.appendChild(el('p', 'fz', 'IFSA University · 33 53 24 15 · 47 66 48 45 · info@ifsauniversity.edu.ht'));
+  }
+  nx.addEventListener('click', async () => {
     if (!validate()) return;
     if (c < 3) return go(c + 1);
-    const body = rows().map(r => r[0] + ' : ' + r[1]).join('\n');
-    const href = 'mailto:info@ifsauniversity.edu.ht?subject=' + encodeURIComponent('Pré-inscription IFSA') + '&body=' + encodeURIComponent(body);
-    F.hidden = true; $('stp').hidden = true; $('stpM').hidden = true; $('barBox').hidden = true;
-    render($('sum2')); $('mailA').href = href; $('done').hidden = false;
-    card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-    $('doneT').focus({ preventScroll: true });
-    location.href = href;
+    fail('');
+    const d = new FormData(F);
+    const payload = { full_name: (d.get('prenom') + ' ' + d.get('nom')).trim(), phone: d.get('tel'), email: d.get('email'), sex: d.get('sexe'), birth_date: d.get('naiss'), birth_place: d.get('lieu'), address: d.get('adr'), site: d.get('site'), faculte: d.get('fac'), option: d.get('opt'), formule: d.get('form'), pieces: d.getAll('p') };
+    nx.disabled = true; const label = nx.textContent; nx.textContent = 'Envoi en cours…';
+    try {
+      let ref;
+      if (sb) { const r = await sb.rpc('submit_application', { p: payload }); if (r.error) throw r.error; ref = r.data; }
+      else if (DEV) ref = 'PRE-26-0000';
+      else throw new Error('unavailable');
+      F.hidden = true; $('stp').hidden = true; $('stpM').hidden = true; $('barBox').hidden = true;
+      $('refNo').textContent = ref; render($('sum2')); fiche(ref); $('done').hidden = false;
+      card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      $('doneT').focus({ preventScroll: true });
+    } catch (e) {
+      const m = (e && e.message) || '';
+      fail(m === 'unavailable' ? 'Le service d\'inscription en ligne est en cours d\'activation. Appelez-nous au 33 53 24 15 pour vous inscrire.'
+        : /déjà été envoyée/.test(m) ? m : 'Votre demande n\'a pas pu être envoyée. Vérifiez votre connexion et réessayez, ou appelez le 33 53 24 15.');
+    } finally { nx.disabled = false; nx.textContent = label; }
   });
   pv.addEventListener('click', () => go(c - 1));
   F.addEventListener('submit', e => { e.preventDefault(); nx.click(); });
   $('prt').addEventListener('click', () => print());
-  $('edt').addEventListener('click', () => {
-    $('done').hidden = true; F.hidden = false; $('stp').hidden = false; $('stpM').hidden = false; $('barBox').hidden = false; go(3);
-  });
 })();
 
   </script>
