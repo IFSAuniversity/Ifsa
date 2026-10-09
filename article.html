@@ -1481,5 +1481,6 @@ $("pn").innerHTML=L(id+1,-1)+L(id-1,1);
 const R=A.map((x,i)=>[x,i]).filter(p=>p[1]!=id).sort((p,q)=>(q[0][0]==a[0])-(p[0][0]==a[0])).slice(0,3);
 $("rel").innerHTML=R.map(p=>'<article class="art"><div class="ph"></div><div class="t"><span class="tag">'+p[0][0]+'</span><h3><a href="article.html?id='+p[1]+'">'+p[0][1]+'</a></h3><small>'+fmt(p[0][3])+'</small></div></article>').join("");
 })();</script>
+<script>/* ===== COMPTE CONNECTÉ : adapte le lien Connexion ===== */(function(){try{var a=JSON.parse(sessionStorage.getItem("ifsa_auth")||"null");if(!a)return;var f=(a.name||"").split(" ")[0],D={student:["Mon espace","espace-etudiant.html"],teacher:["Mon espace","espace-enseignant.html"],user:["Bonjour, "+f+" · Quitter","connexion.html?logout=1"],manager:["Espace direction","manager.html"],admin:["Espace direction","manager.html"]}[a.role];if(!D)return;document.querySelectorAll('a[href="connexion.html"]').forEach(function(l){l.textContent=D[0];l.href=D[1]})}catch(e){}})();</script>
 </body>
 </html>
