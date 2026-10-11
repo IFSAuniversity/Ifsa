@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#071A45">
+<title>Accès du personnel — IFSA University</title>
+<link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>(function(){var r=document.documentElement,t='light';try{var v=localStorage.getItem('ifsa-theme');t=(v==='light'||v==='dark')?v:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}r.dataset.theme=t})();</script>
+<style>
+:root{--navy:#0B1F4B;--gold:#C9A24B;--gold2:#E8CF8E;--ink:#1B2437;--mut:#5B667C;--green:#0E6B3A;--nb:#E4E9F3;--nl:#FFFFFF;--nd:#BFC8DC}
+[data-theme="dark"]{color-scheme:dark;--nb:#0F1A3A;--nl:#17254F;--nd:#060C20;--ink:#E4EAF7;--mut:#A0AECB}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:var(--nb);line-height:1.6;display:grid;place-items:center;padding:max(20px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom));min-height:100dvh}
+h1,h2{font-family:'Fraunces',Georgia,serif;color:var(--navy);line-height:1.15}
+[data-theme="dark"] h1,[data-theme="dark"] h2{color:#fff}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.card{width:min(460px,100%);background:var(--nb);border-radius:34px;padding:34px 30px 30px;box-shadow:16px 16px 36px var(--nd),-16px -16px 36px var(--nl)}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.brand img{width:46px;height:46px;object-fit:contain}
+.brand b{font:700 1.05rem 'Fraunces',serif;color:var(--navy);display:block;line-height:1.1}
+[data-theme="dark"] .brand b{color:#fff}
+.brand span{font-size:.78rem;color:var(--mut)}
+h1{font-size:1.65rem;margin-bottom:4px}
+.sub{color:var(--mut);font-size:.9rem;margin-bottom:22px}
+.lbl{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:0 0 10px 4px}
+/* Sélecteur coulissant de la fonction */
+.sl{position:relative;display:grid;grid-template-columns:repeat(4,1fr);background:var(--nb);border-radius:22px;padding:6px;box-shadow:inset 6px 6px 12px var(--nd),inset -6px -6px 12px var(--nl);touch-action:pan-y;user-select:none;-webkit-user-select:none;margin-bottom:10px}
+.sl .th{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/4);border-radius:17px;background:var(--nb);box-shadow:5px 5px 11px var(--nd),-5px -5px 11px var(--nl);transition:transform .32s cubic-bezier(.3,1.3,.5,1);pointer-events:none}
+.sl .th::after{content:"";position:absolute;left:50%;bottom:6px;width:18px;height:3px;margin-left:-9px;border-radius:3px;background:var(--gold)}
+.sl button{position:relative;z-index:1;border:0;background:none;display:grid;justify-items:center;gap:5px;padding:12px 2px 14px;color:var(--mut);cursor:pointer;font:600 .7rem 'Plus Jakarta Sans',system-ui,sans-serif;transition:color .25s;min-width:0}
+.sl button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sl button[aria-checked=true]{color:var(--navy)}
+[data-theme="dark"] .sl button[aria-checked=true]{color:var(--gold2)}
+.sl .ic{width:22px;height:22px}
+.fn{text-align:center;font:700 1.05rem 'Fraunces',serif;color:var(--navy);margin:0 0 20px;min-height:1.6em}
+[data-theme="dark"] .fn{color:var(--gold2)}
+/* Choix du site */
+.sites{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.sites button{border:0;border-radius:16px;padding:13px 8px;background:var(--nb);color:var(--ink);font:600 .86rem 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;box-shadow:5px 5px 11px var(--nd),-5px -5px 11px var(--nl);transition:box-shadow .2s,color .2s}
+.sites button[aria-checked=true]{box-shadow:inset 4px 4px 9px var(--nd),inset -4px -4px 9px var(--nl);color:var(--navy);font-weight:700}
+[data-theme="dark"] .sites button[aria-checked=true]{color:var(--gold2)}
+.sites button[aria-checked=true]::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:8px;vertical-align:middle}
+/* Champs */
+form{display:grid;gap:0}
+.fld{position:relative;margin-bottom:16px}
+.fld>.ic{position:absolute;left:16px;top:50%;margin-top:-9px;color:var(--mut);pointer-events:none}
+.fld input{width:100%;min-height:50px;padding:14px 48px 14px 46px;border:0;border-radius:16px;background:var(--nb);color:var(--ink);font:inherit;font-size:16px;box-shadow:inset 5px 5px 11px var(--nd),inset -5px -5px 11px var(--nl)}
+.fld input::placeholder{color:#8A94AB}
+.fld input:focus-visible{outline:0;box-shadow:inset 5px 5px 11px var(--nd),inset -5px -5px 11px var(--nl),0 0 0 3px rgba(201,162,75,.55)}
+.fld .eye{position:absolute;right:8px;top:50%;margin-top:-18px;width:36px;height:36px;border:0;background:none;color:var(--mut);cursor:pointer;display:grid;place-items:center;border-radius:50%}
+.fld .eye:hover{color:var(--navy)}
+[data-theme="dark"] .fld .eye:hover{color:var(--gold2)}
+.opt{display:flex;justify-content:flex-end;font-size:.86rem;margin:-4px 0 18px}
+.opt a,.foot a{color:var(--navy);font-weight:700}
+[data-theme="dark"] .opt a,[data-theme="dark"] .foot a{color:var(--gold2)}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border:0;border-radius:16px;font:700 .95rem 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--gold),#DDB863);color:var(--navy);box-shadow:7px 7px 16px var(--nd),-7px -7px 16px var(--nl);transition:box-shadow .2s,transform .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:none;box-shadow:inset 4px 4px 9px rgba(120,90,20,.35),inset -4px -4px 9px rgba(255,235,170,.45)}
+.btn[disabled]{opacity:.7;cursor:wait}
+.sp{width:18px;height:18px;border-radius:50%;border:3px solid rgba(7,26,69,.25);border-top-color:var(--navy);animation:spn .7s linear infinite;display:none}
+.btn[disabled] .sp{display:inline-block}
+@keyframes spn{to{transform:rotate(360deg)}}
+.msg{font-size:.88rem;border-radius:14px;padding:12px 14px;margin-bottom:16px}
+.msg[hidden]{display:none}
+.msg.err{background:#FDECEC;color:#A12B2B;border:1px solid #F4C6C6}
+.msg.ok{background:#E8F6EE;color:#17663D;border:1px solid #BFE5CF}
+.msg.info{background:rgba(201,162,75,.16);color:#6B5316;border:1px solid rgba(201,162,75,.5)}
+[data-theme="dark"] .msg.err{background:#2A1517;color:#F3B4B4;border-color:#6B2A2A}
+[data-theme="dark"] .msg.ok{background:#0F2A1D;color:#9FDDB9;border-color:#245B3C}
+[data-theme="dark"] .msg.info{color:var(--gold2)}
+.foot{text-align:center;font-size:.86rem;color:var(--mut);margin-top:18px}
+.tools{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.tbtn{width:40px;height:40px;border:0;border-radius:50%;background:var(--nb);color:var(--mut);cursor:pointer;display:grid;place-items:center;box-shadow:4px 4px 9px var(--nd),-4px -4px 9px var(--nl)}
+.tbtn:active{box-shadow:inset 3px 3px 7px var(--nd),inset -3px -3px 7px var(--nl)}
+.back{display:inline-flex;gap:6px;align-items:center;font:600 .84rem 'Plus Jakarta Sans';color:var(--mut)}
+.back:hover{color:var(--navy)}
+.mdl{position:fixed;inset:0;background:rgba(7,26,69,.78);backdrop-filter:blur(6px);display:grid;place-items:center;z-index:50;padding:18px}
+.mdl[hidden]{display:none}
+.mdl .card{width:min(460px,100%);max-height:96dvh;overflow:auto;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.stg{height:6px;border-radius:9px;background:var(--nd);overflow:hidden;margin:-6px 0 6px}
+.stg i{display:block;height:100%;width:0;transition:.3s;background:#D64545}
+.stl{font-size:.78rem;color:var(--mut);margin-bottom:16px}
+.okb{text-align:center}
+.okb .ic{width:54px;height:54px;color:var(--green);margin-bottom:10px}
+.okb p{color:var(--mut);margin:8px 0 18px}
+[hidden]{display:none!important}
+@media(max-width:380px){.card{padding:26px 18px 22px}.sl button{font-size:.64rem}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main class="card" id="main">
+  <div class="tools">
+    <a class="back" href="index.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Retour au site</a>
+    <button class="tbtn" id="themeT" type="button" aria-label="Changer de thème"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
+  </div>
+  <div class="brand"><img src="https://i.postimg.cc/8zMT8g8M/No-background.png" alt="" width="46" height="46"><div><b>IFSA University</b><span>Accès du personnel</span></div></div>
+  <h1 id="ttl">Connexion</h1>
+  <p class="sub" id="sb">Choisissez votre fonction et votre site, puis entrez vos identifiants.</p>
+  <div class="msg" id="msg" role="alert" hidden></div>
+
+  <form id="fl" novalidate autocomplete="on">
+    <p class="lbl" id="l1">Votre fonction</p>
+    <div class="sl" id="sl" role="radiogroup" aria-labelledby="l1">
+      <span class="th" id="th" aria-hidden="true"></span>
+      <button type="button" role="radio" aria-checked="true" tabindex="0" data-r="teacher"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg><span>Enseignant</span></button>
+      <button type="button" role="radio" aria-checked="false" tabindex="-1" data-r="bursar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg><span>Économe</span></button>
+      <button type="button" role="radio" aria-checked="false" tabindex="-1" data-r="secretary"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h6"/></svg><span>Secrétaire</span></button>
+      <button type="button" role="radio" aria-checked="false" tabindex="-1" data-r="branch_director"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2 3 7h18z"/></svg><span>Directeur</span></button>
+    </div>
+    <p class="fn" id="fn" aria-live="polite">Enseignant</p>
+
+    <p class="lbl" id="l2">Votre site</p>
+    <div class="sites" id="sites" role="radiogroup" aria-labelledby="l2">
+      <button type="button" role="radio" aria-checked="false" data-s="carrefour">Carrefour</button>
+      <button type="button" role="radio" aria-checked="false" data-s="port-de-paix">Port-de-Paix</button>
+      <button type="button" role="radio" aria-checked="false" data-s="miragoane">Miragoâne</button>
+      <button type="button" role="radio" aria-checked="false" data-s="petit-goave">Petit-Goâve</button>
+    </div>
+
+    <div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><input id="em" type="email" autocomplete="username" placeholder="Votre email" aria-label="Email" required></div>
+    <div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="pw" type="password" autocomplete="current-password" placeholder="Mot de passe" aria-label="Mot de passe" required><button type="button" class="eye" data-eye aria-label="Afficher le mot de passe"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+    <div class="opt"><a href="#" data-a="reset">Mot de passe oublié ?</a></div>
+    <button class="btn" id="go" type="submit"><span class="sp"></span>Se connecter</button>
+  </form>
+
+  <form id="fr" hidden novalidate>
+    <div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><input id="em2" type="email" autocomplete="username" placeholder="Votre email" aria-label="Email" required></div>
+    <button class="btn" id="gr" type="submit"><span class="sp"></span>Envoyer le lien</button>
+    <p class="foot"><a href="#" data-a="back">← Retour à la connexion</a></p>
+  </form>
+</main>
+
+<div class="mdl" id="pwm" hidden role="dialog" aria-modal="true" aria-labelledby="pwt"><div class="card">
+  <form id="pwf" novalidate><h1 id="pwt">Nouveau mot de passe</h1><p class="sub" id="pws"></p>
+    <div class="msg err" id="pwe" role="alert" hidden></div>
+    <div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="n1" type="password" placeholder="Nouveau mot de passe" autocomplete="new-password" aria-label="Nouveau mot de passe" required><button type="button" class="eye" data-eye aria-label="Afficher le mot de passe"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+    <div class="stg" id="sg"><i></i></div><p class="stl" id="sgl">8 caractères minimum, avec lettres et chiffres.</p>
+    <div class="fld"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input id="n2" type="password" placeholder="Confirmer le mot de passe" autocomplete="new-password" aria-label="Confirmer le mot de passe" required><button type="button" class="eye" data-eye aria-label="Afficher le mot de passe"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+    <button class="btn" id="pwb" type="submit"><span class="sp"></span>Enregistrer mon mot de passe</button>
+  </form>
+  <div class="okb" id="pwd" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><h2>Mot de passe enregistré</h2><p>Mémorisez-le bien : il vous servira à accéder à votre espace.</p><button class="btn" id="pwg" type="button">Accéder à mon espace</button></div>
+</div></div>
+
+<noscript><p style="position:fixed;inset:auto 0 0 0;padding:14px;text-align:center;background:#071A45;color:#fff;font:600 .9rem sans-serif">JavaScript est nécessaire pour se connecter.</p></noscript>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+"use strict";
+var SUPABASE_URL="https://feahvqexnoozmpkseate.supabase.co",SUPABASE_ANON_KEY="sb_publishable_ivXCWsho2PYO1JH-1sUpRg_p-S91Z9X";
+var sb=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
+var $=function(i){return document.getElementById(i)};
+var HP=new URLSearchParams(location.hash.replace(/^#/,"")),HT=HP.get("type"),HE=HP.get("error_description");
+var CONTACT="Pour toute question, contactez la direction de votre site ou l'administration au 33 53 24 15 ou à IFSAuniversity@gmail.com.";
+var GENERIC="Email ou mot de passe incorrect.";
+var ROLES=[{r:"teacher",t:"Enseignant"},{r:"bursar",t:"Économe"},{r:"secretary",t:"Censeur / Secrétaire"},{r:"branch_director",t:"Directeur d'antenne"}];
+var DEST={teacher:"espace-enseignant.html",bursar:"espace-econome.html",secretary:"espace-secretariat.html",branch_director:"espace-directeur.html"};
+var EYE="<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg>";
+var EYEOFF="<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M17.9 17.9A10.1 10.1 0 0 1 12 19c-6.5 0-10-7-10-7a18.5 18.5 0 0 1 5.1-5.9\"/><path d=\"M9.9 4.2A9.1 9.1 0 0 1 12 4c6.5 0 10 7 10 7a18.5 18.5 0 0 1-2.2 3.2\"/><path d=\"m2 2 20 20\"/></svg>";
+var idx=0,site="",mode="login";
+
+/* thème */
+(function(){var root=document.documentElement,b=$("themeT");
+b.onclick=function(){var n=root.dataset.theme==="dark"?"light":"dark";root.dataset.theme=n;try{localStorage.setItem("ifsa-theme",n)}catch(e){}}})();
+
+/* œil */
+document.querySelectorAll("[data-eye]").forEach(function(b){b.onclick=function(){var i=b.parentElement.querySelector("input"),s=i.type==="password";i.type=s?"text":"password";b.innerHTML=s?EYEOFF:EYE;b.setAttribute("aria-label",s?"Masquer le mot de passe":"Afficher le mot de passe")}});
+
+/* messages */
+function say(t,k){var m=$("msg");m.className="msg "+(k||"");m.textContent=t||"";m.hidden=!t}
+
+/* sélecteur coulissant */
+var sl=$("sl"),btns=Array.prototype.slice.call(sl.querySelectorAll("button"));
+function setIdx(i,focus){i=Math.max(0,Math.min(ROLES.length-1,i));idx=i;
+$("th").style.transform="translateX("+(i*100)+"%)";
+btns.forEach(function(b,k){var on=k===i;b.setAttribute("aria-checked",on);b.tabIndex=on?0:-1});
+$("fn").textContent=ROLES[i].t;if(focus)btns[i].focus()}
+function idxFromX(x){var r=sl.getBoundingClientRect();return Math.floor(((x-r.left)/r.width)*ROLES.length)}
+var down=false;
+sl.addEventListener("pointerdown",function(e){down=true;try{sl.setPointerCapture(e.pointerId)}catch(x){}setIdx(idxFromX(e.clientX))});
+sl.addEventListener("pointermove",function(e){if(down)setIdx(idxFromX(e.clientX))});
+function up(){down=false}
+sl.addEventListener("pointerup",up);sl.addEventListener("pointercancel",up);
+btns.forEach(function(b,k){b.addEventListener("click",function(){setIdx(k)})});
+sl.addEventListener("keydown",function(e){
+if(e.key==="ArrowRight"||e.key==="ArrowDown"){e.preventDefault();setIdx(idx+1,true)}
+else if(e.key==="ArrowLeft"||e.key==="ArrowUp"){e.preventDefault();setIdx(idx-1,true)}
+else if(e.key==="Home"){e.preventDefault();setIdx(0,true)}else if(e.key==="End"){e.preventDefault();setIdx(ROLES.length-1,true)}});
+setIdx(0);
+
+/* choix du site */
+var sbtn=Array.prototype.slice.call($("sites").querySelectorAll("button"));
+sbtn.forEach(function(b){b.onclick=function(){site=b.dataset.s;sbtn.forEach(function(x){x.setAttribute("aria-checked",x===b)})}});
+
+/* écrans */
+function draw(){var login=mode==="login";$("fl").hidden=!login;$("fr").hidden=login;
+$("ttl").textContent=login?"Connexion":"Mot de passe oublié";
+$("sb").textContent=login?"Choisissez votre fonction et votre site, puis entrez vos identifiants.":"Entrez votre email : si un compte existe, vous recevrez un lien pour choisir un nouveau mot de passe.";say("","")}
+document.addEventListener("click",function(e){var a=e.target.closest("[data-a]");if(!a)return;e.preventDefault();mode=a.dataset.a==="reset"?"reset":"login";
+if(mode==="reset")$("em2").value=$("em").value;draw()});
+
+/* messages d'erreur : ne rien révéler tant que l'identité n'est pas prouvée */
+function why(e){var m=(e&&e.message)||"";
+if(m==="suspended")return "Votre compte est temporairement suspendu. "+CONTACT;
+if(m==="disabled")return "Votre compte a été désactivé. "+CONTACT;
+if(/banned|ban/i.test(m))return "Votre compte est suspendu ou désactivé. "+CONTACT;
+if(/rate limit|too many/i.test(m))return "Trop de tentatives. Patientez quelques minutes avant de réessayer.";
+if(m==="network"||(e&&e.name==="TypeError"))return "Connexion impossible. Vérifiez votre réseau.";
+return GENERIC}
+function ready(){if(sb)return true;say("Le service de connexion est en cours d'activation. Merci de revenir très bientôt.","info");return false}
+async function out(){try{await sb.auth.signOut()}catch(x){}try{sessionStorage.removeItem("ifsa_auth")}catch(x){}}
+
+/* connexion : l'identité, la fonction ET le site sont vérifiés côté base */
+$("fl").onsubmit=async function(e){e.preventDefault();say("","");if(!ready())return;
+var em=$("em").value.trim(),pw=$("pw").value,role=ROLES[idx].r;
+if(!site){say("Choisissez votre site.","err");return}
+if(!em||pw.length<6){say("Entrez votre email et votre mot de passe.","err");return}
+$("go").disabled=true;
+try{
+var r=await sb.auth.signInWithPassword({email:em,password:pw});if(r.error)throw r.error;
+var uid=r.data.user.id;
+var q=await sb.from("profiles").select("role,status,site_id,full_name").eq("id",uid).single();
+var p=q.data;
+if(q.error||!p||p.role!==role||p.site_id!==site){await out();throw new Error("generic")}
+if(p.status==="suspended"){await out();throw new Error("suspended")}
+if(p.status==="disabled"){await out();throw new Error("disabled")}
+var c=await sb.rpc("check_staff_login",{p_role:role,p_site:site});
+if(c.error||c.data!==true){await out();throw new Error("generic")}
+sb.from("profiles").update({last_seen:new Date().toISOString()}).eq("id",uid).then(function(){});
+try{sessionStorage.setItem("ifsa_auth",JSON.stringify({role:p.role,name:p.full_name,email:em,site:p.site_id}))}catch(x){}
+say("Connexion réussie. Redirection en cours…","ok");
+setTimeout(function(){location.href=DEST[p.role]},600);
+}catch(x){say(why(x),"err")}finally{$("go").disabled=false}};
+
+/* mot de passe oublié (réponse toujours identique) */
+$("fr").onsubmit=async function(e){e.preventDefault();if(!ready())return;var em=$("em2").value.trim();
+if(!/^\S+@\S+\.\S+$/.test(em)){say("Entrez une adresse email valide.","err");return}
+$("gr").disabled=true;
+try{await sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname})}catch(x){}
+$("gr").disabled=false;
+say("Si un compte existe pour cette adresse, un email avec un lien de réinitialisation vient d'être envoyé. Pensez à vérifier vos courriers indésirables.","ok")};
+
+/* création / changement de mot de passe (invitation ou lien de réinitialisation) */
+function lvl(p){var s=0;if(p.length>=8)s++;if(p.length>=12)s++;if(/[A-Z]/.test(p)&&/[a-z]/.test(p))s++;if(/\d/.test(p))s++;if(/[^\w]/.test(p))s++;return s}
+$("n1").oninput=function(){var s=lvl($("n1").value),b=$("sg").firstChild;b.style.width=Math.max(8,s*20)+"%";b.style.background=s<2?"#D64545":s<4?"#E0A41E":"#2E9E5B";$("sgl").textContent=["","Très faible","Faible","Moyen","Bon","Excellent"][s]||""};
+function openPw(kind){$("pwm").hidden=false;$("pwt").textContent=kind==="invite"?"Bienvenue à IFSA University":"Nouveau mot de passe";
+$("pws").textContent=kind==="invite"?"Votre compte a été créé par la direction. Créez votre mot de passe pour accéder à votre espace.":"Choisissez un nouveau mot de passe pour votre compte.";
+history.replaceState(null,"",location.pathname)}
+$("pwf").onsubmit=async function(e){e.preventDefault();var a=$("n1").value,b=$("n2").value,m=$("pwe");m.hidden=true;
+if(a.length<8){m.textContent="Votre mot de passe doit contenir au moins 8 caractères.";m.hidden=false;return}
+if(a!==b){m.textContent="Les deux mots de passe ne sont pas identiques.";m.hidden=false;return}
+$("pwb").disabled=true;var r=await sb.auth.updateUser({password:a});$("pwb").disabled=false;
+if(r.error){m.textContent=/same|different/i.test(r.error.message)?"Choisissez un mot de passe différent de l'ancien.":"Impossible d'enregistrer le mot de passe. Le lien a peut-être expiré : demandez-en un nouveau.";m.hidden=false;return}
+$("pwf").hidden=true;$("pwd").hidden=false};
+$("pwg").onclick=async function(){
+try{var u=(await sb.auth.getUser()).data.user;
+var q=await sb.from("profiles").select("role,status,site_id,full_name").eq("id",u.id).single();var p=q.data;
+if(q.error||!p||!DEST[p.role]){await out();$("pwm").hidden=true;say(GENERIC,"err");return}
+if(p.status==="suspended"||p.status==="disabled"){await out();$("pwm").hidden=true;say(why(new Error(p.status)),"err");return}
+try{sessionStorage.setItem("ifsa_auth",JSON.stringify({role:p.role,name:p.full_name,email:u.email,site:p.site_id}))}catch(x){}
+location.href=DEST[p.role]}catch(x){$("pwm").hidden=true;say(why(x),"err")}};
+if(sb){sb.auth.onAuthStateChange(function(ev){if(ev==="PASSWORD_RECOVERY")openPw("recovery")});
+if(HT==="invite"||HT==="recovery"){sb.auth.getSession().then(function(r){if(r.data.session)openPw(HT)})}}
+if(HE){say("Ce lien a expiré ou a déjà été utilisé. Utilisez « Mot de passe oublié » pour recevoir un nouveau lien.","err");history.replaceState(null,"",location.pathname)}
+if(new URLSearchParams(location.search).has("logout")){(async function(){try{if(sb)await sb.auth.signOut()}catch(e){}try{sessionStorage.removeItem("ifsa_auth")}catch(e){}history.replaceState(null,"",location.pathname);say("Vous êtes déconnecté(e). À bientôt !","ok")})()}
+else if(!sb)say("Le service de connexion est en cours d'activation. Merci de revenir très bientôt.","info");
+})();
+</script>
+</body>
+</html>
