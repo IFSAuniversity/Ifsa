@@ -158,12 +158,19 @@ const AUD={all:"Étudiants et personnel",students:"Étudiants",staff:"Personnel"
 const S={cfg:null,me:null,site:"",siteName:"",tab:"",d:{},f:{}};
 function toast(t,bad){const e=$("ts");e.textContent=t;e.className="ts on"+(bad?" bad":"");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),3600)}
 const empty=(i,t)=>'<div class="em">'+ic(i)+'<p>'+t+'</p></div>';
-/* fenêtres */
-let ovEl=null,ovClose=null;
+/* fenêtres : le bouton « retour » du téléphone ferme la fenêtre ouverte, jamais la page */
+const LAY=[];
+function layPush(close){LAY.push(close);try{history.pushState({ifsaLayer:LAY.length},"")}catch(e){}}
+function layDrop(){if(!LAY.length)return;LAY.pop();if(history.state&&history.state.ifsaLayer)history.back()}
+addEventListener("popstate",()=>{if(LAY.length){const c=LAY.pop();c()}});
+let ovEl=null,ovClose=null,ovLayer=false;
 function escKey(e){if(e.key==="Escape")closeModal()}
-function closeModal(){const f=ovClose;ovClose=null;if(ovEl){ovEl.remove();ovEl=null}document.removeEventListener("keydown",escKey);if(f)f()}
-function modal(html,onClose){closeModal();ovClose=onClose||null;ovEl=document.createElement("div");ovEl.className="ov";ovEl.setAttribute("role","dialog");ovEl.setAttribute("aria-modal","true");
-ovEl.innerHTML='<div class="sh">'+html+'</div>';ovEl.addEventListener("click",e=>{if(e.target===ovEl)closeModal()});document.body.appendChild(ovEl);document.addEventListener("keydown",escKey);return ovEl}
+function dropOv(fromBack){const f=ovClose;ovClose=null;if(ovEl){ovEl.remove();ovEl=null}document.removeEventListener("keydown",escKey);if(ovLayer){ovLayer=false;if(!fromBack)layDrop()}if(f)f()}
+function closeModal(){dropOv(false)}
+function modal(html,onClose){const keep=ovLayer;const f=ovClose;ovClose=null;if(ovEl){ovEl.remove();ovEl=null}document.removeEventListener("keydown",escKey);if(f)f();
+ovClose=onClose||null;ovEl=document.createElement("div");ovEl.className="ov";ovEl.setAttribute("role","dialog");ovEl.setAttribute("aria-modal","true");
+ovEl.innerHTML='<div class="sh">'+html+'</div>';ovEl.addEventListener("click",e=>{if(e.target===ovEl)closeModal()});document.body.appendChild(ovEl);document.addEventListener("keydown",escKey);
+if(!keep){ovLayer=true;layPush(()=>{ovLayer=false;dropOv(true)})}return ovEl}
 function ask(o){return new Promise(res=>{const el=modal('<h2>'+esc(o.title)+'</h2><p class="sub">'+esc(o.text||"")+'</p><div class="ac"><button class="bt '+(o.danger?"d":"p")+'" data-k="ok" type="button">'+esc(o.ok||"Confirmer")+'</button><button class="bt" data-k="no" type="button">Annuler</button></div>',()=>res(false));
 el.addEventListener("click",e=>{const b=e.target.closest("[data-k]");if(!b)return;if(b.dataset.k==="ok"){res(true);ovClose=null}closeModal()})})}
 async function run(btn,f,ok){if(btn&&btn.disabled)return;if(btn){btn.disabled=true;btn.classList.add("busy")}
@@ -321,7 +328,7 @@ return '<div class="pg-h"><div><h1>Demandes d\'inscription</h1><p>Seul le direct
 '<div class="bar"><div class="sr">'+ic("search")+'<input type="search" data-in="q" placeholder="Rechercher un nom, un numéro, une référence" value="'+esc(S.f.q_req||"")+'" aria-label="Rechercher"></div></div><div id="lst">'+reqList()+'</div>'}
 /* ----- comptes (étudiants et personnel) ----- */
 function acts(p){const act=p.status==="active";return '<div class="ac">'+(act?'<button class="bt" type="button" data-act="st" data-id="'+esc(p.id)+'" data-to="suspended">Suspendre</button><button class="bt" type="button" data-act="st" data-id="'+esc(p.id)+'" data-to="disabled">Désactiver</button>':'<button class="bt p" type="button" data-act="st" data-id="'+esc(p.id)+'" data-to="active">Réactiver</button>')+
-'<button class="bt" type="button" data-act="pw" data-id="'+esc(p.id)+'">'+ic("key")+'Mot de passe</button><button class="bt d" type="button" data-act="rm" data-id="'+esc(p.id)+'">'+ic("trash")+'Supprimer</button></div>'}
+'<button class="bt d" type="button" data-act="rm" data-id="'+esc(p.id)+'">'+ic("trash")+'Supprimer</button></div>'}
 function pCard(p){return '<div class="it"><div class="av">'+esc(init(p.full_name))+'</div><div class="tx"><b>'+esc(p.full_name||p.email)+'</b><small>'+esc(p.email||"")+(p.phone?" · "+esc(p.phone):"")+(p.matricule?" · "+esc(p.matricule):"")+'</small>'+
 (p.role==="student"&&p.faculte?'<small>'+esc(p.faculte)+(p.annee?" · "+p.annee+"e année":"")+'</small>':"")+'<div><span class="bd">'+esc(ROLE_L[p.role]||p.role)+'</span>'+stBadge(p.status)+'</div>'+acts(p)+'</div></div>'}
 function stuList(){const q=nz(S.f.q_stu||""),L=S.d.students.filter(p=>!q||nz([p.full_name,p.email,p.matricule,p.phone].join(" ")).includes(q));return L.length?L.map(pCard).join(""):empty("cap","Aucun étudiant.")}
@@ -349,28 +356,19 @@ run(b,async()=>{const r=await fn("approve_applicant",{applicant_id:a.id},"connex
 if(to!=="active"&&!(await ask({title:(to==="suspended"?"Suspendre":"Désactiver")+" "+p.full_name+" ?",text:to==="suspended"?"Cette personne ne pourra plus se connecter tant que vous ne la réactivez pas.":"Le compte sera désactivé : plus aucun accès.",ok:to==="suspended"?"Suspendre":"Désactiver",danger:true})))return;
 run(b,async()=>{await fn("set_status",{user_id:p.id,status:to});await refresh()},"Statut mis à jour.")},
 "rm":async(b,d)=>{const p=person(d.id);if(!p)return;if(await ask({title:"Supprimer le compte de "+p.full_name+" ?",text:"Cette action est définitive : le compte et ses données seront supprimés.",ok:"Supprimer définitivement",danger:true}))run(b,async()=>{await fn("delete_user",{user_id:p.id});await refresh()},"Compte supprimé.")},
-"pw":(b,d)=>{const p=person(d.id);if(!p)return;
-const el=modal('<h2>Nouveau mot de passe</h2><p class="sub">Pour '+esc(p.full_name)+'. Remettez-le en main propre : il ne sera plus affiché ensuite.</p><div class="msg err" id="fe" hidden></div><div class="fl">Mot de passe (8 caractères minimum)<div class="pw"><input id="pv" type="text" autocomplete="off" value="'+esc(genPw())+'"><button class="bt" type="button" id="gn">Générer</button></div></div><div class="ac"><button class="bt p" type="button" id="go">Enregistrer</button><button class="bt" type="button" id="cn">Annuler</button></div>');
-el.querySelector("#gn").onclick=()=>{el.querySelector("#pv").value=genPw()};el.querySelector("#cn").onclick=closeModal;
-el.querySelector("#go").onclick=e=>{const v=el.querySelector("#pv").value;if(v.length<8){const er=el.querySelector("#fe");er.textContent="8 caractères minimum.";er.hidden=false;return}
-run(e.currentTarget,async()=>{await fn("set_password",{user_id:p.id,password:v});modal('<h2>Mot de passe enregistré</h2><p class="sub">Communiquez ces informations à '+esc(p.full_name)+' :</p><div class="card"><p><b>Email :</b> '+esc(p.email||"")+'</p><p><b>Mot de passe :</b> '+esc(v)+'</p></div><div class="ac"><button class="bt p" type="button" data-act="close">Terminé</button></div>')})}},
 "close":()=>closeModal(),
 "st-new":(b,d)=>{const hasB=!!byRole("bursar"),hasS=!!byRole("secretary"),pre=d&&d.role||"teacher";
 const el=modal('<h2>Nouveau compte</h2><p class="sub">Compte rattaché à '+esc(S.siteName)+'.</p><div class="msg err" id="fe" hidden></div>'+
 '<label class="fl">Fonction<select id="sr"><option value="teacher">Enseignant</option><option value="bursar"'+(hasB?" disabled":"")+'>Économe'+(hasB?" (déjà pourvu)":"")+'</option><option value="secretary"'+(hasS?" disabled":"")+'>Censeur / Secrétaire'+(hasS?" (déjà pourvu)":"")+'</option></select></label>'+
 '<label class="fl">Nom complet<input id="sn" autocomplete="off" maxlength="120"></label><div class="row2"><label class="fl">Email<input id="se" type="email" autocomplete="off" inputmode="email"></label><label class="fl">Téléphone (facultatif)<input id="sp" type="tel" autocomplete="off"></label></div>'+
-'<div class="fl">Création de l\'accès<div class="seg"><label class="sel"><input type="radio" name="m" value="invite" checked>Invitation par email</label><label><input type="radio" name="m" value="pw">Email + mot de passe</label></div><span class="h">Invitation : la personne crée elle-même son mot de passe par un lien à usage unique.</span></div>'+
-'<div class="fl" id="pb" hidden>Mot de passe (remis en main propre)<div class="pw"><input id="pv" type="text" autocomplete="off"><button class="bt" type="button" id="gn">Générer</button></div></div>'+
+'<p class="sub" style="margin-bottom:14px">La personne recevra un email avec un lien à usage unique pour créer elle-même son mot de passe. Le mot de passe d\'un compte ne peut être défini que par la direction générale ou l\'administration.</p>'+
 '<div class="ac"><button class="bt p" type="button" id="go">Créer le compte</button><button class="bt" type="button" id="cn">Annuler</button></div>');
 const sr=el.querySelector("#sr");sr.value=(pre==="bursar"&&!hasB)||(pre==="secretary"&&!hasS)?pre:"teacher";
-el.querySelectorAll("input[name=m]").forEach(r=>r.onchange=()=>{const pw=el.querySelector("input[name=m]:checked").value==="pw";el.querySelector("#pb").hidden=!pw;if(pw&&!el.querySelector("#pv").value)el.querySelector("#pv").value=genPw();el.querySelectorAll(".seg label").forEach(l=>l.classList.toggle("sel",l.firstChild.checked))});
-el.querySelector("#gn").onclick=()=>{el.querySelector("#pv").value=genPw()};el.querySelector("#cn").onclick=closeModal;
-el.querySelector("#go").onclick=e=>{const er=el.querySelector("#fe"),role=sr.value,name=el.querySelector("#sn").value.trim(),email=el.querySelector("#se").value.trim().toLowerCase(),pw=el.querySelector("input[name=m]:checked").value==="pw",pv=el.querySelector("#pv").value;
+el.querySelector("#cn").onclick=closeModal;
+el.querySelector("#go").onclick=e=>{const er=el.querySelector("#fe"),role=sr.value,name=el.querySelector("#sn").value.trim(),email=el.querySelector("#se").value.trim().toLowerCase();
 const bad=m=>{er.textContent=m;er.hidden=false};
-if(name.length<3)return bad("Entrez le nom complet.");if(!/^\S+@\S+\.\S+$/.test(email))return bad("Entrez un email valide.");if(pw&&pv.length<8)return bad("Mot de passe : 8 caractères minimum.");
-run(e.currentTarget,async()=>{await fn("create_site_user",Object.assign({role,full_name:name,email,phone:el.querySelector("#sp").value.trim()||null},pw?{password:pv}:{}),"espace-pro-i1nhm6okwr.html");await refresh();
-if(pw)modal('<h2>Compte créé</h2><p class="sub">Remettez ces informations à '+esc(name)+' en main propre :</p><div class="card"><p><b>Fonction :</b> '+esc(ROLE_L[role])+'</p><p><b>Site :</b> '+esc(S.siteName)+'</p><p><b>Email :</b> '+esc(email)+'</p><p><b>Mot de passe :</b> '+esc(pv)+'</p></div><p class="sub">La connexion se fait par l\'accès réservé au personnel.</p><div class="ac"><button class="bt p" type="button" data-act="close">Terminé</button></div>');
-else closeModal();return true},()=>pw?"Compte créé.":"Invitation envoyée à "+email+".")}},
+if(name.length<3)return bad("Entrez le nom complet.");if(!/^\S+@\S+\.\S+$/.test(email))return bad("Entrez un email valide.");
+run(e.currentTarget,async()=>{await fn("create_site_user",{role,full_name:name,email,phone:el.querySelector("#sp").value.trim()||null},"espace-pro-i1nhm6okwr.html");await refresh();closeModal();return true},()=>"Invitation envoyée à "+email+".")}},
 "cl-new":()=>{const el=modal('<h2>Nouvelle classe</h2><p class="sub">Classe de '+esc(S.siteName)+'.</p><div class="msg err" id="fe" hidden></div><label class="fl">Nom de la classe<input id="cn1" maxlength="120" autocomplete="off" placeholder="Ex. Licence 1 Gestion"></label>'+
 '<div class="row2"><label class="fl">Faculté<select id="cf"><option value="">—</option>'+FACS.map(f=>'<option>'+f+'</option>').join("")+'</select></label><label class="fl">Année<select id="ca"><option value="">—</option>'+[1,2,3,4,5].map(n=>'<option value="'+n+'">'+n+'e année</option>').join("")+'</select></label></div>'+
 '<label class="fl">Option / filière (facultatif)<input id="co" maxlength="120" autocomplete="off"></label><label class="fl">Enseignant<select id="ct">'+teacherOpts("")+'</select></label><div class="ac"><button class="bt p" type="button" id="go">Créer la classe</button><button class="bt" type="button" id="cn">Annuler</button></div>');

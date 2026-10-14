@@ -158,12 +158,19 @@ const AUD={all:"Étudiants et personnel",students:"Étudiants",staff:"Personnel"
 const S={cfg:null,me:null,site:"",siteName:"",tab:"",d:{},f:{}};
 function toast(t,bad){const e=$("ts");e.textContent=t;e.className="ts on"+(bad?" bad":"");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),3600)}
 const empty=(i,t)=>'<div class="em">'+ic(i)+'<p>'+t+'</p></div>';
-/* fenêtres */
-let ovEl=null,ovClose=null;
+/* fenêtres : le bouton « retour » du téléphone ferme la fenêtre ouverte, jamais la page */
+const LAY=[];
+function layPush(close){LAY.push(close);try{history.pushState({ifsaLayer:LAY.length},"")}catch(e){}}
+function layDrop(){if(!LAY.length)return;LAY.pop();if(history.state&&history.state.ifsaLayer)history.back()}
+addEventListener("popstate",()=>{if(LAY.length){const c=LAY.pop();c()}});
+let ovEl=null,ovClose=null,ovLayer=false;
 function escKey(e){if(e.key==="Escape")closeModal()}
-function closeModal(){const f=ovClose;ovClose=null;if(ovEl){ovEl.remove();ovEl=null}document.removeEventListener("keydown",escKey);if(f)f()}
-function modal(html,onClose){closeModal();ovClose=onClose||null;ovEl=document.createElement("div");ovEl.className="ov";ovEl.setAttribute("role","dialog");ovEl.setAttribute("aria-modal","true");
-ovEl.innerHTML='<div class="sh">'+html+'</div>';ovEl.addEventListener("click",e=>{if(e.target===ovEl)closeModal()});document.body.appendChild(ovEl);document.addEventListener("keydown",escKey);return ovEl}
+function dropOv(fromBack){const f=ovClose;ovClose=null;if(ovEl){ovEl.remove();ovEl=null}document.removeEventListener("keydown",escKey);if(ovLayer){ovLayer=false;if(!fromBack)layDrop()}if(f)f()}
+function closeModal(){dropOv(false)}
+function modal(html,onClose){const keep=ovLayer;const f=ovClose;ovClose=null;if(ovEl){ovEl.remove();ovEl=null}document.removeEventListener("keydown",escKey);if(f)f();
+ovClose=onClose||null;ovEl=document.createElement("div");ovEl.className="ov";ovEl.setAttribute("role","dialog");ovEl.setAttribute("aria-modal","true");
+ovEl.innerHTML='<div class="sh">'+html+'</div>';ovEl.addEventListener("click",e=>{if(e.target===ovEl)closeModal()});document.body.appendChild(ovEl);document.addEventListener("keydown",escKey);
+if(!keep){ovLayer=true;layPush(()=>{ovLayer=false;dropOv(true)})}return ovEl}
 function ask(o){return new Promise(res=>{const el=modal('<h2>'+esc(o.title)+'</h2><p class="sub">'+esc(o.text||"")+'</p><div class="ac"><button class="bt '+(o.danger?"d":"p")+'" data-k="ok" type="button">'+esc(o.ok||"Confirmer")+'</button><button class="bt" data-k="no" type="button">Annuler</button></div>',()=>res(false));
 el.addEventListener("click",e=>{const b=e.target.closest("[data-k]");if(!b)return;if(b.dataset.k==="ok"){res(true);ovClose=null}closeModal()})})}
 async function run(btn,f,ok){if(btn&&btn.disabled)return;if(btn){btn.disabled=true;btn.classList.add("busy")}

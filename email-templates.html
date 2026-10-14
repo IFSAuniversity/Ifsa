@@ -1,0 +1,58 @@
+<!--
+  MODÈLES D'EMAILS — IFSA University
+  Où les coller : Supabase > Authentication > Emails (Email Templates).
+  Pour chaque modèle : copiez le bloc entre les commentaires, collez-le dans l'éditeur "Source" du modèle correspondant,
+  et mettez le sujet proposé.
+  Variables utilisées : {{ .ConfirmationURL }} (lien sécurisé à usage unique), {{ .Data.full_name }} (nom).
+-->
+
+<!-- ########## 1. "Invite user"  —  Sujet : Votre accès à IFSA University ########## -->
+<!-- ===== Bienvenue à IFSA University ===== -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F4F6FB;padding:32px 12px;font-family:Arial,Helvetica,sans-serif">
+<tr><td align="center">
+<table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 10px 40px rgba(7,26,69,.12)">
+<tr><td align="center" style="background:#071A45;padding:28px 24px"><img src="https://i.postimg.cc/8zMT8g8M/No-background.png" alt="IFSA University" height="64" style="display:block;border:0;height:64px"></td></tr>
+<tr><td style="height:4px;background:#C9A24B;line-height:4px;font-size:0">&nbsp;</td></tr>
+<tr><td style="padding:36px 36px 8px;color:#1B2437">
+<h1 style="margin:0 0 14px;font:700 24px Georgia,serif;color:#071A45">Bienvenue à IFSA University</h1>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.7;color:#1B2437">Bonjour {{ .Data.full_name }},<br><br>Votre dossier a été approuvé par l'administration. Cliquez sur le bouton ci-dessous pour ouvrir votre espace et choisir votre mot de passe.</p></td></tr>
+<tr><td align="center" style="padding:18px 36px 10px"><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#C9A24B;color:#071A45;text-decoration:none;font-weight:700;font-size:15px;padding:15px 34px;border-radius:12px">Accéder à mon espace</a></td></tr>
+<tr><td style="padding:18px 36px 30px"><p style="margin:0 0 10px;font-size:13px;line-height:1.7;color:#5B667C">Pour votre sécurité, ce lien est personnel et ne fonctionne qu'une seule fois. S'il a expiré, utilisez « Mot de passe oublié » sur la page de connexion. Ne le transmettez à personne.</p>
+<p style="margin:14px 0 0;font-size:12px;line-height:1.6;color:#8A93A8">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br><span style="word-break:break-all;color:#14306F">{{ .ConfirmationURL }}</span></p></td></tr>
+<tr><td style="background:#F4F6FB;padding:20px 36px;text-align:center;font-size:12px;line-height:1.7;color:#5B667C">
+<b style="color:#071A45">IFSA University</b><br>L'éducation aujourd'hui, le succès demain, car votre réussite est notre succès.<br>33 53 24 15 · 47 66 48 45 · IFSAuniversity@gmail.com</td></tr>
+</table></td></tr></table>
+
+<!-- ########## 2. "Reset password"  —  Sujet : Réinitialisation de votre mot de passe ########## -->
+<!-- ===== Réinitialiser votre mot de passe ===== -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F4F6FB;padding:32px 12px;font-family:Arial,Helvetica,sans-serif">
+<tr><td align="center">
+<table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 10px 40px rgba(7,26,69,.12)">
+<tr><td align="center" style="background:#071A45;padding:28px 24px"><img src="https://i.postimg.cc/8zMT8g8M/No-background.png" alt="IFSA University" height="64" style="display:block;border:0;height:64px"></td></tr>
+<tr><td style="height:4px;background:#C9A24B;line-height:4px;font-size:0">&nbsp;</td></tr>
+<tr><td style="padding:36px 36px 8px;color:#1B2437">
+<h1 style="margin:0 0 14px;font:700 24px Georgia,serif;color:#071A45">Réinitialiser votre mot de passe</h1>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.7;color:#1B2437">Bonjour,<br><br>Vous avez demandé à changer votre mot de passe IFSA University. Cliquez sur le bouton ci-dessous pour en choisir un nouveau.</p></td></tr>
+<tr><td align="center" style="padding:18px 36px 10px"><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#C9A24B;color:#071A45;text-decoration:none;font-weight:700;font-size:15px;padding:15px 34px;border-radius:12px">Choisir un nouveau mot de passe</a></td></tr>
+<tr><td style="padding:18px 36px 30px"><p style="margin:0 0 10px;font-size:13px;line-height:1.7;color:#5B667C">Ce lien est valable une seule fois. Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet email : votre mot de passe actuel reste inchangé.</p>
+<p style="margin:14px 0 0;font-size:12px;line-height:1.6;color:#8A93A8">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br><span style="word-break:break-all;color:#14306F">{{ .ConfirmationURL }}</span></p></td></tr>
+<tr><td style="background:#F4F6FB;padding:20px 36px;text-align:center;font-size:12px;line-height:1.7;color:#5B667C">
+<b style="color:#071A45">IFSA University</b><br>L'éducation aujourd'hui, le succès demain, car votre réussite est notre succès.<br>33 53 24 15 · 47 66 48 45 · IFSAuniversity@gmail.com</td></tr>
+</table></td></tr></table>
+
+<!-- ########## 3. "Confirm sign up"  —  Sujet : Confirmez votre compte IFSA University ########## -->
+<!-- ===== Confirmez votre adresse email ===== -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F4F6FB;padding:32px 12px;font-family:Arial,Helvetica,sans-serif">
+<tr><td align="center">
+<table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 10px 40px rgba(7,26,69,.12)">
+<tr><td align="center" style="background:#071A45;padding:28px 24px"><img src="https://i.postimg.cc/8zMT8g8M/No-background.png" alt="IFSA University" height="64" style="display:block;border:0;height:64px"></td></tr>
+<tr><td style="height:4px;background:#C9A24B;line-height:4px;font-size:0">&nbsp;</td></tr>
+<tr><td style="padding:36px 36px 8px;color:#1B2437">
+<h1 style="margin:0 0 14px;font:700 24px Georgia,serif;color:#071A45">Confirmez votre adresse email</h1>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.7;color:#1B2437">Bonjour,<br><br>Merci de votre intérêt pour IFSA University. Confirmez votre adresse email pour activer votre compte et pouvoir commenter et aimer nos contenus.</p></td></tr>
+<tr><td align="center" style="padding:18px 36px 10px"><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#C9A24B;color:#071A45;text-decoration:none;font-weight:700;font-size:15px;padding:15px 34px;border-radius:12px">Confirmer mon email</a></td></tr>
+<tr><td style="padding:18px 36px 30px"><p style="margin:0 0 10px;font-size:13px;line-height:1.7;color:#5B667C">Si vous n'avez pas créé de compte, ignorez cet email.</p>
+<p style="margin:14px 0 0;font-size:12px;line-height:1.6;color:#8A93A8">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br><span style="word-break:break-all;color:#14306F">{{ .ConfirmationURL }}</span></p></td></tr>
+<tr><td style="background:#F4F6FB;padding:20px 36px;text-align:center;font-size:12px;line-height:1.7;color:#5B667C">
+<b style="color:#071A45">IFSA University</b><br>L'éducation aujourd'hui, le succès demain, car votre réussite est notre succès.<br>33 53 24 15 · 47 66 48 45 · IFSAuniversity@gmail.com</td></tr>
+</table></td></tr></table>
