@@ -34,6 +34,16 @@
     gallery: function () { return once("gallery", function () { return query("gallery_items", function (q) { return q.select("*").eq("published", true).order("position", { ascending: true }).order("created_at", { ascending: false }).limit(200); }); }); },
     videos: function () { return once("videos", function () { return query("video_links", function (q) { return q.select("*").eq("active", true).order("featured", { ascending: false }).order("position", { ascending: true }).limit(60); }); }); },
     zones: function () { return once("zones", function () { return query("site_images", function (q) { return q.select("key,image_url,alt"); }); }); },
+    /* ---- ajouts 5a : bannière, témoignages, j'aime, session ---- */
+    client: getClient,
+    slides: function () { return once("slides", function () { return query("home_slides", function (q) { return q.select("*").eq("published", true).order("position", { ascending: true }).limit(12); }); }); },
+    testimonials: function () { return once("testi", function () { return query("testimonials", function (q) { return q.select("*").eq("published", true).order("created_at", { ascending: false }).limit(30); }); }); },
+    /* identifiant anonyme d'appareil : permet d'aimer sans compte */
+    visitor: function () { var k = "ifsa-visitor", v = ""; try { v = localStorage.getItem(k) || ""; if (v.length < 8) { v = "v" + Date.now().toString(36) + Math.random().toString(36).slice(2, 12); localStorage.setItem(k, v); } } catch (e) { v = v || "v" + Math.random().toString(36).slice(2, 14); } return v; },
+    stats: function (type, ids) { return timeout(getClient().then(function (c) { return c.rpc("get_stats", { t: type, ids: ids.map(String), v: IFSA.visitor() }); })).then(function (r) { if (r.error) throw r.error; return r.data || []; }); },
+    like: function (type, id) { return timeout(getClient().then(function (c) { return c.rpc("toggle_like", { t: type, i: String(id), v: IFSA.visitor() }); })).then(function (r) { if (r.error) throw r.error; return r.data; }); },
+    /* utilisateur connecté et son profil (null si visiteur) */
+    me: function () { return getClient().then(function (c) { return c.auth.getSession().then(function (s) { var u = s && s.data && s.data.session && s.data.session.user; if (!u) return null; return c.from("profiles").select("id,role,full_name").eq("id", u.id).maybeSingle().then(function (r) { return r.data ? r.data : { id: u.id, role: "user", full_name: "" }; }); }); }).catch(function () { return null; }); },
     /* texte d'une actualité -> paragraphes (séparés par une ligne vide) */
     paragraphs: function (t) { return String(t || "").split(/\n\s*\n/).map(function (p) { return p.trim(); }).filter(Boolean); },
     /* remplace les emplacements d'images ([data-zone]) par les photos choisies par l'administrateur */

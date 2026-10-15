@@ -104,6 +104,7 @@ a{color:inherit;text-decoration:none}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
 </style>
+  <link rel="stylesheet" href="ifsa-plus.css">
 </head>
 <body>
 <header class="top"><div class="brand"><img src="https://i.postimg.cc/8zMT8g8M/No-background.png" alt="" width="38" height="38"><div><b id="who">Espace directeur</b><small id="me"></small></div></div>
@@ -153,7 +154,7 @@ const ic=n=>'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+(IC[n]||""
 const SL={active:"Actif",suspended:"Suspendu",disabled:"Désactivé"};
 const SITES={carrefour:"Carrefour","port-de-paix":"Port-de-Paix",miragoane:"Miragoâne","petit-goave":"Petit-Goâve"};
 const ROLE_L={student:"Étudiant",teacher:"Enseignant",bursar:"Économe",secretary:"Censeur / Secrétaire",branch_director:"Directeur d'antenne",manager:"Directeur général",admin:"Administrateur",user:"Utilisateur"};
-const FACS=["Sciences agronomiques","Sciences infirmières","Pharmacologie","Sciences administratives"];
+const FACS=["Sciences informatiques","Sciences comptables","Sciences administratives","Sciences de la gestion","Sciences de l'éducation","Sciences agronomiques","Sciences infirmières"];
 const AUD={all:"Étudiants et personnel",students:"Étudiants",staff:"Personnel"},KIND={announcement:"Annonce",notice:"Avis"};
 const S={cfg:null,me:null,site:"",siteName:"",tab:"",d:{},f:{}};
 function toast(t,bad){const e=$("ts");e.textContent=t;e.className="ts on"+(bad?" bad":"");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),3600)}
@@ -392,5 +393,6 @@ boot({role:"branch_director",title:"Espace directeur",load,actions:ACT,inputs:IN
 
 })();
 </script>
+<script src="ifsa-plus.js" defer></script>
 </body>
 </html>

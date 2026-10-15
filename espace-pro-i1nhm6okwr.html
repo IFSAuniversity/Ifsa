@@ -96,6 +96,7 @@ form{display:grid;gap:0}
 @media(max-width:380px){.card{padding:26px 18px 22px}.sl button{font-size:.64rem}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
+  <link rel="stylesheet" href="ifsa-plus.css">
 </head>
 <body>
 <main class="card" id="main">
@@ -275,5 +276,6 @@ if(new URLSearchParams(location.search).has("logout")){(async function(){try{if(
 else if(!sb)say("Le service de connexion est en cours d'activation. Merci de revenir très bientôt.","info");
 })();
 </script>
+<script src="ifsa-plus.js" defer></script>
 </body>
 </html>

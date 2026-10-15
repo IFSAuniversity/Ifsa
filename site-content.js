@@ -9,6 +9,8 @@
     { id: "events", label: "Événements", ic: "cal", where: "Apparaît sur : la page <b>Événements</b> (à venir et passés) et l'<b>agenda de l'accueil</b> (les 3 prochains).", link: "evenements.html" },
     { id: "gal", label: "Galerie", ic: "img", where: "Apparaît sur : la page <b>Galerie</b> (photos classées par catégorie, avec agrandissement).", link: "galerie.html" },
     { id: "vids", label: "Vidéos", ic: "vid", where: "Apparaît sur : l'<b>accueil</b> (section « En vidéo », 3 vidéos au plus, celle à la une en premier) et la page <b>Galerie</b> (toutes les vidéos actives).", link: "galerie.html" },
+    { id: "slides", label: "Bannière d'accueil", ic: "img", where: "Apparaît sur : la <b>grande bannière en haut de l'accueil</b> (diaporama). Chaque diapo = une image, un titre et un texte. Un voile sombre garde le texte lisible.", link: "index.html" },
+    { id: "testi", label: "Témoignages", ic: "news", admin: true, where: "Apparaît sur : la section <b>Ils parlent d'IFSA</b> de l'accueil. Vous pouvez créer, modifier, masquer ou supprimer n'importe quel témoignage.", link: "index.html#temoignages" },
     { id: "zones", label: "Zones d'images", ic: "pin", admin: true, where: "Chaque zone est une <b>photo précise d'une page du site</b>. Tant qu'aucune image n'est choisie, le site affiche son emplacement d'exemple.", link: "index.html" }
   ];
   var ICO = { news: '<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M8 8h7M8 12h7M8 16h4"/>', cal: '<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>', img: '<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>', vid: '<rect width="18" height="14" x="3" y="5" rx="2"/><path d="m10 9 5 3-5 3z"/>', pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>', plus: '<path d="M12 5v14M5 12h14"/>', trash: '<path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>', edit: '<path d="M12 20h9"/><path d="M16.4 3.6a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>', eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>', up: '<path d="m18 15-6-6-6 6"/>', down: '<path d="m6 9 6 6 6-6"/>', ext: '<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>' };
@@ -16,7 +18,7 @@
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var httpsUrl = function (u) { u = String(u || "").trim(); return /^https:\/\//i.test(u) ? u.replace(/["'<>()\s\\]/g, function (c) { return encodeURIComponent(c); }) : ""; };
   var fmtD = function (d) { return d ? new Date(String(d).length <= 10 ? d + "T12:00:00" : d).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" }) : ""; };
-  var C = { sb: null, role: "", toast: function () {}, root: null, uid: null, base: "" }, S = { tab: "news", edit: null, busy: false, loaded: false, err: "", d: { news: [], events: [], gal: [], vids: [], zones: [] } };
+  var C = { sb: null, role: "", toast: function () {}, root: null, uid: null, base: "" }, S = { tab: "news", edit: null, busy: false, loaded: false, err: "", d: { news: [], events: [], gal: [], vids: [], slides: [], testi: [], zones: [] } };
 
   var css = document.createElement("style");
   css.textContent = ".sc{--scn:var(--navy,#0B1F4B);--scg:var(--gold,#C9A24B);--scm:var(--mut,#5B667C);--scl:var(--line,#E1E6F2);--scc:var(--card,#fff);--sci:var(--ink,#1B2437)}.sc *{box-sizing:border-box}.sc-i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.sc-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px}.sc-tabs button{flex:none;display:inline-flex;gap:7px;align-items:center;border:1.5px solid var(--scl);background:var(--scc);color:var(--sci);border-radius:12px;padding:10px 14px;font-weight:600;font-size:.88rem;cursor:pointer}.sc-tabs button[aria-selected=true]{background:var(--scn);color:#E8CF8E;border-color:var(--scn)}.sc-where{background:rgba(201,162,75,.14);border:1px solid rgba(201,162,75,.45);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:.9rem;color:var(--sci);display:flex;gap:10px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}.sc-where a{display:inline-flex;gap:6px;align-items:center;font-weight:700;color:var(--scn);text-decoration:underline}.sc-card{background:var(--scc);border:1px solid var(--scl);border-radius:18px;padding:16px;margin-bottom:14px}.sc-card h3{margin:0 0 10px;font-size:1.05rem}.sc label{display:grid;gap:5px;font-weight:700;font-size:.84rem;margin-bottom:12px;color:var(--scn)}.sc input,.sc select,.sc textarea{width:100%;padding:11px 13px;border:1.5px solid var(--scl);border-radius:12px;background:transparent;color:var(--sci);font:inherit;font-weight:500;font-size:16px}.sc textarea{min-height:130px;resize:vertical}.sc .sc-ck{display:flex;gap:10px;align-items:center;font-weight:600}.sc .sc-ck input{width:20px;height:20px}.sc-r2{display:grid;gap:12px;grid-template-columns:1fr 1fr}@media(max-width:560px){.sc-r2{grid-template-columns:1fr}}.sc-h{font-weight:500;color:var(--scm);font-size:.8rem;margin:-6px 0 12px}.sc-btn{display:inline-flex;gap:7px;align-items:center;justify-content:center;border:1.5px solid var(--scl);background:var(--scc);color:var(--sci);border-radius:12px;padding:9px 14px;font-weight:600;font-size:.84rem;cursor:pointer;min-height:40px;text-decoration:none}.sc-btn.p{background:linear-gradient(135deg,#C9A24B,#DDB863);color:#0B1F4B;border-color:transparent;font-weight:700}.sc-btn.d{color:#B3261E}.sc-btn[disabled]{opacity:.55;cursor:wait}.sc-row{display:flex;gap:12px;align-items:flex-start;background:var(--scc);border:1px solid var(--scl);border-radius:16px;padding:12px;margin-bottom:10px}.sc-th{width:84px;height:64px;border-radius:12px;object-fit:cover;flex:none;background:rgba(11,31,75,.08)}.sc-th.ph{display:grid;place-items:center;color:var(--scm);font-size:.7rem;text-align:center}.sc-tx{flex:1;min-width:0}.sc-tx b{display:block;word-break:break-word}.sc-tx small{display:block;color:var(--scm)}.sc-ac{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.sc-bd{display:inline-block;border-radius:99px;padding:2px 10px;font-size:.72rem;font-weight:700;margin-right:6px;background:rgba(11,31,75,.08);color:var(--scn)}.sc-bd.ok{background:#E3F4EA;color:#0E6B3A}.sc-bd.wt{background:rgba(201,162,75,.22);color:#8A6414}.sc-pv{display:flex;gap:12px;align-items:center;border:1px dashed var(--scl);border-radius:14px;padding:10px;margin:0 0 12px}.sc-pv img,.sc-pv .sc-th{width:96px;height:72px}.sc-empty{text-align:center;color:var(--scm);padding:26px 10px}.sc-gal{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}.sc-gi{background:var(--scc);border:1px solid var(--scl);border-radius:16px;overflow:hidden}.sc-gi img{width:100%;height:120px;object-fit:cover;display:block}.sc-gi div{padding:10px}.sc-zp{margin:18px 0 8px;font-size:1rem;color:var(--scn)}.sc-err{background:#FDECEC;color:#A12B2B;border-radius:12px;padding:11px 14px;margin-bottom:12px;font-size:.88rem}.sc-load{text-align:center;padding:40px;color:var(--scm)}";
@@ -69,9 +71,11 @@
       sb.from("events").select("*").order("event_date", { ascending: false }),
       sb.from("gallery_items").select("*").order("position", { ascending: true }).order("created_at", { ascending: false }),
       sb.from("video_links").select("*").order("featured", { ascending: false }).order("position", { ascending: true })];
+    jobs.push(sb.from("home_slides").select("*").order("position", { ascending: true }));
+    jobs.push(C.role === "admin" ? sb.from("testimonials").select("*").order("created_at", { ascending: false }) : Promise.resolve(null));
     if (C.role === "admin") jobs.push(sb.from("site_images").select("*").order("position", { ascending: true }));
     var r = await Promise.all(jobs);
-    S.d = { news: must(r[0]), events: must(r[1]), gal: must(r[2]), vids: must(r[3]), zones: r[4] ? must(r[4]) : [] };
+    S.d = { news: must(r[0]), events: must(r[1]), gal: must(r[2]), vids: must(r[3]), slides: r[4] && !r[4].error ? must(r[4]) : [], testi: r[5] ? must(r[5]) : [], zones: r[6] ? must(r[6]) : [] };
     S.loaded = true; S.err = "";
   }
   async function reload() { try { await load(); } catch (e) { S.err = "Chargement impossible : " + ((e && e.message) || "erreur"); } render(); }
@@ -146,6 +150,38 @@
         (v.active ? viewLink("galerie.html") : "") + '<button class="sc-btn d" data-a="del" data-t="vids" data-id="' + esc(v.id) + '">' + ic("trash") + "</button></div></div></div>";
     }).join("") : '<div class="sc-empty">Aucune vidéo. Ajoutez la première ci-dessus.</div>');
   }
+  function vSlides() {
+    var e = S.edit && S.edit.t === "slides" ? S.edit.row : null, d = S.d.slides, v = function (k) { return esc(e && e[k]); };
+    var form = '<form class="sc-card" data-f="slides"><h3>' + (e ? "Modifier la diapo" : "Nouvelle diapo de la bannière") + "</h3>" +
+      '<label>Petit titre au-dessus (facultatif)<input id="sc-sk" maxlength="80" value="' + v("kicker") + '"></label>' +
+      '<label>Grand titre<input id="sc-st" maxlength="120" required value="' + v("title") + '"></label>' +
+      '<label>Texte sous le titre<textarea id="sc-ss" maxlength="300">' + v("subtitle") + "</textarea></label>" +
+      '<div class="sc-r2"><label>Texte du bouton (facultatif)<input id="sc-sl" maxlength="40" value="' + v("cta_label") + '"></label><label>Lien du bouton<input id="sc-su" maxlength="200" placeholder="admissions.html" value="' + v("cta_url") + '"></label></div>' +
+      '<div class="sc-r2"><label>Ordre (1 = première)<input id="sc-so" type="number" min="1" max="99" value="' + (e ? e.position : d.length + 1) + '"></label><label>Voile sombre sur l\'image : <b id="sc-svv">' + (e && e.overlay != null ? e.overlay : 55) + ' %</b><input id="sc-sv" type="range" min="0" max="85" step="5" value="' + (e && e.overlay != null ? e.overlay : 55) + '" oninput="document.getElementById(\'sc-svv\').textContent=this.value+\' %\'"></label></div>' +
+      '<div class="sc-pv" id="sc-pv">' + thumb(e && e.image_url, "") + '<div class="sc-h" style="margin:0">Image de fond : format paysage, 1920 × 900 px conseillé. Le voile sombre est ajouté automatiquement pour que le texte reste lisible.</div></div>' +
+      '<label>Image<input type="file" id="sc-si" accept="image/jpeg,image/png,image/webp"></label>' +
+      (e && e.image_url ? '<label class="sc-ck"><input type="checkbox" id="sc-sr"> Retirer l\'image actuelle</label>' : "") +
+      '<label class="sc-ck"><input type="checkbox" id="sc-sp"' + (!e || e.published ? " checked" : "") + "> Affichée sur l'accueil</label>" +
+      '<div class="sc-ac"><button class="sc-btn p" type="submit">' + ic(e ? "edit" : "plus") + (e ? "Enregistrer" : "Ajouter à la bannière") + "</button>" + (e ? '<button class="sc-btn" type="button" data-a="cancel">Annuler</button>' : "") + "</div></form>";
+    return form + (d.length ? d.map(function (s) {
+      return '<div class="sc-row">' + thumb(s.image_url, s.title) + '<div class="sc-tx"><b>' + esc(s.position) + ". " + esc(s.title) + "</b><small>" + esc(s.subtitle || "") + "</small>" + badge(s.published, "Affichée", "Masquée") +
+        '<div class="sc-ac"><button class="sc-btn" data-a="edit" data-t="slides" data-id="' + esc(s.id) + '">' + ic("edit") + 'Modifier</button><button class="sc-btn" data-a="pub" data-t="slides" data-id="' + esc(s.id) + '">' + (s.published ? "Masquer" : "Afficher") + '</button><button class="sc-btn d" data-a="del" data-t="slides" data-id="' + esc(s.id) + '">' + ic("trash") + "</button></div></div></div>";
+    }).join("") : '<div class="sc-empty">Aucune diapo : l\'accueil affiche ses diapos par défaut. Ajoutez la première ci-dessus.</div>');
+  }
+  var FACS = ["Sciences informatiques", "Sciences comptables", "Sciences administratives", "Sciences de la gestion", "Sciences de l'éducation", "Sciences agronomiques", "Sciences infirmières"], TROLES = ["Étudiant(e)", "Enseignant(e)", "Directeur(trice)", "Personnel", "Diplômé(e)", "Autre"];
+  function vTesti() {
+    var e = S.edit && S.edit.t === "testi" ? S.edit.row : null, d = S.d.testi;
+    var form = '<form class="sc-card" data-f="testi"><h3>' + (e ? "Modifier le témoignage" : "Nouveau témoignage") + "</h3>" +
+      '<div class="sc-r2"><label>Nom de la personne<input id="sc-tn" maxlength="80" required value="' + esc(e && e.author_name) + '"></label><label>Statut<select id="sc-tr">' + opts(TROLES, e && e.author_role) + "</select></label></div>" +
+      '<label>Faculté (facultatif)<select id="sc-tf"><option value="">—</option>' + opts(FACS, e && e.faculty) + "</select></label>" +
+      '<label>Témoignage<textarea id="sc-tb" maxlength="600" required>' + esc(e && e.body) + '</textarea></label><p class="sc-h">600 caractères au plus.</p>' +
+      '<label class="sc-ck"><input type="checkbox" id="sc-tp"' + (!e || e.published ? " checked" : "") + "> Visible sur le site</label>" +
+      '<div class="sc-ac"><button class="sc-btn p" type="submit">' + ic(e ? "edit" : "plus") + (e ? "Enregistrer" : "Ajouter le témoignage") + "</button>" + (e ? '<button class="sc-btn" type="button" data-a="cancel">Annuler</button>' : "") + "</div></form>";
+    return form + (d.length ? d.map(function (t) {
+      return '<div class="sc-row"><div class="sc-tx"><b>' + esc(t.author_name || "Anonyme") + "</b><small>" + esc(t.author_role || "") + (t.faculty ? " · " + esc(t.faculty) : "") + (t.author_id ? " · écrit par la personne" : " · créé par l'administration") + "</small><p style='margin:6px 0'>« " + esc(t.body) + " »</p>" + badge(t.published, "Visible", "Masqué") +
+        '<div class="sc-ac"><button class="sc-btn" data-a="edit" data-t="testi" data-id="' + esc(t.id) + '">' + ic("edit") + 'Modifier</button><button class="sc-btn" data-a="pub" data-t="testi" data-id="' + esc(t.id) + '">' + (t.published ? "Masquer" : "Afficher") + '</button><button class="sc-btn d" data-a="del" data-t="testi" data-id="' + esc(t.id) + '">' + ic("trash") + "</button></div></div></div>";
+    }).join("") : '<div class="sc-empty">Aucun témoignage pour le moment.</div>');
+  }
   function vZones() {
     var Z = S.d.zones; if (!Z.length) return '<div class="sc-err">Les zones d\'images ne sont pas encore installées : exécutez le SQL « supabase-update-4a » dans Supabase.</div>';
     var pages = [], by = {}; Z.forEach(function (z) { if (!by[z.page]) { by[z.page] = []; pages.push(z.page); } by[z.page].push(z); });
@@ -162,13 +198,13 @@
   function render() {
     var root = C.root; if (!root) return;
     var tabs = TABS.filter(function (t) { return !t.admin || C.role === "admin"; }); if (!tabs.some(function (t) { return t.id === S.tab; })) S.tab = tabs[0].id;
-    var t = tabs.filter(function (x) { return x.id === S.tab; })[0], body = !S.loaded ? '<div class="sc-load">Chargement…</div>' : ({ news: vNews, events: vEvents, gal: vGal, vids: vVids, zones: vZones })[S.tab]();
+    var t = tabs.filter(function (x) { return x.id === S.tab; })[0], body = !S.loaded ? '<div class="sc-load">Chargement…</div>' : ({ news: vNews, events: vEvents, gal: vGal, vids: vVids, zones: vZones, slides: vSlides, testi: vTesti })[S.tab]();
     root.innerHTML = '<div class="sc"><div class="sc-tabs" role="tablist">' + tabs.map(function (x) { return '<button type="button" role="tab" data-a="tab" data-id="' + x.id + '" aria-selected="' + (x.id === S.tab) + '">' + ic(x.ic) + esc(x.label) + "</button>"; }).join("") + "</div>" +
       '<div class="sc-where"><span>' + t.where + "</span>" + viewLink(t.link, "Ouvrir la page du site") + "</div>" + (S.err ? '<div class="sc-err">' + esc(S.err) + "</div>" : "") + body + "</div>";
   }
 
   /* ---------- actions ---------- */
-  var tbl = { news: "news", events: "events", gal: "gallery_items", vids: "video_links" };
+  var tbl = { news: "news", events: "events", gal: "gallery_items", vids: "video_links", slides: "home_slides", testi: "testimonials" };
   function find(t, id) { return (S.d[t] || []).filter(function (r) { return r.id === id; })[0]; }
   async function onClick(e) {
     var b = e.target.closest("[data-a]"); if (!b) return; var a = b.dataset.a, id = b.dataset.id, t = b.dataset.t, sb = C.sb;
@@ -221,6 +257,26 @@
           must(await sb.from("gallery_items").insert({ category: cat, caption: cap, image_url: u, position: pos + i + 1, published: true })); }
       }, files.length > 1 ? files.length + " photos ajoutées." : "Photo ajoutée."); return;
     }
+    if (kind === "slides") {
+      var sd = S.edit && S.edit.t === "slides" ? S.edit.row : null, st = q("sc-st").value.trim(), sf = q("sc-si").files[0];
+      if (st.length < 3) { C.toast("Donnez un titre à la diapo.", true); return; }
+      await run(btn, async function () {
+        var url = sd ? sd.image_url || null : null, old = url;
+        if (sf) { url = await upload("slides", sf, 1920); } else if (sd && q("sc-sr") && q("sc-sr").checked) url = null;
+        var row = { kicker: q("sc-sk").value.trim() || null, title: st, subtitle: q("sc-ss").value.trim() || null, cta_label: q("sc-sl").value.trim() || null, cta_url: q("sc-su").value.trim() || null, position: +q("sc-so").value || 1, overlay: +q("sc-sv").value, image_url: url, published: q("sc-sp").checked };
+        if (sd) must(await sb.from("home_slides").update(row).eq("id", sd.id)); else must(await sb.from("home_slides").insert(row));
+        if (old && old !== url) await drop(old); S.edit = null;
+      }, sd ? "Diapo modifiée." : "Diapo ajoutée à la bannière."); return;
+    }
+    if (kind === "testi") {
+      var te = S.edit && S.edit.t === "testi" ? S.edit.row : null, tb = q("sc-tb").value.trim(), tn = q("sc-tn").value.trim();
+      if (tb.length < 10 || !tn) { C.toast("Indiquez le nom et un témoignage d'au moins 10 caractères.", true); return; }
+      await run(btn, async function () {
+        var row = { author_name: tn, author_role: q("sc-tr").value, faculty: q("sc-tf").value || null, body: tb, published: q("sc-tp").checked };
+        if (te) must(await sb.from("testimonials").update(row).eq("id", te.id)); else must(await sb.from("testimonials").insert(row));
+        S.edit = null;
+      }, te ? "Témoignage modifié." : "Témoignage ajouté."); return;
+    }
     if (kind === "vids") {
       var id = ytId(q("sc-vu").value), vt = q("sc-vt").value.trim();
       if (!id) { C.toast("Lien YouTube non reconnu. Collez l'adresse de la vidéo.", true); return; }
@@ -236,7 +292,7 @@
       await run(null, async function () { var url = await upload("zones", file, 1920), old = z.image_url; must(await C.sb.from("site_images").update({ image_url: url, alt: (alt && alt.value.trim()) || z.alt || z.label }).eq("key", key)); if (old) await drop(old); }, "Image enregistrée : elle apparaît maintenant sur le site.");
       return;
     }
-    var ni = e.target.closest("#sc-ni");
+    var ni = e.target.closest("#sc-ni,#sc-si");
     if (ni) { var pv = C.root.querySelector("#sc-pv"), f = ni.files[0], er = f ? check(f) : ""; if (er) { C.toast(er, true); ni.value = ""; return; } if (f && pv) { var im = pv.querySelector("img,.sc-th"); var n = document.createElement("img"); n.className = "sc-th"; n.alt = ""; n.src = URL.createObjectURL(f); if (im) im.replaceWith(n); } }
   }
   window.IFSAContent = {
