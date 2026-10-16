@@ -14,6 +14,7 @@
   var safeHref = function (u) { u = String(u || "").trim(); return /^(https:\/\/|[\w\-./]+(\.html)?([?#][\w\-./=&%]*)?$)/i.test(u) && !/^javascript:/i.test(u) ? u : ""; };
   var fmt = function (s) { try { return new Date(String(s).length <= 10 ? s + "T12:00:00" : s).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }); } catch (e) { return ""; } };
 
+  var fmtT = function (s) { try { if (!s) return ""; var long = String(s).length > 10, D = new Date(long ? s : s + "T12:00:00"); var t = D.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }); return long ? t + " · " + D.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) : t; } catch (e) { return ""; } };
   /* ---------- 1. logo sur tout ce qui s'imprime / s'enregistre en PDF ---------- */
   function printHead() {
     if ($(".ifx-ph") || /^(espace-|manager|admin|email-)/.test(PAGE)) return;
@@ -188,9 +189,9 @@
       var f = L[0], rest = L.slice(1, shown);
       var im = imgBox(f, "im"); im.appendChild(el("span", "jr-kick", f.category || "Actualités")); im.lastChild.style.cssText = "position:absolute;top:16px;left:16px";
       var tx = el("div"); tx.appendChild(el("span", "jr-kick", "À la une")); tx.appendChild(art(f, true)); if (f.summary) tx.appendChild(el("p", "", f.summary));
-      var by = el("div", "jr-by"); by.appendChild(el("span", "", fmt(f.published_at))); tx.appendChild(by); tx.appendChild(actions(f)); lead.appendChild(im); lead.appendChild(tx);
+      var by = el("div", "jr-by"); by.appendChild(el("span", "", fmtT(f.published_at))); tx.appendChild(by); tx.appendChild(actions(f)); lead.appendChild(im); lead.appendChild(tx);
       rest.forEach(function (r) {
-        var c = el("article", "jr-card"); c.appendChild(imgBox(r, "im")); var by2 = el("div", "jr-by"); by2.appendChild(el("span", "jr-kick", r.category || "Actualités")); by2.appendChild(el("span", "", fmt(r.published_at))); c.appendChild(by2);
+        var c = el("article", "jr-card"); c.appendChild(imgBox(r, "im")); var by2 = el("div", "jr-by"); by2.appendChild(el("span", "jr-kick", r.category || "Actualités")); by2.appendChild(el("span", "", fmtT(r.published_at))); c.appendChild(by2);
         c.appendChild(art(r)); if (r.summary) c.appendChild(el("p", "", r.summary)); c.appendChild(actions(r)); grid.appendChild(c);
       });
       more.hidden = L.length - 1 <= shown;
@@ -201,7 +202,7 @@
     }
     $("#jr-q").addEventListener("input", function (e) { q = e.target.value.trim().toLowerCase(); shown = 9; draw(); });
     $("button", more).addEventListener("click", function () { shown += 9; draw(); });
-    $("#jr-date").textContent = new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    (function () { var n = $("#jr-date"); function tick() { var D = new Date(); n.textContent = D.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) + " · " + D.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }); } tick(); setInterval(tick, 20000); })();
     IFSA.news().then(function (rows) { N = rows; return withStats("news", rows.map(function (r) { return r.id; })); }).then(function (m) { sm = m || {}; filters(); draw(); }).catch(function () { none.hidden = false; none.textContent = "Les actualités sont momentanément indisponibles."; });
   }
 
@@ -217,3 +218,5 @@
   function start() { if (window.IFSA) return boot(); var s = d.createElement("script"); s.src = "site-data.js"; s.onload = boot; s.onerror = function () { printHead(); theme(); }; d.head.appendChild(s); }
   if (d.readyState === "loading") d.addEventListener("DOMContentLoaded", start); else start();
 })();
+/* Session expirée : message clair quand un espace connecté renvoie vers l'accueil */
+(function(){try{var q=new URLSearchParams(location.search);if(!q.has("expired"))return;var d=document.createElement("div");d.className="ifx-exp";d.setAttribute("role","status");d.style.cssText="position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:300;background:#0B1F4B;color:#fff;border:1px solid #C9A24B;border-radius:14px;padding:12px 18px;font:600 .9rem 'Plus Jakarta Sans',sans-serif;box-shadow:0 14px 40px rgba(0,0,0,.35);max-width:92vw;text-align:center";d.textContent="Votre session a expiré. Reconnectez-vous pour continuer.";document.body.appendChild(d);setTimeout(function(){d.remove()},7000);history.replaceState(null,"",location.pathname)}catch(e){}})();

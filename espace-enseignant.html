@@ -6,7 +6,9 @@
   <title>Espace enseignant — IFSA University</title>
   <meta name="description" content="Votre espace enseignant IFSA University : classes, présences, notes, documents et emploi du temps.">
   <meta name="theme-color" content="#071A45">
-  <link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
+  <link rel="preconnect" href="https://feahvqexnoozmpkseate.supabase.co" crossorigin>
+<link rel="preconnect" href="https://i.postimg.cc" crossorigin>
+<link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1266,6 +1268,18 @@ footer,.totop{display:none!important}.ap{display:grid;grid-template-columns:268p
 <meta name="theme-color" content="#071A45"><meta property="og:type" content="website"><meta property="og:site_name" content="IFSA University"><meta property="og:title" content="Espace enseignant — IFSA University"><meta property="og:description" content="Votre espace enseignant IFSA University : classes, présences, notes, documents et emploi du temps."><meta property="og:image" content="https://i.postimg.cc/8zMT8g8M/No-background.png"><meta property="og:locale" content="fr_FR">
 <meta name="robots" content="noindex">
   <link rel="stylesheet" href="ifsa-plus.css">
+<link rel="stylesheet" href="ifsa-core.css">
+<style id="ifx-app">
+/* espaces connectés : l'en-tête du site public est remplacé par l'en-tête d'application */
+#hdr,#nav,.skip,body>footer,footer,#totop,#prog{display:none!important}
+body{padding-top:0!important}
+main{padding-top:0!important}
+.hd-app{position:sticky;top:0}
+.hd-app .hd-in{padding-bottom:10px}
+.ap-sb{top:84px!important}
+.ap{padding-top:18px!important}
+.hd-app+main,.hd-app ~ main{min-height:70dvh}
+</style>
 </head>
 <body data-page="contact.html">
   <a class="skip" href="#main">Aller au contenu</a>
@@ -1302,11 +1316,43 @@ footer,.totop{display:none!important}.ap{display:grid;grid-template-columns:268p
   </header>
 
   <!-- ===== CONTENU DE LA PAGE ===== -->
-  <main id="main">
+  <header class="hd hd-app" id="hdApp">
+<div class="hd-in">
+<a class="hd-brand" href="index.html" aria-label="Retour au site IFSA University"><img src="https://i.postimg.cc/8zMT8g8M/No-background.png" alt="" width="42" height="42"><span><small>IFSA University</small><b id="appTitle">Espace enseignant</b></span></a>
+<span class="hd-site" id="siteChip" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span id="siteTxt"></span></span>
+<div class="hd-tools"><span id="bellHost" style="display:contents"></span>
+<button class="ib" id="appTheme" type="button" aria-label="Changer de thème"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
+<div class="usr"><button class="usr-b" id="usrB" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Mon compte"><span class="usr-av" id="usrAv">?</span><span class="usr-t"><b id="usrName"></b><small id="usrRole"></small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+<div class="usr-m" id="usrM" hidden><div class="usr-id"><span class="usr-av" id="usrAv2">?</span><div><b id="mName"></b><small id="mMail"></small></div></div><div class="usr-tags" id="mTags"></div>
+<a href="index.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Retour au site</a>
+<button type="button" class="out" id="appOut"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Se déconnecter</button></div></div>
+</div></div>
+</header>
+<script>/* En-tête d'application : menu du compte, thème, déconnexion */
+window.IFX_HEADER=function(o){
+var $=function(i){return document.getElementById(i)},esc=IFSACore.esc;
+var ini=function(n){return String(n||"?").trim().split(/\s+/).map(function(w){return w[0]}).slice(0,2).join("").toUpperCase()};
+$("appTitle").textContent=o.title;
+$("usrAv").textContent=$("usrAv2").textContent=ini(o.name);
+$("usrName").textContent=o.name||"";$("usrRole").textContent=o.role||"";
+$("mName").textContent=o.name||"";$("mMail").textContent=o.email||"";
+$("mTags").innerHTML='<span>'+esc(o.role||"")+'</span>'+(o.site?'<span>'+esc(o.site)+'</span>':'');
+if(o.site){$("siteTxt").textContent=o.site;$("siteChip").hidden=false}
+var um=$("usrM"),ub=$("usrB");
+function shut(){um.hidden=true;ub.setAttribute("aria-expanded","false")}
+ub.onclick=function(e){e.stopPropagation();um.hidden=!um.hidden;ub.setAttribute("aria-expanded",String(!um.hidden))};
+document.addEventListener("click",function(e){if(!um.hidden&&!e.target.closest(".usr"))shut()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")shut()});
+$("appTheme").onclick=function(){var n=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=n;try{localStorage.setItem("ifsa-theme",n)}catch(e){}};
+$("appOut").onclick=function(){IFSACore.logout(o.logoutTo||"index.html")};
+if(o.bell&&o.sb)IFSACore.bell({sb:o.sb,uid:o.uid,host:$("bellHost")}).catch(function(){});
+};</script>
+<main id="main">
     <div class="ap"><aside class="ap-sb" aria-label="Navigation de l'espace enseignant"><div class="ap-u"><div class="ap-av" id="ua">EN</div><div><b id="un">Enseignant</b><small id="us"></small></div></div><button type="button" data-v="dashboard"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg><span>Accueil</span></button><button type="button" data-v="classes"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>Mes classes</span></button><button type="button" data-v="annonces"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><span>Annonces</span></button><button type="button" data-v="profil"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg><span>Profil</span></button><button type="button" class="lo" id="lo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg><span>Se déconnecter</span></button></aside>
       <div><div class="ap-t"><div><h1 id="tt">Tableau de bord</h1><small id="dt"></small></div></div><div id="vw" aria-live="polite"></div></div></div>
     <div class="ap-ts" id="ts" role="status"></div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="ifsa-core.js"></script>
   
   </main>
 
@@ -1546,8 +1592,7 @@ footer,.totop{display:none!important}.ap{display:grid;grid-template-columns:268p
 const SUPABASE_URL="https://feahvqexnoozmpkseate.supabase.co",SUPABASE_ANON_KEY="sb_publishable_ivXCWsho2PYO1JH-1sUpRg_p-S91Z9X";
 const sb=(SUPABASE_URL&&SUPABASE_ANON_KEY&&window.supabase)?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
 const $=i=>document.getElementById(i);
-let auth=null;try{auth=JSON.parse(sessionStorage.getItem("ifsa_auth"))}catch(e){}
-if(!auth||auth.role!=="teacher"||!sb){location.replace("index.html");return}
+let auth=IFSACore.readAuth()||{};
 const IC={"dash": "<rect width=\"7\" height=\"9\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"14\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"9\" x=\"14\" y=\"12\" rx=\"1\"/><rect width=\"7\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"/>", "cls": "<path d=\"M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z\"/><path d=\"M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z\"/>", "user": "<circle cx=\"12\" cy=\"8\" r=\"5\"/><path d=\"M20 21a8 8 0 0 0-16 0\"/>", "out": "<path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\"/><path d=\"m16 17 5-5-5-5\"/><path d=\"M21 12H9\"/>", "users": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.9\"/><path d=\"M16 3.1a4 4 0 0 1 0 7.8\"/>", "cal": "<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/>", "back": "<path d=\"m15 18-6-6 6-6\"/>", "clock": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 6v6l4 2\"/>", "award": "<circle cx=\"12\" cy=\"8\" r=\"6\"/><path d=\"M15.5 13.5 17 22l-5-3-5 3 1.5-8.5\"/>"};IC.mega="<path d=\"m3 11 18-5v12L3 14v-3z\"/><path d=\"M11.6 16.8a3 3 0 1 1-5.8-1.6\"/>";const ic=n=>'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+IC[n]+'</svg>';
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt=d=>d?new Date(String(d).slice(0,10)+"T12:00:00").toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"}):"—";
@@ -1557,23 +1602,24 @@ const iso=()=>new Date().toISOString().slice(0,10);
 const DAYS=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
 function toast(t,bad){const e=$("ts");e.textContent=t;e.classList.add("on");e.style.background=bad?"#A12B2B":"";clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),3000)}
 const SN={carrefour:"Carrefour","port-de-paix":"Port-de-Paix",miragoane:"Miragoâne","petit-goave":"Petit-Goâve"};let U,ME={},CL=[],EN={},SS=[],AN=[],SEL={date:null,sem:"Semestre 1",edit:null};
-async function load(){U=(await sb.auth.getUser()).data.user;if(!U){bye();return false}
+async function load(){U=((await sb.auth.getSession()).data.session||{}).user;if(!U){bye();return false}
 ME=ck(await sb.from("profiles").select("*").eq("id",U.id).single())||{};if(ME.status!=="active"||ME.role!=="teacher"||!ME.site_id){bye();return false}
 CL=ck(await sb.from("classes").select("*").eq("teacher_id",U.id).order("created_at"))||[];EN={};SS=[];const ids=CL.map(c=>c.id);
 if(ids.length){const en=ck(await sb.from("enrollments").select("class_id,student_id,profiles(full_name,matricule,email,validated)").in("class_id",ids))||[];en.forEach(e=>{(EN[e.class_id]=EN[e.class_id]||[]).push(Object.assign({id:e.student_id},e.profiles||{}))});SS=ck(await sb.from("class_sessions").select("*").in("class_id",ids))||[]}
 try{AN=ck(await sb.from("announcements").select("*").order("created_at",{ascending:false}).limit(30))||[]}catch(e){AN=[]}
 return true}
-async function bye(){try{await sb.auth.signOut()}catch(e){}sessionStorage.removeItem("ifsa_auth");location.href="index.html"}
+function bye(){return IFSACore.logout("index.html")}
 const nm=s=>esc(s.full_name||s.email||"Élève");
 const meta=c=>[c.faculte,c.option,c.annee?"Année "+c.annee:"",c.site].filter(Boolean).map(esc).join(" · ");
 const card=(t,h,a)=>'<div class="ap-c"><h3>'+t+(a||"")+'</h3>'+h+'</div>';
 const hm=t=>String(t||"").slice(0,5);
 const todayDay=()=>{const d=new Date().getDay();return d===0?7:d};
+const PH=(n,sub,mail)=>'<div class="ap-ph"><span class="ap-av">'+String(n||"?").trim().split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase()+'</span><div><h2>'+esc(n||"")+'</h2><p>'+esc(sub||"")+'</p><small>'+esc(mail||"")+'</small></div></div>';
 const V={
 dashboard(){const n=new Set(Object.values(EN).flat().map(s=>s.id)).size,t=SS.filter(s=>s.day===todayDay()).sort((a,b)=>a.start_time<b.start_time?-1:1),cn=id=>(CL.find(c=>c.id===id)||{}).name||"";
 return '<div class="ap-hero"><h2>Bonjour, <em>'+esc((ME.full_name||"").split(" ")[0]||"")+'</em></h2><p style="color:#C3CFEA;margin-top:6px">Voici l\'état de vos classes.</p></div><div class="ap-k"><div class="ap-kc">'+ic("cls")+'<b>'+CL.length+'</b><span>Classes</span></div><div class="ap-kc">'+ic("users")+'<b>'+n+'</b><span>Élèves</span></div><div class="ap-kc">'+ic("cal")+'<b>'+t.length+'</b><span>Séances aujourd\'hui</span></div><div class="ap-kc">'+ic("clock")+'<b style="font-size:1.1rem">'+new Date().toLocaleDateString("fr-FR",{day:"numeric",month:"short"})+'</b><span>Aujourd\'hui</span></div></div><div class="ap-g"><div>'+card("Aujourd\'hui",t.length?t.map(s=>'<div class="ap-row"><span class="tm">'+hm(s.start_time)+" – "+hm(s.end_time)+'</span><div class="gr"><b>'+esc(cn(s.class_id))+'</b><small>'+esc(s.room||"")+'</small></div><a class="ap-btn" href="#classe/'+s.class_id+'/presences">Faire l\'appel</a></div>').join(""):'<p style="color:var(--mut)">Aucune séance prévue aujourd\'hui.</p>')+'</div><div>'+card("Mes classes",CL.length?CL.slice(0,4).map(c=>'<div class="ap-row"><div class="gr"><b>'+esc(c.name)+'</b><small>'+(EN[c.id]||[]).length+' élève(s)</small></div><a class="ap-btn" href="#classe/'+c.id+'/eleves">Ouvrir</a></div>').join(""):'<p style="color:var(--mut)">Aucune classe ne vous est encore affectée. La direction les crée et vous les attribue.</p>')+'</div></div>'+annCard(3)},
 classes(){return CL.length?CL.map(c=>'<div class="ap-cl"><div class="gr"><b>'+esc(c.name)+'</b><small>'+meta(c)+" · "+(EN[c.id]||[]).length+' élève(s)</small></div><a class="ap-btn g" href="#classe/'+c.id+'/eleves">Ouvrir la classe</a></div>').join(""):card("Mes classes",'<p style="color:var(--mut)">Aucune classe ne vous est encore affectée. Contactez la direction.</p>')},
-profil(){return card("Mon profil",'<form id="pf" class="ap-f"><label>Nom complet<input value="'+esc(ME.full_name)+'" readonly></label><label>Email<input value="'+esc(ME.email||U.email)+'" readonly></label><label>Téléphone<input id="ph" type="tel" value="'+esc(ME.phone||"")+'" autocomplete="tel"></label><div class="full">'+(ME.badges||[]).map(b=>'<span class="bdg o" style="background:rgba(201,162,75,.25);color:#6B5316">'+esc(b)+'</span>').join("")+'</div><div class="full"><button class="ap-btn g" type="submit">Enregistrer</button></div></form>')+card("Mot de passe",'<form id="pw" class="ap-f"><label>Nouveau mot de passe<input id="np" type="password" minlength="8" autocomplete="new-password" required></label><label>Confirmer<input id="np2" type="password" autocomplete="new-password" required></label><div class="full"><button class="ap-btn" type="submit">Changer le mot de passe</button></div></form>')}};
+profil(){return PH(ME.full_name,"Enseignant · "+(SN[ME.site_id]||""),ME.email||U.email)+card("Mon profil",'<form id="pf" class="ap-f"><label>Nom complet<input value="'+esc(ME.full_name)+'" readonly></label><label>Email<input value="'+esc(ME.email||U.email)+'" readonly></label><label>Téléphone<input id="ph" type="tel" value="'+esc(ME.phone||"")+'" autocomplete="tel"></label><div class="full">'+(ME.badges||[]).map(b=>'<span class="bdg o" style="background:rgba(201,162,75,.25);color:#6B5316">'+esc(b)+'</span>').join("")+'</div><div class="full"><button class="ap-btn g" type="submit">Enregistrer</button></div></form>')+card("Mot de passe",'<form id="pw" class="ap-f"><label>Nouveau mot de passe<input id="np" type="password" minlength="8" autocomplete="new-password" required></label><label>Confirmer<input id="np2" type="password" autocomplete="new-password" required></label><div class="full"><button class="ap-btn" type="submit">Changer le mot de passe</button></div></form>')}};
 /* ===== Détail d'une classe ===== */
 const annRows=L=>L.map(a=>'<div class="ap-row"><div class="gr"><b>'+esc(a.title)+'</b><small>'+fmt(a.created_at)+(a.kind==="notice"?" · Avis":"")+'</small>'+(a.body?'<p style="font-size:.86rem;color:var(--mut);margin-top:4px;white-space:pre-wrap">'+esc(a.body)+'</p>':"")+'</div></div>').join("");
 const annCard=n=>card("Annonces de mon site",AN.length?annRows(AN.slice(0,n))+(AN.length>n?'<p style="margin-top:10px"><a class="ap-btn" href="#annonces">Tout voir</a></p>':""):'<p style="color:var(--mut)">Aucune annonce pour le moment.</p>');
@@ -1612,7 +1658,9 @@ document.querySelectorAll("[data-dh]").forEach(b=>b.onclick=async()=>{if(!confir
 const pf=$("pf");if(pf)pf.onsubmit=async e=>{e.preventDefault();try{ck(await sb.from("profiles").update({phone:$("ph").value.trim()}).eq("id",U.id));ME.phone=$("ph").value.trim();toast("Profil enregistré")}catch(x){toast("Enregistrement impossible.",1)}};
 const pw=$("pw");if(pw)pw.onsubmit=async e=>{e.preventDefault();if($("np").value.length<8||$("np").value!==$("np2").value){toast("Les mots de passe doivent être identiques (8 caractères minimum).",1);return}const r=await sb.auth.updateUser({password:$("np").value});toast(r.error?"Modification impossible.":"Mot de passe modifié",!!r.error);if(!r.error)pw.reset()}}
 document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{location.hash=b.dataset.v});$("lo").onclick=bye;addEventListener("hashchange",render);
-load().then(ok=>{if(!ok)return;const n=ME.full_name||"Enseignant";$("un").textContent=n;$("ua").textContent=ini(n);$("us").textContent="Enseignant · "+(SN[ME.site_id]||"");$("dt").textContent=new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});render()}).catch(()=>{toast("Chargement impossible.",1)});
+(async()=>{const G=await IFSACore.guard({roles:["teacher"],login:"index.html",needSite:true});if(!G)return;U=G.user;
+IFX_HEADER({title:"Espace enseignant",name:G.profile.full_name||"Enseignant",role:"Enseignant",email:G.user.email,site:SN[G.profile.site_id]||"",sb:sb,uid:G.user.id,bell:true});
+try{const ok=await IFSACore.retry(load);if(!ok)return;const n=ME.full_name||"Enseignant";$("un").textContent=n;$("ua").textContent=ini(n);$("us").textContent="Enseignant · "+(SN[ME.site_id]||"");$("dt").textContent=new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});render()}catch(e){IFSACore.fail({login:"index.html"},e)}})();
 })();</script>
 <script src="ifsa-plus.js" defer></script>
 </body>

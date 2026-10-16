@@ -6,7 +6,9 @@
   <title>Galerie — IFSA University</title>
   <meta name="description" content="Photos du campus, des étudiants, des cérémonies et des événements d'IFSA University.">
   <meta name="theme-color" content="#071A45">
-  <link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
+  <link rel="preconnect" href="https://feahvqexnoozmpkseate.supabase.co" crossorigin>
+<link rel="preconnect" href="https://i.postimg.cc" crossorigin>
+<link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1536,7 +1538,7 @@ addEventListener("keydown",function(e){if(!lb.classList.contains("on"))return;if
 IFSA.videos().then(function(v){var h=IFSA.videoCards(v);if(h){document.getElementById("vids").innerHTML=h;document.getElementById("vsec").hidden=false;IFSA.bindVideos(document.getElementById("vids"))}}).catch(function(){});
 IFSA.gallery().then(function(rows){G=rows.map(function(r){return [r.category||"Campus",r.caption,r.image_url]});cat="Tous";cats_();R()}).catch(function(){});
 })();</script>
-<script>/* ===== COMPTE CONNECTÉ : adapte le lien Connexion ===== */(function(){try{var a=JSON.parse(sessionStorage.getItem("ifsa_auth")||"null");if(!a)return;var f=(a.name||"").split(" ")[0],D={student:["Mon espace","espace-etudiant.html"],teacher:["Mon espace","espace-enseignant.html"],bursar:["Mon espace","espace-econome.html"],secretary:["Mon espace","espace-secretariat.html"],branch_director:["Espace directeur","espace-directeur.html"],user:["Bonjour, "+f+" · Quitter","connexion.html?logout=1"],manager:["Espace direction","manager.html"],admin:["Espace administrateur","admin.html"]}[a.role];if(!D)return;document.querySelectorAll('a[href="connexion.html"]').forEach(function(l){var _n=l.lastChild;if(_n&&_n.nodeType===3)_n.textContent=D[0];else l.textContent=D[0];l.href=D[1]})}catch(e){}})();</script>
+<script>/* ===== COMPTE CONNECTÉ : adapte le lien Connexion ===== */(function(){try{var a=JSON.parse(sessionStorage.getItem("ifsa_auth")||localStorage.getItem("ifsa_auth")||"null");if(!a)return;var f=(a.name||"").split(" ")[0],D={student:["Mon espace","espace-etudiant.html"],teacher:["Mon espace","espace-enseignant.html"],bursar:["Mon espace","espace-econome.html"],secretary:["Mon espace","espace-secretariat.html"],branch_director:["Espace directeur","espace-directeur.html"],user:["Bonjour, "+f+" · Quitter","connexion.html?logout=1"],manager:["Espace direction","manager.html"],admin:["Espace administrateur","admin.html"]}[a.role];if(!D)return;document.querySelectorAll('a[href="connexion.html"]').forEach(function(l){var _n=l.lastChild;if(_n&&_n.nodeType===3)_n.textContent=D[0];else l.textContent=D[0];l.href=D[1]})}catch(e){}})();</script>
 <script src="ifsa-plus.js" defer></script>
 </body>
 </html>

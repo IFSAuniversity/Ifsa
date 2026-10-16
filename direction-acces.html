@@ -6,7 +6,9 @@
   <title>Accès direction — IFSA University</title>
   <meta name="description" content="Accès réservé à la direction d'IFSA University.">
   <meta name="theme-color" content="#071A45">
-  <link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
+  <link rel="preconnect" href="https://feahvqexnoozmpkseate.supabase.co" crossorigin>
+<link rel="preconnect" href="https://i.postimg.cc" crossorigin>
+<link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1564,7 +1566,7 @@ async function check(user){const {data:p,error}=await sb.from("profiles").select
 if(error||!p||(p.role!=="manager"&&p.role!=="admin")){await sb.auth.signOut();throw new Error("generic")}
 if(p.status!=="active"){await sb.auth.signOut();throw new Error("inactive")}
 sb.from("profiles").update({last_seen:new Date().toISOString()}).eq("id",user.id).then(()=>{});
-sessionStorage.setItem("ifsa_auth",JSON.stringify({role:p.role,name:p.full_name,email:user.email}));return p}
+(function(v){sessionStorage.setItem("ifsa_auth",v);try{localStorage.setItem("ifsa_auth",v)}catch(e){}})(JSON.stringify({role:p.role,name:p.full_name,email:user.email}));return p}
 const why=e=>e&&e.message==="inactive"?"Ce compte est suspendu ou désactivé. Contactez l'administrateur.":/rate limit|too many/i.test(e&&e.message||"")?"Trop de tentatives. Patientez quelques minutes.":e&&e.name==="TypeError"?"Connexion impossible. Vérifiez votre réseau.":GENERIC;
 const avail=()=>{if(sb)return true;say("Le service est momentanément indisponible.","info");return false};
 $("fl").onsubmit=async e=>{e.preventDefault();say("","");if(!avail())return;const em=$("em").value.trim(),pw=$("pw").value;if(!em||pw.length<6){say("Entrez votre email et votre mot de passe.","err");return}
@@ -1582,6 +1584,7 @@ $("pwf").hidden=true;$("pwd").hidden=false};
 $("pwg").onclick=async()=>{try{const u=(await sb.auth.getUser()).data.user;const p=await check(u);location.href=p.role==="admin"?"admin.html":"manager.html"}catch(x){$("pwm").hidden=true;say(why(x),"err")}};
 if(sb){sb.auth.onAuthStateChange(ev=>{if(ev==="PASSWORD_RECOVERY")openPw()});if(HT==="recovery")sb.auth.getSession().then(r=>{if(r.data.session)openPw()})}
 if(HE){say("Ce lien a expiré ou a déjà été utilisé. Demandez un nouveau lien.","err");history.replaceState(null,"",location.pathname)}
+if(new URLSearchParams(location.search).has("expired"))say("Votre session a expiré. Reconnectez-vous pour continuer.","info");
 if(!sb)say("Le service est momentanément indisponible.","info");
 })();</script>
 <script src="ifsa-plus.js" defer></script>

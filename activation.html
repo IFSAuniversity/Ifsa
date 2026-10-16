@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#071A45">
+<title>Activer mon compte — IFSA University</title>
+<link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>(function(){var r=document.documentElement,t='light';try{var v=localStorage.getItem('ifsa-theme');t=(v==='light'||v==='dark')?v:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}r.dataset.theme=t})();</script>
+<style>
+:root{--navy:#0B1F4B;--gold:#C9A24B;--gold2:#E8CF8E;--ink:#1B2437;--mut:#5B667C;--bg:#EEF2FA;--card:#fff;--line:#D9E0F0}
+[data-theme="dark"]{color-scheme:dark;--bg:#0A1230;--card:#101B3B;--ink:#E4EAF7;--mut:#A9B6D3;--line:#2A3A66}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:radial-gradient(900px 500px at 85% -10%,rgba(201,162,75,.18),transparent 60%),var(--bg);min-height:100dvh;display:grid;place-items:center;padding:max(20px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom));line-height:1.55}
+.card{width:min(460px,100%);background:var(--card);border:1px solid var(--line);border-radius:28px;padding:30px 26px;box-shadow:0 24px 70px rgba(7,26,69,.16)}
+.brand{display:flex;gap:12px;align-items:center;margin-bottom:20px}
+.brand img{width:46px;height:46px;object-fit:contain}
+.brand b{display:block;font:700 1.05rem 'Fraunces',Georgia,serif;color:var(--navy)}
+[data-theme="dark"] .brand b,[data-theme="dark"] h1{color:#fff}
+.brand span{font-size:.78rem;color:var(--mut)}
+h1{font:700 1.6rem/1.2 'Fraunces',Georgia,serif;color:var(--navy);margin-bottom:6px}
+.sub{color:var(--mut);font-size:.92rem;margin-bottom:18px}
+.who{display:flex;gap:12px;align-items:center;background:rgba(201,162,75,.12);border:1px solid rgba(201,162,75,.4);border-radius:16px;padding:12px 14px;margin-bottom:18px}
+.who i{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#C9A24B,#E8CF8E);color:#0B1F4B;display:grid;place-items:center;font-style:normal;font-weight:800;flex:none}
+.who b{display:block;word-break:break-word}.who small{color:var(--mut);word-break:break-word}
+label{display:block;font-weight:700;font-size:.84rem;margin:0 0 6px}
+.f{position:relative;margin-bottom:12px}
+.f input{width:100%;min-height:50px;border:1.5px solid var(--line);border-radius:14px;padding:0 48px 0 14px;font:500 16px 'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink)}
+.f input:focus{outline:3px solid rgba(201,162,75,.5);border-color:var(--gold)}
+.eye{position:absolute;right:6px;bottom:5px;width:40px;height:40px;border:0;background:none;color:var(--mut);cursor:pointer;font-size:.8rem;font-weight:700}
+.stg{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin:2px 0 6px}.stg i{display:block;height:100%;width:8%;background:#D64545;transition:.25s}
+.stl{font-size:.8rem;color:var(--mut);margin-bottom:14px}
+.btn{width:100%;min-height:52px;border:0;border-radius:14px;background:linear-gradient(135deg,#C9A24B,#DDB863);color:#0B1F4B;font:700 1rem 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.btn[disabled]{opacity:.6;cursor:wait}
+.msg{border-radius:12px;padding:11px 14px;font-size:.9rem;margin-bottom:14px}
+.msg.err{background:#FDECEC;color:#A12B2B}[data-theme="dark"] .msg.err{background:#2A1517;color:#F3B4B4}
+.msg.ok{background:#E3F4EA;color:#0E6B3A}[data-theme="dark"] .msg.ok{background:#12301F;color:#5FD08F}
+.exp{font-size:.8rem;color:var(--mut);margin-top:12px;text-align:center}
+.state{text-align:center;padding:6px 0}
+.state .ic{width:58px;height:58px;border-radius:18px;margin:0 auto 14px;display:grid;place-items:center;font-size:1.7rem}
+.state .ic.bad{background:#FDECEC;color:#B3261E}.state .ic.good{background:#E3F4EA;color:#0E6B3A}
+.state a{display:inline-block;margin-top:16px;color:var(--navy);font-weight:700}[data-theme="dark"] .state a{color:var(--gold2)}
+.sp{display:inline-block;width:22px;height:22px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--gold);animation:s .7s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<main class="card" id="c" aria-live="polite">
+  <div class="brand"><img src="https://i.postimg.cc/8zMT8g8M/No-background.png" alt="" width="46" height="46"><div><b>IFSA University</b><span>Activation du compte</span></div></div>
+  <div class="state"><span class="sp"></span></div>
+</main>
+<script>
+(function(){
+"use strict";
+var URL_="https://feahvqexnoozmpkseate.supabase.co",KEY="sb_publishable_ivXCWsho2PYO1JH-1sUpRg_p-S91Z9X";
+var T=new URLSearchParams(location.search).get("t")||"";
+var c=document.getElementById("c");
+var RL={student:"Étudiant",teacher:"Enseignant",bursar:"Économe",secretary:"Censeur / Secrétaire",branch_director:"Directeur d'antenne",manager:"Directeur général",admin:"Administrateur"};
+var brand=c.firstElementChild.outerHTML;
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(x){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[x]})}
+function call(body){return fetch(URL_+"/functions/v1/invite-public",{method:"POST",headers:{"Content-Type":"application/json",apikey:KEY,Authorization:"Bearer "+KEY},body:JSON.stringify(body)}).then(function(r){return r.json()})}
+function bad(t,m){c.innerHTML=brand+'<div class="state"><div class="ic bad">!</div><h1>'+esc(t)+'</h1><p class="sub">'+esc(m)+'</p><a href="index.html">Retour au site</a></div>'}
+function lvl(p){var s=0;if(p.length>=8)s++;if(p.length>=12)s++;if(/[A-Z]/.test(p)&&/[a-z]/.test(p))s++;if(/\d/.test(p))s++;if(/[^\w]/.test(p))s++;return s}
+function fmtExp(d){try{return new Date(d).toLocaleString("fr-FR",{day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})}catch(e){return""}}
+if(T.length<20){bad("Lien invalide","Ce lien est incomplet. Ouvrez-le depuis l'email reçu.");return}
+call({action:"check",token:T}).then(function(r){
+  if(!r.ok){bad(r.reason==="expired"?"Lien expiré":r.reason==="used"?"Compte déjà créé":"Lien indisponible",r.error||"Ce lien ne peut pas être utilisé.");return}
+  var ini=String(r.name||r.email||"?").trim().split(/\s+/).map(function(w){return w[0]}).slice(0,2).join("").toUpperCase();
+  c.innerHTML=brand+'<h1>Bienvenue à IFSA University</h1><p class="sub">Choisissez votre mot de passe pour activer votre compte.</p>'+
+  '<div class="who"><i>'+esc(ini)+'</i><div><b>'+esc(r.name||r.email)+'</b><small>'+esc(RL[r.role]||"")+' · '+esc(r.email)+'</small></div></div>'+
+  '<div class="msg err" id="e" role="alert" hidden></div>'+
+  '<form id="f" novalidate><div class="f"><label for="p1">Mot de passe</label><input id="p1" type="password" autocomplete="new-password" required><button class="eye" type="button" data-e>Voir</button></div>'+
+  '<div class="stg"><i id="sg"></i></div><p class="stl" id="sl">8 caractères minimum, avec lettres et chiffres.</p>'+
+  '<div class="f"><label for="p2">Confirmer le mot de passe</label><input id="p2" type="password" autocomplete="new-password" required><button class="eye" type="button" data-e>Voir</button></div>'+
+  '<button class="btn" id="b" type="submit">Créer mon compte</button></form>'+
+  '<p class="exp">Ce lien est valable jusqu\'au '+esc(fmtExp(r.expires_at))+' et s\'éteint dès que votre compte est créé.</p>';
+  document.querySelectorAll("[data-e]").forEach(function(b){b.onclick=function(){var i=b.parentElement.querySelector("input"),s=i.type==="password";i.type=s?"text":"password";b.textContent=s?"Masquer":"Voir"}});
+  var p1=document.getElementById("p1");
+  p1.oninput=function(){var s=lvl(p1.value),g=document.getElementById("sg");g.style.width=Math.max(8,s*20)+"%";g.style.background=s<2?"#D64545":s<4?"#E0A41E":"#2E9E5B";document.getElementById("sl").textContent=["","Très faible","Faible","Moyen","Bon","Excellent"][s]||""};
+  document.getElementById("f").onsubmit=function(e){e.preventDefault();var er=document.getElementById("e"),a=p1.value,b2=document.getElementById("p2").value;er.hidden=true;
+    if(a.length<8){er.textContent="Votre mot de passe doit contenir au moins 8 caractères.";er.hidden=false;return}
+    if(a!==b2){er.textContent="Les deux mots de passe ne sont pas identiques.";er.hidden=false;return}
+    var btn=document.getElementById("b");btn.disabled=true;btn.textContent="Création du compte…";
+    call({action:"accept",token:T,password:a}).then(function(x){
+      if(!x.ok){btn.disabled=false;btn.textContent="Créer mon compte";if(x.reason==="expired"||x.reason==="used"||x.reason==="revoked"||x.reason==="invalid"){bad("Lien indisponible",x.error);return}er.textContent=x.error||"Création impossible. Réessayez.";er.hidden=false;return}
+      c.innerHTML=brand+'<div class="state"><div class="ic good">✓</div><h1>Compte créé</h1><p class="sub">Votre mot de passe est enregistré. Vous pouvez maintenant vous connecter.</p><a class="btn" style="display:block;text-decoration:none;line-height:52px;color:#0B1F4B" href="'+esc(x.next||"connexion.html")+'">Me connecter</a></div>';
+    }).catch(function(){btn.disabled=false;btn.textContent="Créer mon compte";er.textContent="Connexion impossible. Vérifiez votre réseau puis réessayez.";er.hidden=false});
+  };
+}).catch(function(){bad("Connexion impossible","Vérifiez votre réseau puis rechargez la page.")});
+})();
+</script>
+</body>
+</html>

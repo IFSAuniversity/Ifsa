@@ -6,6 +6,8 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="theme-color" content="#071A45">
 <title>Espace économe — IFSA University</title>
+<link rel="preconnect" href="https://feahvqexnoozmpkseate.supabase.co" crossorigin>
+<link rel="preconnect" href="https://i.postimg.cc" crossorigin>
 <link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,15 +107,28 @@ a{color:inherit;text-decoration:none}
 
 </style>
   <link rel="stylesheet" href="ifsa-plus.css">
+  <link rel="stylesheet" href="ifsa-core.css">
 </head>
 <body>
-<header class="top"><div class="brand"><img src="https://i.postimg.cc/8zMT8g8M/No-background.png" alt="" width="38" height="38"><div><b id="who">Espace économe</b><small id="me"></small></div></div>
-<div class="tl"><button class="ib" id="themeT" type="button" aria-label="Changer de thème"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button><button class="ib" id="out" type="button" aria-label="Se déconnecter"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg></button></div></header>
+<header class="hd" id="hd">
+<div class="hd-in">
+<a class="hd-brand" href="index.html" aria-label="Retour au site IFSA University"><img src="https://i.postimg.cc/8zMT8g8M/No-background.png" alt="" width="42" height="42"><span><small>IFSA University</small><b id="who">Espace économe</b></span></a>
+<span class="hd-site" id="siteChip" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span id="siteTxt"></span></span>
+<div class="hd-tools"><span id="bellHost" style="display:contents"></span>
+<button class="ib" id="themeT" type="button" aria-label="Changer de thème"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
+<div class="usr"><button class="usr-b" id="usrB" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Mon compte"><span class="usr-av" id="usrAv">?</span><span class="usr-t"><b id="me"></b><small id="rl"></small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+<div class="usr-m" id="usrM" hidden><div class="usr-id"><span class="usr-av" id="usrAv2">?</span><div><b id="mName"></b><small id="mMail"></small></div></div><div class="usr-tags" id="mTags"></div>
+<a href="index.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Retour au site</a>
+<button type="button" class="out" id="out"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Se déconnecter</button></div></div>
+</div></div>
 <nav class="tabs" id="tabs" role="tablist" aria-label="Sections"></nav>
+</header>
 <main class="wrap" id="body" aria-live="polite"><div class="load"><span class="sp"></span></div></main>
 <div class="ts" id="ts" role="status"></div>
 <noscript><p style="position:fixed;inset:auto 0 0 0;padding:14px;text-align:center;background:#071A45;color:#fff;font:600 .9rem sans-serif">JavaScript est nécessaire pour utiliser cet espace.</p></noscript>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="ifsa-core.js"></script>
+<script src="ifsa-docx.js"></script>
 <script>
 (function(){
 "use strict";
@@ -179,35 +194,46 @@ try{const r=await f();if(ok)toast(typeof ok==="function"?ok(r):ok);return r}catc
 function genPw(){const a="abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";const u=new Uint32Array(12);crypto.getRandomValues(u);return Array.from(u,x=>a[x%a.length]).join("")}
 /* appel de la fonction Edge (actions sensibles exécutées côté serveur) */
 async function fn(action,body,page){const redirect_to=location.origin+location.pathname.replace(/[^/]*$/,"")+(page||"connexion.html");
-const r=await sb.functions.invoke("admin-users",{body:Object.assign({action,redirect_to},body)});
+const r=await sb.functions.invoke("admin-users",{body:Object.assign({action,redirect_to,invite_hours:IFSACore.inviteHours()},body)});
 if(r.error){let m="Action impossible.";try{const j=await r.error.context.json();if(j&&j.error)m=j.error}catch(e){}throw new Error(m)}
-if(r.data&&r.data.error)throw new Error(r.data.error);return r.data}
+if(r.data&&r.data.error)throw new Error(r.data.error);if(r.data&&r.data.invite_link)IFSACore.inviteResult(r.data);return r.data}
 const must=r=>{if(r.error)throw r.error;return r.data||[]};
 const nameOf=id=>{const p=(S.d.people||[]).find(x=>x.id===id);return p?p.full_name:null};
 const STAFF_ROLES=["teacher","bursar","secretary"];
 /* ===== amorçage : session, contrôle du compte, en-tête, onglets ===== */
 async function boot(cfg){S.cfg=cfg;
-const bye=async()=>{try{if(sb)await sb.auth.signOut()}catch(e){}try{sessionStorage.removeItem("ifsa_auth")}catch(e){}location.replace("index.html")};
-let auth=null;try{auth=JSON.parse(sessionStorage.getItem("ifsa_auth"))}catch(e){}
-if(!sb||!auth||auth.role!==cfg.role){location.replace("index.html");return}
-let me=null;
-try{const g=await sb.auth.getSession(),s=g.data&&g.data.session;if(!s){await bye();return}
-const q=await sb.from("profiles").select("id,role,status,site_id,full_name,email").eq("id",s.user.id).single();me=q.data;if(q.error||!me)throw new Error("x")}catch(e){await bye();return}
-if(me.role!==cfg.role||me.status!=="active"||!me.site_id){await bye();return}
+const G=await IFSACore.guard({roles:[cfg.role],login:"index.html",needSite:true});
+if(!G)return;
+const me=G.profile;
 S.me=me;S.site=me.site_id;S.siteName=SITES[me.site_id]||me.site_id;S.tab=cfg.tabs[0].id;
+const bye=()=>IFSACore.logout("index.html");
 document.title=cfg.title+" — "+S.siteName+" — IFSA University";
-$("who").textContent=cfg.title+" · "+S.siteName;$("me").textContent=me.full_name||me.email||"";
+$("who").textContent=cfg.title;$("me").textContent=(me.full_name||me.email||"").trim();
+$("rl").textContent=ROLE_L[cfg.role]||"";
+$("siteTxt").textContent=S.siteName;$("siteChip").hidden=false;
+$("usrAv").textContent=$("usrAv2").textContent=init(me.full_name||me.email);
+$("mName").textContent=me.full_name||"";$("mMail").textContent=me.email||G.user.email||"";
+$("mTags").innerHTML='<span>'+esc(ROLE_L[cfg.role]||"")+'</span><span>'+esc(S.siteName)+'</span>';
+const um=$("usrM"),ub=$("usrB");
+const shut=()=>{um.hidden=true;ub.setAttribute("aria-expanded","false")};
+ub.onclick=e=>{e.stopPropagation();um.hidden=!um.hidden;ub.setAttribute("aria-expanded",String(!um.hidden))};
+document.addEventListener("click",e=>{if(!um.hidden&&!e.target.closest(".usr"))shut()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")shut()});
 $("out").onclick=bye;
 $("themeT").onclick=()=>{const n=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=n;try{localStorage.setItem("ifsa-theme",n)}catch(e){}};
 document.addEventListener("click",e=>{const t=e.target.closest("[data-tab]");if(t){e.preventDefault();S.tab=t.dataset.tab;drawTabs();draw(true);return}
 const b=e.target.closest("[data-act]");if(!b)return;const a=cfg.actions[b.dataset.act];if(a){e.preventDefault();a(b,b.dataset)}});
 const inp=e=>{const t=e.target.closest("[data-in]");if(t&&cfg.inputs&&cfg.inputs[t.dataset.in])cfg.inputs[t.dataset.in](t,e)};
 document.addEventListener("input",inp);document.addEventListener("change",inp);
-$("body").innerHTML='<div class="load"><span class="sp"></span></div>';
+$("body").innerHTML='<div class="ifx-skel"></div><div class="ifx-skel"></div><div class="ifx-skel"></div>';
+IFSACore.bell({sb:sb,uid:me.id,host:$("bellHost")}).catch(()=>{});
 await refresh()}
 function drawTabs(){$("tabs").innerHTML=S.cfg.tabs.map(t=>{const n=t.badge?t.badge():0;return '<button type="button" role="tab" data-tab="'+t.id+'" aria-selected="'+(S.tab===t.id)+'">'+ic(t.icon)+esc(t.label)+(n>0?'<span class="n">'+n+'</span>':"")+'</button>'}).join("")}
 function draw(top){const t=S.cfg.tabs.find(x=>x.id===S.tab)||S.cfg.tabs[0];$("body").innerHTML=t.view();if(t.after)t.after();if(top)scrollTo(0,0)}
-async function refresh(){try{await S.cfg.load()}catch(x){toast("Chargement impossible : "+((x&&x.message)||"erreur"),1)}drawTabs();draw()}
+async function refresh(){try{await S.cfg.load();S.loadErr=null;S.loaded=true}catch(x){S.loadErr=x;toast("Actualisation impossible : "+((x&&x.message)||"erreur"),1)}
+drawTabs();
+if(S.loadErr&&!S.loaded){$("body").innerHTML='<div class="ifx-fail"><div class="ifx-fail-i">'+ic("alert")+'</div><h2>Chargement impossible</h2><p>Vos données n\'ont pas pu être chargées. Vérifiez votre connexion puis réessayez.</p><div class="ifx-fail-a"><button type="button" class="ifx-b p" id="rt">Réessayer</button><button type="button" class="ifx-b" id="rl2">Se reconnecter</button></div></div>';$("rt").onclick=async()=>{$("body").innerHTML='<div class="ifx-skel"></div><div class="ifx-skel"></div>';await refresh()};$("rl2").onclick=()=>IFSACore.logout("index.html");return}
+draw()}
 const stBadge=s=>s&&s!=="active"?'<span class="bd no">'+(SL[s]||s)+'</span>':"";
 /* ===== sections communes ===== */
 const isOwnAnn=a=>Array.isArray(a.site_ids)&&a.site_ids.length===1&&a.site_ids[0]===S.site;
@@ -279,9 +305,7 @@ else{main='<p class="dt">'+esc(S.siteName)+', le '+dt+'</p>'+(o.to?'<p class="to
 return '<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>'+esc(o.title)+'</title><style>@page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Georgia,"Times New Roman",serif;color:#111;line-height:1.65;font-size:12pt;margin:0;padding:8px}.lh{display:flex;align-items:center;gap:14px;border-bottom:3px solid #C9A24B;padding-bottom:10px;margin-bottom:28px}.lh img{width:68px;height:68px;object-fit:contain}.lh b{display:block;font-size:18pt;color:#0B1F4B}.lh span{font-size:9.5pt;color:#555}h1{font-size:21pt;color:#0B1F4B;margin:6px 0 4px}.tag{display:inline-block;background:#0B1F4B;color:#E8CF8E;font:700 9pt sans-serif;padding:3px 12px;border-radius:99px;margin:0}.dt{color:#555;margin:6px 0 22px}.to{margin:0 0 18px}.obj{font-weight:bold;margin:18px 0;border-left:4px solid #C9A24B;padding-left:10px}.bd2{margin:0 0 30px;text-align:justify}.sig{margin-top:40px;text-align:right}.ft{margin-top:50px;border-top:1px solid #ccc;padding-top:8px;font-size:8.5pt;color:#666;text-align:center}</style></head><body>'+lh+main+'<div class="ft">IFSA University — Document généré le '+new Date().toLocaleDateString("fr-FR")+'</div></body></html>'}
 function printDoc(o){o=Object.assign({role:ROLE_L[S.cfg.role],author:S.me.full_name},o);const w=window.open("","_blank");if(!w){toast("Autorisez l'ouverture de fenêtres pour imprimer.",1);return}
 w.document.write(docHtml(o));w.document.close();setTimeout(()=>{try{w.focus();w.print()}catch(e){}},500)}
-function downloadDoc(o){o=Object.assign({role:ROLE_L[S.cfg.role],author:S.me.full_name},o);
-const blob=new Blob(["\ufeff"+docHtml(o)],{type:"application/msword"}),a=document.createElement("a"),nm=(o.title||"document").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^\w]+/g,"-").replace(/^-|-$/g,"").slice(0,50)||"document";
-a.href=URL.createObjectURL(blob);a.download="IFSA-"+nm+".doc";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);toast("Document téléchargé.")}
+function downloadDoc(o){o=Object.assign({role:ROLE_L[S.cfg.role],author:S.me.full_name,place:S.siteName},o);try{IFSADocx.download(o);toast("Document Word téléchargé.")}catch(e){toast("Téléchargement impossible.",1)}}
 
 /* ===== ESPACE DE L'ÉCONOME (paiements des étudiants de son site) ===== */
 const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};

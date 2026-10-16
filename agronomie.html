@@ -6,7 +6,9 @@
   <title>Sciences agronomiques — IFSA University</title>
   <meta name="description" content="Former des experts capables d'améliorer la production agricole, de gérer durablement les ressources naturelles et de contribuer à la sécurité alimentaire.">
   <meta name="theme-color" content="#071A45">
-  <link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
+  <link rel="preconnect" href="https://feahvqexnoozmpkseate.supabase.co" crossorigin>
+<link rel="preconnect" href="https://i.postimg.cc" crossorigin>
+<link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1697,7 +1699,7 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 
   </script>
 <script>/* ===== AJOUTS : progression de lecture + retour en haut ===== */(function(){var p=document.getElementById("prog"),t=document.getElementById("totop");function u(){var h=document.documentElement,m=h.scrollHeight-h.clientHeight;p.style.width=(m>0?h.scrollTop/m*100:0)+"%";t.classList.toggle("on",h.scrollTop>500)}addEventListener("scroll",u,{passive:true});u();t.onclick=function(){scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}})();</script>
-<script>/* ===== COMPTE CONNECTÉ : adapte le lien Connexion ===== */(function(){try{var a=JSON.parse(sessionStorage.getItem("ifsa_auth")||"null");if(!a)return;var f=(a.name||"").split(" ")[0],D={student:["Mon espace","espace-etudiant.html"],teacher:["Mon espace","espace-enseignant.html"],bursar:["Mon espace","espace-econome.html"],secretary:["Mon espace","espace-secretariat.html"],branch_director:["Espace directeur","espace-directeur.html"],user:["Bonjour, "+f+" · Quitter","connexion.html?logout=1"],manager:["Espace direction","manager.html"],admin:["Espace administrateur","admin.html"]}[a.role];if(!D)return;document.querySelectorAll('a[href="connexion.html"]').forEach(function(l){var _n=l.lastChild;if(_n&&_n.nodeType===3)_n.textContent=D[0];else l.textContent=D[0];l.href=D[1]})}catch(e){}})();</script>
+<script>/* ===== COMPTE CONNECTÉ : adapte le lien Connexion ===== */(function(){try{var a=JSON.parse(sessionStorage.getItem("ifsa_auth")||localStorage.getItem("ifsa_auth")||"null");if(!a)return;var f=(a.name||"").split(" ")[0],D={student:["Mon espace","espace-etudiant.html"],teacher:["Mon espace","espace-enseignant.html"],bursar:["Mon espace","espace-econome.html"],secretary:["Mon espace","espace-secretariat.html"],branch_director:["Espace directeur","espace-directeur.html"],user:["Bonjour, "+f+" · Quitter","connexion.html?logout=1"],manager:["Espace direction","manager.html"],admin:["Espace administrateur","admin.html"]}[a.role];if(!D)return;document.querySelectorAll('a[href="connexion.html"]').forEach(function(l){var _n=l.lastChild;if(_n&&_n.nodeType===3)_n.textContent=D[0];else l.textContent=D[0];l.href=D[1]})}catch(e){}})();</script>
 <script src="ifsa-plus.js" defer></script>
 </body>
 </html>

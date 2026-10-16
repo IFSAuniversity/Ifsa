@@ -7,6 +7,8 @@
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#071A45">
 <title>Accès du personnel — IFSA University</title>
+<link rel="preconnect" href="https://feahvqexnoozmpkseate.supabase.co" crossorigin>
+<link rel="preconnect" href="https://i.postimg.cc" crossorigin>
 <link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -95,6 +97,20 @@ form{display:grid;gap:0}
 [hidden]{display:none!important}
 @media(max-width:380px){.card{padding:26px 18px 22px}.sl button{font-size:.64rem}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* --- choix de la fonction et du site : état sélectionné net, lisible en clair comme en sombre --- */
+.sl .th{background:linear-gradient(135deg,#0B1F4B,#14306F);box-shadow:0 8px 18px rgba(11,31,75,.35)}
+.sl .th::after{background:var(--gold2)}
+.sl button[aria-checked=true],[data-theme="dark"] .sl button[aria-checked=true]{color:#E8CF8E}
+.sl button{color:var(--ink)}
+.sites button{border:2px solid transparent;color:var(--ink);font-weight:700;min-height:48px;display:flex;align-items:center;justify-content:center;gap:8px}
+.sites button[aria-checked=true],[data-theme="dark"] .sites button[aria-checked=true]{background:linear-gradient(135deg,#0B1F4B,#14306F);color:#E8CF8E;border-color:var(--gold);box-shadow:0 8px 20px rgba(11,31,75,.4)}
+.sites button[aria-checked=true]::before{content:"✓";width:auto;height:auto;background:none;color:var(--gold2);margin:0;font-weight:800}
+[data-theme="dark"] .sites button:not([aria-checked=true]){background:#17254F;color:#E4EAF7}
+.card{position:relative}
+.card::before{content:"";position:absolute;left:34px;right:34px;top:0;height:4px;border-radius:0 0 6px 6px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.fld input{border:1.5px solid transparent}
+.fld input:focus-visible{border-color:var(--gold)}
 </style>
   <link rel="stylesheet" href="ifsa-plus.css">
 </head>
@@ -218,7 +234,7 @@ if(/rate limit|too many/i.test(m))return "Trop de tentatives. Patientez quelques
 if(m==="network"||(e&&e.name==="TypeError"))return "Connexion impossible. Vérifiez votre réseau.";
 return GENERIC}
 function ready(){if(sb)return true;say("Le service de connexion est en cours d'activation. Merci de revenir très bientôt.","info");return false}
-async function out(){try{await sb.auth.signOut()}catch(x){}try{sessionStorage.removeItem("ifsa_auth")}catch(x){}}
+async function out(){try{await sb.auth.signOut()}catch(x){}try{(sessionStorage.removeItem("ifsa_auth"),localStorage.removeItem("ifsa_auth"))}catch(x){}}
 
 /* connexion : l'identité, la fonction ET le site sont vérifiés côté base */
 $("fl").onsubmit=async function(e){e.preventDefault();say("","");if(!ready())return;
@@ -237,7 +253,7 @@ if(p.status==="disabled"){await out();throw new Error("disabled")}
 var c=await sb.rpc("check_staff_login",{p_role:role,p_site:site});
 if(c.error||c.data!==true){await out();throw new Error("generic")}
 sb.from("profiles").update({last_seen:new Date().toISOString()}).eq("id",uid).then(function(){});
-try{sessionStorage.setItem("ifsa_auth",JSON.stringify({role:p.role,name:p.full_name,email:em,site:p.site_id}))}catch(x){}
+try{(function(v){sessionStorage.setItem("ifsa_auth",v);try{localStorage.setItem("ifsa_auth",v)}catch(e){}})(JSON.stringify({role:p.role,name:p.full_name,email:em,site:p.site_id}))}catch(x){}
 say("Connexion réussie. Redirection en cours…","ok");
 setTimeout(function(){location.href=DEST[p.role]},600);
 }catch(x){say(why(x),"err")}finally{$("go").disabled=false}};
@@ -267,12 +283,13 @@ try{var u=(await sb.auth.getUser()).data.user;
 var q=await sb.from("profiles").select("role,status,site_id,full_name").eq("id",u.id).single();var p=q.data;
 if(q.error||!p||!DEST[p.role]){await out();$("pwm").hidden=true;say(GENERIC,"err");return}
 if(p.status==="suspended"||p.status==="disabled"){await out();$("pwm").hidden=true;say(why(new Error(p.status)),"err");return}
-try{sessionStorage.setItem("ifsa_auth",JSON.stringify({role:p.role,name:p.full_name,email:u.email,site:p.site_id}))}catch(x){}
+try{(function(v){sessionStorage.setItem("ifsa_auth",v);try{localStorage.setItem("ifsa_auth",v)}catch(e){}})(JSON.stringify({role:p.role,name:p.full_name,email:u.email,site:p.site_id}))}catch(x){}
 location.href=DEST[p.role]}catch(x){$("pwm").hidden=true;say(why(x),"err")}};
 if(sb){sb.auth.onAuthStateChange(function(ev){if(ev==="PASSWORD_RECOVERY")openPw("recovery")});
 if(HT==="invite"||HT==="recovery"){sb.auth.getSession().then(function(r){if(r.data.session)openPw(HT)})}}
 if(HE){say("Ce lien a expiré ou a déjà été utilisé. Utilisez « Mot de passe oublié » pour recevoir un nouveau lien.","err");history.replaceState(null,"",location.pathname)}
-if(new URLSearchParams(location.search).has("logout")){(async function(){try{if(sb)await sb.auth.signOut()}catch(e){}try{sessionStorage.removeItem("ifsa_auth")}catch(e){}history.replaceState(null,"",location.pathname);say("Vous êtes déconnecté(e). À bientôt !","ok")})()}
+if(new URLSearchParams(location.search).has("expired"))say("Votre session a expiré. Reconnectez-vous pour continuer.","info");
+if(new URLSearchParams(location.search).has("logout")){(async function(){try{if(sb)await sb.auth.signOut()}catch(e){}try{(sessionStorage.removeItem("ifsa_auth"),localStorage.removeItem("ifsa_auth"))}catch(e){}history.replaceState(null,"",location.pathname);say("Vous êtes déconnecté(e). À bientôt !","ok")})()}
 else if(!sb)say("Le service de connexion est en cours d'activation. Merci de revenir très bientôt.","info");
 })();
 </script>

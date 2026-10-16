@@ -14,7 +14,7 @@
     if (client) return Promise.resolve(client);
     if (pending) return pending;
     pending = new Promise(function (res, rej) {
-      function make() { try { client = window.supabase.createClient(SB_URL, SB_KEY); res(client); } catch (e) { rej(e); } }
+      function make() { try { client = window.__ifsaSB || (window.__ifsaSB = window.supabase.createClient(SB_URL, SB_KEY)); res(client); } catch (e) { rej(e); } }
       if (window.supabase && window.supabase.createClient) return make();
       var s = document.createElement("script"); s.src = CDN; s.async = true; s.onload = make; s.onerror = function () { rej(new Error("cdn")); };
       document.head.appendChild(s);
@@ -25,7 +25,18 @@
   function query(table, build) {
     return timeout(getClient().then(function (c) { return build(c.from(table)); }).then(function (r) { if (r.error) throw r.error; return r.data || []; }));
   }
-  function once(key, f) { return cache[key] || (cache[key] = f()); }
+  /* Affichage immédiat : la dernière réponse connue est gardée dans le navigateur.
+     Si le réseau répond en moins de 0,6 s on affiche les données fraîches, sinon on affiche tout de suite la copie
+     et la mise à jour continue en arrière-plan pour la visite suivante. */
+  var CK = "ifsa_dc_v1_";
+  function readC(k) { try { var o = JSON.parse(localStorage.getItem(CK + k) || "null"); return o && Date.now() - o.t < 7 * 864e5 ? o.d : null; } catch (e) { return null; } }
+  function writeC(k, d) { try { localStorage.setItem(CK + k, JSON.stringify({ t: Date.now(), d: d })); } catch (e) {} }
+  function swr(key, f) {
+    var c = readC(key), net = f().then(function (d) { writeC(key, d); return d; });
+    if (!c) return net;
+    return Promise.race([net.catch(function () { return c; }), new Promise(function (res) { setTimeout(function () { res(c); }, 600); })]);
+  }
+  function once(key, f) { return cache[key] || (cache[key] = swr(key, f)); }
 
   var IFSA = {
     esc: esc, url: safeUrl,
@@ -35,6 +46,13 @@
     videos: function () { return once("videos", function () { return query("video_links", function (q) { return q.select("*").eq("active", true).order("featured", { ascending: false }).order("position", { ascending: true }).limit(60); }); }); },
     zones: function () { return once("zones", function () { return query("site_images", function (q) { return q.select("key,image_url,alt"); }); }); },
     /* ---- ajouts 5a : bannière, témoignages, j'aime, session ---- */
+    /* partenaires : [] tant que l'admin n'a pas activé la section ou ajouté de partenaire */
+    partners: function () { return once("partners", function () {
+      return query("site_settings", function (q) { return q.select("value").eq("key", "partners_enabled"); }).then(function (r) {
+        if (!r.length || r[0].value !== true) return [];
+        return query("partners", function (q) { return q.select("*").eq("active", true).order("position", { ascending: true }).limit(24); });
+      }).catch(function () { return []; });
+    }); },
     client: getClient,
     slides: function () { return once("slides", function () { return query("home_slides", function (q) { return q.select("*").eq("published", true).order("position", { ascending: true }).limit(12); }); }); },
     testimonials: function () { return once("testi", function () { return query("testimonials", function (q) { return q.select("*").eq("published", true).order("created_at", { ascending: false }).limit(30); }); }); },

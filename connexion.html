@@ -6,7 +6,9 @@
   <title>Connexion — IFSA University</title>
   <meta name="description" content="Connexion aux espaces étudiant et utilisateur d'IFSA University.">
   <meta name="theme-color" content="#071A45">
-  <link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
+  <link rel="preconnect" href="https://feahvqexnoozmpkseate.supabase.co" crossorigin>
+<link rel="preconnect" href="https://i.postimg.cc" crossorigin>
+<link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1616,18 +1618,18 @@ if(p.role!=="student"&&p.role!=="user"){await sb.auth.signOut();throw new Error(
 if(p.status==="suspended"){await sb.auth.signOut();throw new Error("suspended")}if(p.status==="disabled"){await sb.auth.signOut();throw new Error("disabled")}
 if(expect&&p.role!==expect){await sb.auth.signOut();const e=new Error("wrongtab");e.role=p.role;throw e}
 sb.from("profiles").update({last_seen:new Date().toISOString()}).eq("id",user.id).then(()=>{});
-sessionStorage.setItem("ifsa_auth",JSON.stringify({role:p.role,name:p.full_name,email:user.email}));return p}
+(function(v){sessionStorage.setItem("ifsa_auth",v);try{localStorage.setItem("ifsa_auth",v)}catch(e){}})(JSON.stringify({role:p.role,name:p.full_name,email:user.email}));return p}
 function go(role,msg){say(msg||"Connexion réussie. Redirection en cours…","ok");setTimeout(()=>{location.href=DEST[role]||"index.html"},600)}
 const avail=()=>{if(sb||DEV)return true;say("Le service de connexion est en cours d'activation. Merci de revenir très bientôt.","info");return false};
 $("fl").onsubmit=async e=>{e.preventDefault();say("","");if(!avail())return;const em=$("em").value.trim(),pw=$("pw").value;if(!em||pw.length<6){say("Entrez votre email et votre mot de passe.","err");return}
-$("go").disabled=true;try{if(!sb){sessionStorage.setItem("ifsa_auth",JSON.stringify({demo:true,role:tab,name:"Compte de démonstration",email:em}));return go(tab)}
+$("go").disabled=true;try{if(!sb){(function(v){sessionStorage.setItem("ifsa_auth",v);try{localStorage.setItem("ifsa_auth",v)}catch(e){}})(JSON.stringify({demo:true,role:tab,name:"Compte de démonstration",email:em}));return go(tab)}
 const {data,error}=await sb.auth.signInWithPassword({email:em,password:pw});if(error)throw error;const p=await check(data.user,tab);go(p.role)}catch(x){say(why(x),"err")}finally{$("go").disabled=false}};
 $("fr").onsubmit=async e=>{e.preventDefault();if(!avail())return;const em=$("em2").value.trim();if(!em){say("Entrez votre email.","err");return}
 if(sb){await sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname})}
 say("Si un compte existe pour cette adresse, un email avec un lien de réinitialisation vient d'être envoyé. Pensez à vérifier vos courriers indésirables.","ok")};
 $("fs").onsubmit=async e=>{e.preventDefault();say("","");if(!avail())return;const n=$("sn").value.trim(),em=$("se").value.trim(),p1=$("s1").value,p2=$("s2").value;
 if(n.length<3||!/^\S+@\S+\.\S+$/.test(em)){say("Entrez votre nom complet et un email valide.","err");return}if(p1.length<8){say("Votre mot de passe doit contenir au moins 8 caractères.","err");return}if(p1!==p2){say("Les deux mots de passe ne sont pas identiques.","err");return}
-$("gs").disabled=true;try{if(!sb){sessionStorage.setItem("ifsa_auth",JSON.stringify({demo:true,role:"user",name:n,email:em}));return go("user","Compte créé. Bienvenue !")}
+$("gs").disabled=true;try{if(!sb){(function(v){sessionStorage.setItem("ifsa_auth",v);try{localStorage.setItem("ifsa_auth",v)}catch(e){}})(JSON.stringify({demo:true,role:"user",name:n,email:em}));return go("user","Compte créé. Bienvenue !")}
 const {data,error}=await sb.auth.signUp({email:em,password:p1,options:{data:{full_name:n},emailRedirectTo:location.origin+location.pathname}});
 if(error){say(/registered|already/i.test(error.message)?"Cet email a déjà un compte. Connectez-vous.":why(error),"err");return}
 if(data.session){await check(data.user,"user");go("user","Votre compte est créé. Bienvenue "+n.split(" ")[0]+" !")}
@@ -1643,7 +1645,8 @@ if(sb){sb.auth.onAuthStateChange(ev=>{if(ev==="PASSWORD_RECOVERY")openPw("recove
 if(HT==="invite"||HT==="recovery"){sb.auth.getSession().then(r=>{if(r.data.session)openPw(HT)})}}
 if(HE){say("Ce lien a expiré ou a déjà été utilisé. Utilisez « Mot de passe oublié » pour recevoir un nouveau lien.","err");history.replaceState(null,"",location.pathname)}
 draw();
-if(new URLSearchParams(location.search).has("logout")){(async()=>{try{if(sb)await sb.auth.signOut()}catch(e){}sessionStorage.removeItem("ifsa_auth");history.replaceState(null,"",location.pathname);say("Vous êtes déconnecté(e). À bientôt !","ok")})()}
+if(new URLSearchParams(location.search).has("expired"))say("Votre session a expiré. Reconnectez-vous pour continuer.");
+if(new URLSearchParams(location.search).has("logout")){(async()=>{try{if(sb)await sb.auth.signOut()}catch(e){}(sessionStorage.removeItem("ifsa_auth"),localStorage.removeItem("ifsa_auth"));history.replaceState(null,"",location.pathname);say("Vous êtes déconnecté(e). À bientôt !","ok")})()}
 else if(!sb&&!DEV)say("Le service de connexion est en cours d'activation. Merci de revenir très bientôt.","info");
 })();</script>
 <script src="ifsa-plus.js" defer></script>
