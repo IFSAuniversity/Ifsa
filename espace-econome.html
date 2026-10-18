@@ -165,6 +165,7 @@ send:'<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
 alert:'<path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3z"/><path d="M12 9v4M12 17h.01"/>',
 bank:'<path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2 3 7h18z"/>',
 mail:'<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>'};
+IC.cal='<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>';IC.dl='<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>';
 const ic=n=>'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+(IC[n]||"")+'</svg>';
 const SL={active:"Actif",suspended:"Suspendu",disabled:"Désactivé"};
 const SITES={carrefour:"Carrefour","port-de-paix":"Port-de-Paix",miragoane:"Miragoâne","petit-goave":"Petit-Goâve"};
@@ -319,7 +320,8 @@ const [pf,py,an]=await Promise.all([
 sb.from("profiles").select("id,role,status,full_name,email,phone,matricule,faculte,annee").eq("site_id",S.site).eq("role","student").order("full_name"),
 sb.from("payments").select("*"),
 sb.from("announcements").select("*").order("created_at",{ascending:false}).limit(50)]);
-const D=S.d;D.students=must(pf);D.people=D.students;const ids=new Set(D.students.map(s=>s.id));D.pay=must(py).filter(p=>ids.has(p.student_id));D.ann=must(an)}
+const D=S.d;D.per=[];D.perErr="";try{const pr=await sb.from("fee_periods").select("*").eq("site_id",S.site).order("ends_on",{ascending:true});if(pr.error)D.perErr=pr.error.message;else D.per=pr.data||[]}catch(x){D.perErr="indisponible"}
+D.students=must(pf);D.people=D.students;const ids=new Set(D.students.map(s=>s.id));D.pay=must(py).filter(p=>ids.has(p.student_id));D.ann=must(an)}
 /* ----- Aperçu ----- */
 function payRow(p,withAct){const s=stu(p.student_id)||{};const lt=late(p);
 return '<div class="it"><div class="av">'+esc(init(s.full_name))+'</div><div class="tx"><b>'+esc(s.full_name||"Étudiant")+'</b><small>'+esc(p.label)+(s.matricule?" · "+esc(s.matricule):"")+'</small>'+
@@ -329,7 +331,7 @@ return '<div class="it"><div class="av">'+esc(init(s.full_name))+'</div><div cla
 function vOv(){const P=S.d.pay,paid=P.filter(p=>p.status==="paid"),pend=P.filter(p=>p.status!=="paid"),lt=pend.filter(late),debt=new Set(pend.map(p=>p.student_id)).size;
 return '<div class="pg-h"><div><h1>Économat de '+esc(S.siteName)+'</h1><p>Bonjour '+esc((S.me.full_name||"").split(" ")[0])+', voici la situation des paiements.</p></div><button class="bt p" type="button" data-act="pnew">'+ic("plus")+'Nouveau paiement</button></div>'+
 '<div class="grid"><div class="st"><small>Encaissé</small><b>'+money(sum(paid))+'</b></div><div class="st"><small>En attente</small><b>'+money(sum(pend))+'</b></div><div class="st'+(lt.length?" al":"")+'"><small>En retard</small><b>'+money(sum(lt))+'</b></div><div class="st"><small>Étudiants avec un solde</small><b>'+debt+'</b></div><div class="st"><small>Étudiants du site</small><b>'+S.d.students.length+'</b></div></div>'+
-'<div class="card"><h2>Paiements en retard</h2>'+(lt.length?sortPay(lt).slice(0,5).map(p=>payRow(p,false)).join("")+(lt.length>5?'<p class="sub" style="margin-top:6px">'+(lt.length-5)+' autre(s) dans l\'onglet Paiements.</p>':""):empty("check","Aucun paiement en retard."))+'</div>'+
+((S.d.per||[]).filter(p=>p.ends_on>=today()).slice(0,3).length?'<div class="card"><h2>Prochaines échéances</h2>'+(S.d.per||[]).filter(p=>p.ends_on>=today()).slice(0,3).map(perCard).join("")+'</div>':"")+'<div class="card"><h2>Paiements en retard</h2>'+(lt.length?sortPay(lt).slice(0,5).map(p=>payRow(p,false)).join("")+(lt.length>5?'<p class="sub" style="margin-top:6px">'+(lt.length-5)+' autre(s) dans l\'onglet Paiements.</p>':""):empty("check","Aucun paiement en retard."))+'</div>'+
 '<div class="card"><h2>Derniers paiements encaissés</h2>'+(paid.length?sortPay(paid).slice(0,5).map(p=>payRow(p,false)).join(""):empty("wallet","Aucun paiement encaissé pour le moment."))+'</div>'}
 /* ----- Paiements ----- */
 function payList(){const f=S.f.pay||"all",q=nz(S.f.q_pay||"");
@@ -345,6 +347,39 @@ return L.length?L.map(s=>{const P=S.d.pay.filter(p=>p.student_id===s.id),pd=sum(
 return '<div class="it"><div class="av">'+esc(init(s.full_name))+'</div><div class="tx"><b>'+esc(s.full_name)+'</b><small>'+esc(s.matricule||"")+(s.faculte?" · "+esc(s.faculte):"")+(s.annee?" · "+s.annee+"e année":"")+'</small><div><span class="bd ok">Payé '+money(pd)+'</span><span class="bd '+(pn?"wa":"")+'">Reste '+money(pn)+'</span>'+stBadge(s.status)+'</div>'+
 '<div class="ac"><button class="bt" type="button" data-act="sf" data-id="'+esc(s.id)+'">Situation</button><button class="bt p" type="button" data-act="pnew" data-id="'+esc(s.id)+'">'+ic("plus")+'Paiement</button></div></div></div>'}).join(""):empty("cap","Aucun étudiant.")}
 function vStu(){return '<div class="pg-h"><div><h1>Étudiants</h1><p>'+S.d.students.length+' étudiant(s) à '+esc(S.siteName)+'. Les comptes sont gérés par le directeur d\'antenne.</p></div></div><div class="bar"><div class="sr">'+ic("search")+'<input type="search" data-in="q" placeholder="Rechercher un nom, un matricule" value="'+esc(S.f.q_stu||"")+'" aria-label="Rechercher"></div></div><div id="lst">'+stuList()+'</div>'}
+
+/* ----- Calendrier : examens, échéances, mise en règle ----- */
+const KINDS={exam:"Examens",deadline:"Échéance de paiement",registration:"Inscriptions / réinscriptions",other:"Autre"};
+const PLAB=["Examens — période 1","Examens — période 2","Examens de reprise","Fin du délai de paiement de la scolarité","Date limite de mise en règle","Réinscriptions"];
+const dd=(a,b)=>Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5);
+function owing(per){const m={};(S.d.pay||[]).forEach(p=>{if(p.status!=="paid"&&(!p.due_date||p.due_date<=per.ends_on)){(m[p.student_id]=m[p.student_id]||{s:stu(p.student_id),amt:0,items:[]});m[p.student_id].amt+=Number(p.amount)||0;m[p.student_id].items.push(p.label)}});return Object.values(m).filter(x=>x.s&&x.s.status==="active").sort((a,b)=>b.amt-a.amt)}
+function perState(p){const t=today(),left=dd(t,p.ends_on);if(p.starts_on&&p.starts_on>t)return{k:"soon",txt:"Commence dans "+dd(t,p.starts_on)+" j",cls:"wa"};if(left<0)return{k:"past",txt:"Terminée",cls:""};if(left===0)return{k:"now",txt:"Dernier jour",cls:"no"};return{k:"now",txt:(p.starts_on&&p.starts_on<=t?"En cours · ":"")+"J-"+left,cls:left<=7?"no":"wa"}}
+function perCard(p){const st=perState(p),ow=p.clearance_required?owing(p):[];
+return '<div class="it"><div class="av">'+ic("cal")+'</div><div class="tx"><b>'+esc(p.title)+'</b><small>'+esc(KINDS[p.kind]||"")+' · '+(p.starts_on?"du "+esc(fmtD(p.starts_on))+" ":"")+'jusqu\'au '+esc(fmtD(p.ends_on))+'</small>'+
+'<div><span class="bd '+st.cls+'">'+st.txt+'</span>'+(p.clearance_required?'<span class="bd '+(ow.length&&st.k!=="past"?"no":"ok")+'">'+(ow.length?ow.length+" étudiant(s) pas en règle":"Tous en règle")+'</span>':"")+(p.published?"":'<span class="bd">Masquée aux étudiants</span>')+'</div>'+(p.note?'<small>'+esc(p.note)+'</small>':"")+
+'<div class="ac">'+(p.clearance_required?'<button class="bt p" type="button" data-act="perow" data-id="'+esc(p.id)+'">'+ic("users")+'Étudiants à relancer</button>':"")+'<button class="bt" type="button" data-act="peed" data-id="'+esc(p.id)+'">'+ic("edit")+'Modifier</button><button class="bt d" type="button" data-act="perm" data-id="'+esc(p.id)+'">'+ic("trash")+'Supprimer</button></div></div></div>'}
+function vCal(){const P=S.d.per||[],t=today(),up=P.filter(p=>p.ends_on>=t),pa=P.filter(p=>p.ends_on<t).reverse();
+return '<div class="pg-h"><div><h1>Calendrier de l\'économat</h1><p>Périodes d\'examens et dates limites pour être en règle. Les étudiants de '+esc(S.siteName)+' les voient dans leur espace.</p></div><button class="bt p" type="button" data-act="penew">'+ic("plus")+'Nouvelle période</button></div>'+
+(S.d.perErr?'<div class="msg err">Calendrier indisponible : '+esc(S.d.perErr)+'. Demandez à l\'administrateur d\'exécuter la mise à jour 7a.</div>':"")+
+'<div class="card"><h2>À venir et en cours</h2>'+(up.length?up.map(perCard).join(""):empty("cal","Aucune période à venir. Ajoutez les examens et les dates limites."))+'</div>'+
+(pa.length?'<div class="card"><h2>Terminées</h2>'+pa.slice(0,10).map(perCard).join("")+'</div>':"")}
+function perForm(p){const el=modal('<h2>'+(p?"Modifier la période":"Nouvelle période")+'</h2><p class="sub">Visible par les étudiants de '+esc(S.siteName)+'.</p><div class="msg err" id="fe" hidden></div>'+
+'<label class="fl">Type<select id="pk">'+Object.keys(KINDS).map(k=>'<option value="'+k+'"'+((p?p.kind:"exam")===k?" selected":"")+'>'+KINDS[k]+'</option>').join("")+'</select></label>'+
+'<label class="fl">Titre<input id="pt" list="ptl" maxlength="120" autocomplete="off" value="'+esc(p?p.title:"")+'"><datalist id="ptl">'+PLAB.map(l=>'<option value="'+esc(l)+'">').join("")+'</datalist></label>'+
+'<div class="row2"><label class="fl">Début (facultatif)<input id="ps" type="date" value="'+esc(p&&p.starts_on||"")+'"></label><label class="fl">Fin / date limite<input id="pe" type="date" value="'+esc(p&&p.ends_on||"")+'"></label></div>'+
+'<label class="fl" style="display:flex;gap:10px;align-items:center"><input id="pc" type="checkbox" style="width:auto"'+(!p||p.clearance_required?" checked":"")+'> Les étudiants doivent être en règle avec l\'économat avant la fin de cette période</label>'+
+'<label class="fl">Note pour les étudiants (facultatif)<input id="pn" maxlength="200" value="'+esc(p&&p.note||"")+'"></label>'+
+'<label class="fl" style="display:flex;gap:10px;align-items:center"><input id="pp" type="checkbox" style="width:auto"'+(!p||p.published?" checked":"")+'> Visible par les étudiants</label>'+
+'<div class="ac"><button class="bt p" type="button" id="go">Enregistrer</button><button class="bt" type="button" id="cn">Annuler</button></div>');
+el.querySelector("#cn").onclick=closeModal;
+el.querySelector("#go").onclick=e=>{const er=el.querySelector("#fe"),bad=m=>{er.textContent=m;er.hidden=false},tt=el.querySelector("#pt").value.trim(),en=el.querySelector("#pe").value,st=el.querySelector("#ps").value||null;
+if(tt.length<3)return bad("Indiquez le titre.");if(!en)return bad("Indiquez la date de fin ou la date limite.");if(st&&st>en)return bad("Le début doit précéder la fin.");
+const row={site_id:S.site,kind:el.querySelector("#pk").value,title:tt,starts_on:st,ends_on:en,clearance_required:el.querySelector("#pc").checked,note:el.querySelector("#pn").value.trim()||null,published:el.querySelector("#pp").checked};
+run(e.currentTarget,async()=>{if(p)must(await sb.from("fee_periods").update(row).eq("id",p.id));else must(await sb.from("fee_periods").insert(row));closeModal();await refresh()},p?"Période modifiée.":"Période ajoutée.")}}
+function owList(p){const L=owing(p);
+modal('<h2>'+esc(p.title)+'</h2><p class="sub">Pas en règle au '+esc(fmtD(p.ends_on))+' : '+L.length+' étudiant(s) · '+money(L.reduce((a,x)=>a+x.amt,0))+'</p>'+(L.length?L.map(x=>'<div class="it"><div class="av">'+esc(init(x.s.full_name))+'</div><div class="tx"><b>'+esc(x.s.full_name)+'</b><small>'+esc(x.s.matricule||"")+(x.s.phone?" · "+esc(x.s.phone):"")+'</small><div><span class="bd no">Reste '+money(x.amt)+'</span></div><small>'+esc(x.items.join(" · "))+'</small></div></div>').join(""):empty("check","Tous les étudiants sont en règle."))+'<div class="ac">'+(L.length?'<button class="bt p" type="button" data-act="percsv" data-id="'+esc(p.id)+'">'+ic("dl")+'Exporter (CSV)</button>':"")+'<button class="bt" type="button" data-act="close">Fermer</button></div>')}
+function perCsv(p){const L=owing(p),q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"',rows=[["Nom","Matricule","Téléphone","Reste à payer ($)","Motifs"]].concat(L.map(x=>[x.s.full_name,x.s.matricule||"",x.s.phone||"",x.amt,x.items.join(" ; ")]));
+const b=new Blob(["\ufeff"+rows.map(r=>r.map(q).join(";")).join("\r\n")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="a-relancer-"+p.ends_on+".csv";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 /* ----- reçu imprimable ----- */
 function receipt(p){const s=stu(p.student_id)||{},w=window.open("","_blank");if(!w){toast("Autorisez l'ouverture de fenêtres pour imprimer le reçu.",1);return}
 const no=String(p.id).replace(/[^a-z0-9]/gi,"").slice(0,8).toUpperCase(),dt=new Date(p.paid_at||Date.now()).toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"});
@@ -369,6 +404,11 @@ else{const paid=el.querySelector("input[name=s]:checked").value==="paid";must(aw
 closeModal();await refresh()},p?"Paiement modifié.":"Paiement enregistré.")}}
 const ACT=Object.assign({},{
 "pf":(b,d)=>{S.f.pay=d.f;draw()},
+"penew":()=>perForm(null),
+"peed":(b,d)=>{const p=S.d.per.find(x=>x.id===d.id);if(p)perForm(p)},
+"perow":(b,d)=>{const p=S.d.per.find(x=>x.id===d.id);if(p)owList(p)},
+"percsv":(b,d)=>{const p=S.d.per.find(x=>x.id===d.id);if(p)perCsv(p)},
+"perm":async(b,d)=>{const p=S.d.per.find(x=>x.id===d.id);if(p&&await ask({title:"Supprimer cette période ?",text:p.title+" — "+fmtD(p.ends_on),ok:"Supprimer",danger:true}))run(b,async()=>{must(await sb.from("fee_periods").delete().eq("id",p.id));await refresh()},"Période supprimée.")},
 "pnew":(b,d)=>payForm(null,d&&d.id),
 "pe":(b,d)=>{const p=S.d.pay.find(x=>x.id===d.id);if(p)payForm(p)},
 "pay":(b,d)=>run(b,async()=>{must(await sb.from("payments").update({status:"paid",paid_at:new Date().toISOString()}).eq("id",d.id));await refresh()},"Paiement marqué comme payé."),
@@ -381,6 +421,7 @@ modal('<h2>'+esc(s.full_name)+'</h2><p class="sub">'+esc(s.matricule||"")+' · P
 const INP={"q":t=>{S.f["q_"+S.tab]=t.value;const l=$("lst");if(l)l.innerHTML=S.tab==="pay"?payList():stuList()}};
 boot({role:"bursar",title:"Espace économe",load,actions:ACT,inputs:INP,tabs:[
 {id:"ov",label:"Aperçu",icon:"grid",view:vOv},{id:"pay",label:"Paiements",icon:"wallet",view:vPay,badge:()=>S.d.pay.filter(late).length},
+{id:"cal",label:"Calendrier",icon:"cal",view:vCal,badge:()=>(S.d.per||[]).filter(p=>p.clearance_required&&p.ends_on>=today()&&dd(today(),p.ends_on)<=7).length},
 {id:"stu",label:"Étudiants",icon:"cap",view:vStu},{id:"ann",label:"Annonces",icon:"mega",view:viewAnnonces}]});
 
 })();

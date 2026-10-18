@@ -4,7 +4,13 @@
 .hd{position:sticky;top:0;z-index:40;background:linear-gradient(165deg,#06163D 0%,#0B1F4B 70%,#102C66 100%);color:#fff;box-shadow:0 6px 24px rgba(4,12,36,.28);border-bottom:2px solid rgba(201,162,75,.55)}
 .hd-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:max(10px,env(safe-area-inset-top)) clamp(12px,3vw,24px) 10px}
 .hd-brand{display:flex;align-items:center;gap:11px;min-width:0;flex:1 1 auto;color:#fff;text-decoration:none}
-.hd-brand img{width:42px;height:42px;object-fit:contain;flex:none;border-radius:10px;background:rgba(255,255,255,.08);padding:3px}
+.hd-brand img{width:46px;height:46px;object-fit:contain;flex:none;border-radius:50%;padding:5px;
+  /* halo blanc derrière le logo : il reste lisible même sur le bleu de l'en-tête */
+  background:radial-gradient(circle at 50% 50%,#fff 0 56%,rgba(255,255,255,.9) 70%,rgba(255,255,255,.42) 100%);
+  box-shadow:0 0 0 2px rgba(255,255,255,.4),0 0 14px 3px rgba(255,255,255,.55),0 0 34px 10px rgba(170,200,255,.38);
+  animation:ifx-halo 3.6s ease-in-out infinite}
+@keyframes ifx-halo{0%,100%{box-shadow:0 0 0 2px rgba(255,255,255,.4),0 0 14px 3px rgba(255,255,255,.5),0 0 30px 8px rgba(170,200,255,.32)}50%{box-shadow:0 0 0 2px rgba(255,255,255,.55),0 0 20px 6px rgba(255,255,255,.75),0 0 42px 14px rgba(170,200,255,.5)}}
+@media(prefers-reduced-motion:reduce){.hd-brand img{animation:none}}
 .hd-brand>span{display:flex;flex-direction:column;min-width:0;gap:1px}
 .hd-brand small{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#E8CF8E;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hd-brand b{font:700 1.08rem/1.15 'Fraunces',Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

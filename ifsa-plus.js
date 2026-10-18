@@ -74,17 +74,18 @@
 
   /* ---------- 5. bannière d'accueil ---------- */
   var DEFAULT_SLIDES = [
-    { kicker: "Depuis 2007 · 4 sites en Haïti", title: "L'éducation aujourd'hui, le succès demain", subtitle: "Car votre réussite est notre succès. Une formation supérieure de qualité, au meilleur coût.", cta_label: "Candidater maintenant", cta_url: "admissions.html", cta2: ["Découvrir les facultés", "facultes.html"], zone: "home-hero" },
+    { kicker: "Depuis 2007 · 4 sites en Haïti", title: "L'éducation aujourd'hui, le succès demain", subtitle: "Car votre réussite est notre succès. Une formation supérieure de qualité, au meilleur coût.", cta_label: "Candidater maintenant", cta_url: "admissions.html", cta2_label: "Découvrir les facultés", cta2_url: "facultes.html", zone: "home-hero" },
     { kicker: "7 facultés", title: "Choisissez la formation qui vous ressemble", subtitle: "Informatique, comptabilité, administration, gestion, éducation, agronomie et sciences infirmières.", cta_label: "Voir les facultés", cta_url: "facultes.html" },
     { kicker: "Inscriptions ouvertes", title: "Rejoignez IFSA University", subtitle: "Des professionnels compétents, éthiques et innovants formés près de chez vous.", cta_label: "Commencer mon inscription", cta_url: "inscription.html" }
   ];
+  function preload(u) { return new Promise(function (res) { if (!u) return res(); var i = new Image(), t = setTimeout(res, 1800); i.onload = i.onerror = function () { clearTimeout(t); res(); }; i.src = u; }); }
   function hero() {
     var box = $("#hs"); if (!box) return;
     var sl = $(".hs-sl", box), dots = $(".hs-dots", box), cur = 0, slides = [], timer = null, DUR = 6500;
     function build(list, zm) {
       sl.textContent = ""; dots.textContent = ""; slides = [];
       list.forEach(function (s, i) {
-        var sec = el("div", "hs-s"); sec.setAttribute("role", "group"); sec.setAttribute("aria-roledescription", "diapositive"); sec.setAttribute("aria-label", (i + 1) + " sur " + list.length);
+        var sec = el("div", "hs-s" + (s.align === "center" ? " al-c" : s.align === "right" ? " al-r" : "")); sec.setAttribute("role", "group"); sec.setAttribute("aria-roledescription", "diapositive"); sec.setAttribute("aria-label", (i + 1) + " sur " + list.length);
         var bg = el("div", "hs-bg"); bg.setAttribute("aria-hidden", "true");
         var img = s.image_url || (s.zone && zm && zm[s.zone] && zm[s.zone].image_url); if (img) setVar(bg, img);
         bg.style.setProperty("--ov", ((s.overlay == null ? 55 : s.overlay) / 100).toFixed(2));
@@ -92,9 +93,9 @@
         if (s.kicker) t.appendChild(el("span", "hs-k", s.kicker));
         t.appendChild(el(i === 0 ? "h1" : "h2", "hs-h", s.title));
         if (s.subtitle) t.appendChild(el("p", "hs-p", s.subtitle));
-        var b = el("div", "hs-b"), u = safeHref(s.cta_url);
+        var b = el("div", "hs-b"), u = safeHref(s.cta_url), u2 = safeHref(s.cta2_url);
         if (s.cta_label && u) { var a = el("a", "btn btn-gold", s.cta_label); a.href = u; b.appendChild(a); }
-        if (s.cta2) { var a2 = el("a", "btn btn-ghost", s.cta2[0]); a2.href = s.cta2[1]; b.appendChild(a2); }
+        if (s.cta2_label && u2) { var a2 = el("a", "btn btn-ghost", s.cta2_label); a2.href = u2; b.appendChild(a2); }
         if (b.children.length) t.appendChild(b);
         w.appendChild(t); sec.appendChild(bg); sec.appendChild(w); sl.appendChild(sec); slides.push(sec);
         var dt = el("button"); dt.type = "button"; dt.setAttribute("aria-label", "Aller à la diapositive " + (i + 1)); dt.addEventListener("click", function () { go(i); }); dots.appendChild(dt);
@@ -107,14 +108,38 @@
       $$("button", dots).forEach(function (b, k) { b.classList.remove("on"); if (k === cur) { void b.offsetWidth; b.classList.add("on"); b.style.setProperty("--d", DUR + "ms"); } b.setAttribute("aria-current", k === cur); });
       clearTimeout(timer); if (slides.length > 1 && !reduce) timer = setTimeout(function () { go(cur + 1); }, DUR);
     }
+    function count(n, node) { var t = +n, t0 = performance.now(); (function step(now) { var p = Math.min((now - t0) / 1100, 1); node.textContent = Math.round(t * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); })(t0); }
+    function applyCfg(c) {
+      if (!c || typeof c !== "object") return;
+      var st = $("#hs-st"), call = $("#hx-call");
+      if (c.duration) DUR = Math.max(3, Math.min(20, +c.duration || 6.5)) * 1000;
+      if (st) {
+        if (c.show_stats === false) st.style.display = "none";
+        else if (Array.isArray(c.stats) && c.stats.length) {
+          st.textContent = "";
+          c.stats.slice(0, 4).forEach(function (x) { if (!x || x.n == null || x.n === "") return; var dv = el("div"), b = el("b", "", String(x.n)); dv.appendChild(b); dv.appendChild(el("span", "", x.l || "")); st.appendChild(dv); if (/^\d{1,6}$/.test(String(x.n)) && !reduce) { b.textContent = "0"; count(x.n, b); } });
+        }
+      }
+      if (call) {
+        if (c.show_call === false) call.hidden = true;
+        else if (c.call_phone) {
+          var ph = String(c.call_phone), dg = ph.replace(/[^\d+]/g, ""); if (/^\d{8}$/.test(dg)) dg = "+509" + dg;
+          call.href = "tel:" + dg; var sp = $("span", call); sp.textContent = ""; sp.appendChild(el("small", "", c.call_label || "Appelez-nous")); sp.appendChild(d.createTextNode(ph));
+        }
+      }
+    }
     $(".hs-ar.p", box).addEventListener("click", function () { go(cur - 1); }); $(".hs-ar.n", box).addEventListener("click", function () { go(cur + 1); });
     box.addEventListener("mouseenter", function () { box.classList.add("paused"); clearTimeout(timer); }); box.addEventListener("mouseleave", function () { box.classList.remove("paused"); go(cur); });
     box.addEventListener("keydown", function (e) { if (e.key === "ArrowLeft") go(cur - 1); if (e.key === "ArrowRight") go(cur + 1); });
     var x0 = null; box.addEventListener("pointerdown", function (e) { x0 = e.clientX; }); box.addEventListener("pointerup", function (e) { if (x0 != null && Math.abs(e.clientX - x0) > 50) go(cur + (e.clientX < x0 ? 1 : -1)); x0 = null; });
     d.addEventListener("visibilitychange", function () { if (d.hidden) clearTimeout(timer); else go(cur); });
-    zones().then(function (zm) {
-      build(DEFAULT_SLIDES, zm);
-      IFSA.slides().then(function (rows) { rows = rows.filter(function (r) { return r.title; }); if (rows.length) build(rows, zm); }).catch(function () {});
+    /* tout est attendu (diapos, image, réglages) puis la bannière apparaît d'un seul bloc : plus de bannière provisoire */
+    var wait = Promise.all([IFSA.slides().catch(function () { return null; }), zones(), IFSA.config("hero_config")]);
+    Promise.race([wait, new Promise(function (r) { setTimeout(function () { r(null); }, 6000); })]).then(function (r) {
+      var rows = ((r && r[0]) || []).filter(function (x) { return x.title; }), zm = (r && r[1]) || {}, cfg = r && r[2];
+      applyCfg(cfg);
+      var list = rows.length ? rows : DEFAULT_SLIDES, f = list[0], u = IFSA.url(f.image_url || (f.zone && zm[f.zone] && zm[f.zone].image_url) || "");
+      return preload(u).then(function () { build(list, zm); box.classList.remove("hs-ld"); box.classList.add("hs-in-ready"); });
     });
   }
 
@@ -150,8 +175,8 @@
       var x = el("div"); x.appendChild(el("b", "", n)); x.appendChild(el("span", "", [t.author_role, t.faculty].filter(Boolean).join(" · "))); w.appendChild(x); c.appendChild(w); return c;
     }
     function list() {
-      IFSA.client().then(function (c) { return c.from("testimonials").select("*").eq("published", true).order("created_at", { ascending: false }).limit(30); }).then(function (r) {
-        var rows = (r && r.data) || []; if (!rows.length) return; g.textContent = ""; rows.forEach(function (t) { g.appendChild(card(t, me && t.author_id === me.id)); });
+      IFSA.testimonials().then(function (rows) {
+        rows = rows || []; markOk("#tm-g"); if (!rows.length) return; g.textContent = ""; rows.forEach(function (t) { g.appendChild(card(t, me && t.author_id === me.id)); });
         var mine = me && rows.filter(function (t) { return t.author_id === me.id; })[0]; if (mine && form) { var ta = $("textarea", form); if (ta && !ta.value) { ta.value = mine.body; ta.dispatchEvent(new Event("input")); } form.dataset.has = "1"; $(".tm-go", form).textContent = "Modifier mon témoignage"; }
       }).catch(function () {});
     }
@@ -203,7 +228,7 @@
     $("#jr-q").addEventListener("input", function (e) { q = e.target.value.trim().toLowerCase(); shown = 9; draw(); });
     $("button", more).addEventListener("click", function () { shown += 9; draw(); });
     (function () { var n = $("#jr-date"); function tick() { var D = new Date(); n.textContent = D.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) + " · " + D.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }); } tick(); setInterval(tick, 20000); })();
-    IFSA.news().then(function (rows) { N = rows; return withStats("news", rows.map(function (r) { return r.id; })); }).then(function (m) { sm = m || {}; filters(); draw(); }).catch(function () { none.hidden = false; none.textContent = "Les actualités sont momentanément indisponibles."; });
+    IFSA.news().then(function (rows) { N = rows; return withStats("news", rows.map(function (r) { return r.id; })); }).then(function (m) { sm = m || {}; filters(); draw(); markOk("#jr-lead,#jr-g"); }).catch(function () { markOk("#jr-lead,#jr-g"); none.hidden = false; none.textContent = "Les actualités sont momentanément indisponibles."; });
   }
 
   /* ---------- 10. j'aime sur la page d'un article ---------- */
@@ -214,7 +239,24 @@
     var host = $("#body, .art-body, article") || $("main"); (host || d.body).appendChild(box);
   }
 
-  function boot() { printHead(); theme(); heroes(); hero(); newsSlider(); testimonials(); journal(); articleLike(); if (window.IFSA) IFSA.applyZones(); }
+  /* ---------- 11. apparition sans saut : les blocs alimentés par la base se dévoilent quand ils sont prêts ---------- */
+  function markOk(sel) { $$(sel).forEach(function (e) { e.classList.add("ifx-ok", "ifx-reveal"); }); }
+  function ready(sel, p) { if (!$$(sel).length) return; var f = function () { setTimeout(function () { markOk(sel); }, 40); }; Promise.resolve(p).then(f, f); }
+  function marks() {
+    if (!window.IFSA) return;
+    ready("#home-agenda", IFSA.events()); ready("#home-news", IFSA.news()); ready("#up,#past,#ef", IFSA.events()); ready("#gal,#gf", IFSA.gallery());
+    ready("#tm-g", IFSA.testimonials()); if (!$("#tm-g")) return;
+  }
+
+  /* ---------- 12. « Le Journal d'IFSA » : étincelles ---------- */
+  function sparkle() {
+    var t = $(".jr-t"); if (!t || $(".jr-w", t)) return;
+    var w = el("span", "jr-w"); while (t.firstChild) w.appendChild(t.firstChild); t.appendChild(w);
+    var P = [[3, 8, 14, 0, 2.6], [16, -16, 18, .5, 3], [34, 90, 12, 1.1, 2.4], [48, -14, 16, 1.6, 2.8], [64, 96, 18, .3, 3.2], [80, -10, 12, 2, 2.5], [94, 14, 16, 1.2, 2.9], [101, 70, 12, .8, 2.6], [-3, 62, 16, 2.3, 3], [25, 40, 10, 1.9, 2.2], [58, 42, 10, .6, 2.7], [88, 50, 12, 1.4, 2.3]];
+    P.forEach(function (q) { var s = el("span", "spk"); s.setAttribute("aria-hidden", "true"); s.style.cssText = "left:" + q[0] + "%;top:" + q[1] + "%;--s:" + q[2] + "px;--w:" + q[3] + "s;--d:" + q[4] + "s"; s.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>'; w.appendChild(s); });
+  }
+
+  function boot() { marks(); sparkle(); printHead(); theme(); heroes(); hero(); newsSlider(); testimonials(); journal(); articleLike(); if (window.IFSA) IFSA.applyZones(); }
   function start() { if (window.IFSA) return boot(); var s = d.createElement("script"); s.src = "site-data.js"; s.onload = boot; s.onerror = function () { printHead(); theme(); }; d.head.appendChild(s); }
   if (d.readyState === "loading") d.addEventListener("DOMContentLoaded", start); else start();
 })();

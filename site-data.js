@@ -21,9 +21,29 @@
     });
     return pending;
   }
+  /* Lecture publique SANS le SDK (≈ 100 Ko en moins à télécharger) : petite requête REST avec la clé publique.
+     Même syntaxe que le SDK pour ce qui est utilisé ici : select, eq, order, limit, maybeSingle. */
+  function Q(t) { this.t = t; this.c = "*"; this.f = []; this.o = []; this.l = 0; this.one = false; }
+  Q.prototype.select = function (c) { this.c = c || "*"; return this; };
+  Q.prototype.eq = function (k, v) { this.f.push(k + "=eq." + encodeURIComponent(v)); return this; };
+  Q.prototype.order = function (k, o) { this.o.push(k + (o && o.ascending === false ? ".desc" : ".asc")); return this; };
+  Q.prototype.limit = function (n) { this.l = n; return this; };
+  Q.prototype.maybeSingle = function () { this.one = true; this.l = 1; return this; };
+  Q.prototype.then = function (ok, ko) {
+    var u = SB_URL + "/rest/v1/" + this.t + "?select=" + encodeURIComponent(this.c) + (this.f.length ? "&" + this.f.join("&") : "") + (this.o.length ? "&order=" + this.o.join(",") : "") + (this.l ? "&limit=" + this.l : ""), one = this.one;
+    return fetch(u, { headers: { apikey: SB_KEY, Authorization: "Bearer " + SB_KEY, Accept: "application/json" } })
+      .then(function (r) { return r.json().then(function (j) { return r.ok ? { data: one ? (j[0] || null) : j, error: null } : { data: null, error: j }; }); }).then(ok, ko);
+  };
+  function rest(table) { return new Q(table); }
+  function rpcRest(name, args) {
+    return fetch(SB_URL + "/rest/v1/rpc/" + name, { method: "POST", headers: { apikey: SB_KEY, Authorization: "Bearer " + SB_KEY, "Content-Type": "application/json" }, body: JSON.stringify(args || {}) })
+      .then(function (r) { return r.json().then(function (j) { return r.ok ? { data: j, error: null } : { data: null, error: j }; }); });
+  }
+  /* une session est-elle présente ? (alors on passe par le SDK pour que la base reconnaisse la personne) */
+  function hasSession() { try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (/^sb-.*-auth-token$/.test(k)) return true; } } catch (e) {} return false; }
   function timeout(p) { return Promise.race([p, new Promise(function (_, rej) { setTimeout(function () { rej(new Error("timeout")); }, TIMEOUT); })]); }
   function query(table, build) {
-    return timeout(getClient().then(function (c) { return build(c.from(table)); }).then(function (r) { if (r.error) throw r.error; return r.data || []; }));
+    return timeout(Promise.resolve(build(rest(table))).then(function (r) { if (r.error) throw r.error; return r.data || []; }));
   }
   /* Affichage immédiat : la dernière réponse connue est gardée dans le navigateur.
      Si le réseau répond en moins de 0,6 s on affiche les données fraîches, sinon on affiche tout de suite la copie
@@ -54,12 +74,25 @@
       }).catch(function () { return []; });
     }); },
     client: getClient,
+    /* réglage du site (JSON) : ex. config("hero_config") ; null si absent */
+    config: function (key) { return once("cfg_" + key, function () { return query("site_settings", function (q) { return q.select("value").eq("key", key); }).then(function (r) { return r.length ? r[0].value : null; }); }).catch(function () { return null; }); },
+    /* sites de l'université avec leur position sur la carte (les colonnes de la mise à jour 7a peuvent manquer : on se rabat sur les colonnes de base) */
+    sites: function () { return once("sites7", function () {
+      return query("sites", function (q) { return q.select("id,name,is_central,position,lat,lng,zoom,address,phone,email,hours,description").order("position", { ascending: true }); })
+        .catch(function () { return query("sites", function (q) { return q.select("id,name,is_central,position").order("position", { ascending: true }); }); });
+    }); },
+    /* cours en ligne : la base retire les identifiants vidéo des cours non autorisés (jamais mis en copie locale quand on est connecté) */
+    courses: function () {
+      if (hasSession()) return timeout(getClient().then(function (c) { return c.rpc("get_online_courses"); })).then(function (r) { if (r.error) throw r.error; return r.data || []; });
+      return once("courses7", function () { return timeout(rpcRest("get_online_courses", {})).then(function (r) { if (r.error) throw r.error; return r.data || []; }); });
+    },
+    hasSession: hasSession,
     slides: function () { return once("slides", function () { return query("home_slides", function (q) { return q.select("*").eq("published", true).order("position", { ascending: true }).limit(12); }); }); },
     testimonials: function () { return once("testi", function () { return query("testimonials", function (q) { return q.select("*").eq("published", true).order("created_at", { ascending: false }).limit(30); }); }); },
     /* identifiant anonyme d'appareil : permet d'aimer sans compte */
     visitor: function () { var k = "ifsa-visitor", v = ""; try { v = localStorage.getItem(k) || ""; if (v.length < 8) { v = "v" + Date.now().toString(36) + Math.random().toString(36).slice(2, 12); localStorage.setItem(k, v); } } catch (e) { v = v || "v" + Math.random().toString(36).slice(2, 14); } return v; },
-    stats: function (type, ids) { return timeout(getClient().then(function (c) { return c.rpc("get_stats", { t: type, ids: ids.map(String), v: IFSA.visitor() }); })).then(function (r) { if (r.error) throw r.error; return r.data || []; }); },
-    like: function (type, id) { return timeout(getClient().then(function (c) { return c.rpc("toggle_like", { t: type, i: String(id), v: IFSA.visitor() }); })).then(function (r) { if (r.error) throw r.error; return r.data; }); },
+    stats: function (type, ids) { return timeout(rpcRest("get_stats", { t: type, ids: ids.map(String), v: IFSA.visitor() })).then(function (r) { if (r.error) throw r.error; return r.data || []; }); },
+    like: function (type, id) { return timeout(rpcRest("toggle_like", { t: type, i: String(id), v: IFSA.visitor() })).then(function (r) { if (r.error) throw r.error; return r.data; }); },
     /* utilisateur connecté et son profil (null si visiteur) */
     me: function () { return getClient().then(function (c) { return c.auth.getSession().then(function (s) { var u = s && s.data && s.data.session && s.data.session.user; if (!u) return null; return c.from("profiles").select("id,role,full_name").eq("id", u.id).maybeSingle().then(function (r) { return r.data ? r.data : { id: u.id, role: "user", full_name: "" }; }); }); }).catch(function () { return null; }); },
     /* texte d'une actualité -> paragraphes (séparés par une ligne vide) */
@@ -68,6 +101,7 @@
     applyZones: function () {
       var els = document.querySelectorAll("[data-zone]");
       if (!els.length) return Promise.resolve();
+      var fin = function () { [].forEach.call(els, function (e) { e.classList.add("ifx-ok"); }); };
       return IFSA.zones().then(function (rows) {
         var m = {}; rows.forEach(function (r) { if (r.image_url) m[r.key] = r; });
         [].forEach.call(els, function (el) {
@@ -77,7 +111,8 @@
           el.textContent = ""; el.style.background = 'url("' + u + '") center/cover no-repeat'; el.style.border = "0";
           el.setAttribute("role", "img"); el.setAttribute("aria-label", z.alt || ""); el.classList.add("has-img");
         });
-      }).catch(function () { /* la page garde ses emplacements d'exemple */ });
+        fin();
+      }).catch(function () { fin(); /* la page garde ses emplacements d'exemple */ });
     },
     /* vidéos YouTube : vignette, la lecture ne démarre qu'au clic (aucun cookie avant) */
     videoCards: function (list) {
