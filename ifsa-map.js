@@ -23,8 +23,8 @@
     return lp;
   }
   var TILES = {
-    plan: { url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", a: "© OpenStreetMap · © CARTO" },
-    night: { url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", a: "© OpenStreetMap · © CARTO" },
+    plan: { url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png", a: "© contributeurs OpenStreetMap" },
+    night: { url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png", a: "© contributeurs OpenStreetMap", cls: "mp-dark-tiles" },
     sat: { url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", a: "Imagery © Esri" }
   };
   var isDark = function () { return document.documentElement.dataset.theme === "dark"; };
@@ -54,7 +54,7 @@
   }
   function baseLayer(L, map, st) {
     var cur = null;
-    function apply() { var k = st.sat ? "sat" : isDark() ? "night" : "plan"; if (cur) map.removeLayer(cur); cur = L.tileLayer(TILES[k].url, { subdomains: "abcd", maxZoom: 19, attribution: TILES[k].a, crossOrigin: true }).addTo(map); cur.bringToBack(); }
+    function apply() { var k = st.sat ? "sat" : isDark() ? "night" : "plan"; if (cur) map.removeLayer(cur); cur = L.tileLayer(TILES[k].url, { maxZoom: 19, attribution: TILES[k].a, className: TILES[k].cls || "" }).addTo(map); cur.bringToBack(); }
     apply(); new MutationObserver(apply).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
     return apply;
   }

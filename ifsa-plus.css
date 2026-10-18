@@ -364,3 +364,5 @@ details p{margin-top:10px!important}
 .contact-map{padding-top:0}
 @media(max-width:860px){.mp{grid-template-columns:1fr}.mp-side{flex-direction:row;overflow-x:auto;max-height:none;padding:14px}.mp-side h3{display:none}.mp-s,.mp-all{flex:none;width:230px}.mp-map{min-height:420px}.mp-fs .mp{display:flex;flex-direction:column}.mp-fs .mp-map{flex:1}}
 .cc .th .lk{right:auto;width:max-content;max-width:calc(100% - 20px)}
+
+.mp-dark-tiles{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.88) saturate(.8)}
