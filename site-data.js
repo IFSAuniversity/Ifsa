@@ -73,6 +73,10 @@
         return query("partners", function (q) { return q.select("*").eq("active", true).order("position", { ascending: true }).limit(24); });
       }).catch(function () { return []; });
     }); },
+    /* appel d'une fonction serveur (ex. le chatbot) */
+    fn: function (name, body, ms) { var ac = new AbortController(), t = setTimeout(function () { ac.abort(); }, ms || 25000);
+      return fetch(SB_URL + "/functions/v1/" + name, { method: "POST", signal: ac.signal, headers: { apikey: SB_KEY, Authorization: "Bearer " + SB_KEY, "Content-Type": "application/json" }, body: JSON.stringify(body || {}) })
+        .then(function (r) { return r.json(); }).finally(function () { clearTimeout(t); }); },
     client: getClient,
     /* réglage du site (JSON) : ex. config("hero_config") ; null si absent */
     config: function (key) { return once("cfg_" + key, function () { return query("site_settings", function (q) { return q.select("value").eq("key", key); }).then(function (r) { return r.length ? r[0].value : null; }); }).catch(function () { return null; }); },

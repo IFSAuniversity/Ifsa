@@ -1534,15 +1534,17 @@ if(o.bell&&o.sb)IFSACore.bell({sb:o.sb,uid:o.uid,host:$("bellHost")}).catch(func
     M.scrollTop = M.scrollHeight;
     return M.lastElementChild;
   }
-  function ask(q) {
+function ask(q) {
     add(q.replace(/</g, '&lt;'), 'u');
     const typing = add('<span class="dots" aria-label="L\'assistant écrit"><span></span><span></span><span></span></span>', 'b');
     const n = norm(q); let best = null, bs = 0;
     KB.forEach(e => { const sc = e[0].filter(k => n.includes(k)).length; if (sc > bs) { bs = sc; best = e; } });
-    setTimeout(() => {
-      typing.remove();
-      add(best ? best[1] : '<p>Je n\'ai pas cette information pour le moment.</p><p><a href="contact.html">Écrivez-nous</a> ou appelez le 33 53 24 15.</p>', 'b');
-    }, reduce ? 0 : 600);
+    const local = () => best ? best[1] : '<p>Je n\'ai pas cette information pour le moment.</p><p><a href="contact.html">Écrivez-nous</a> ou appelez le 33 53 24 15.</p>';
+    const done = h => { typing.remove(); add(h, 'b'); };
+    /* question courte qui correspond à un sujet connu : réponse locale instantanée (aucun quota). Sinon : IA côté serveur, avec le chatbot local en secours. */
+    if (best && n.split(' ').length <= 3) return setTimeout(() => done(best[1]), reduce ? 0 : 500);
+    const ld = () => window.IFSAChat ? Promise.resolve() : new Promise((ok, ko) => { const s = d.createElement('script'); s.src = 'ifsa-chat.js'; s.onload = ok; s.onerror = ko; d.head.appendChild(s); });
+    ld().then(() => IFSAChat.ask(q)).then(r => done(r.fallback ? local() : r.html)).catch(() => done(local()));
   }
   $('#cbC').innerHTML = ['Programmes', 'Inscription', 'Frais', 'Nos sites', 'Contact'].map(t => '<button type="button">' + t + '</button>').join('');
   $$('#cbC button').forEach(b => b.addEventListener('click', () => ask(b.textContent)));

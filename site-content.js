@@ -11,16 +11,17 @@
     { id: "vids", label: "Vidéos", ic: "vid", where: "Apparaît sur : l'<b>accueil</b> (section « En vidéo », 3 vidéos au plus, celle à la une en premier) et la page <b>Galerie</b> (toutes les vidéos actives).", link: "galerie.html" },
     { id: "slides", label: "Bannière d'accueil", ic: "img", where: "Apparaît sur : la <b>grande bannière en haut de l'accueil</b> (diaporama). Chaque diapo = une image, un titre et un texte. Un voile sombre garde le texte lisible.", link: "index.html" },
     { id: "courses", label: "Cours en ligne", ic: "vid", where: "Apparaît sur : la page <b>Cours en ligne</b>. Collez le lien YouTube de chaque leçon : la vignette se charge toute seule. Choisissez <b>qui peut regarder</b> ; les autres voient « Verrouillé » et ne reçoivent jamais le lien de la vidéo.", link: "cours.html" },
+    { id: "chat", label: "Chatbot", ic: "chat", where: "Apparaît sur : le <b>chatbot</b> du site. Ajoutez des questions-réponses : elles sont servies <b>sans IA</b> (zéro quota) et servent de source fiable à l'IA. Les questions restées sans réponse apparaissent plus bas : transformez-les en réponses.", link: "index.html" },
     { id: "sites", label: "Sites et carte", ic: "pin", admin: true, where: "Apparaît sur : la <b>carte</b> de la page Contact. Placez l'épingle de chaque site à l'endroit exact (clic, glisser, recherche d'adresse ou lien Google Maps).", link: "contact.html#carte" },
     { id: "testi", label: "Témoignages", ic: "news", admin: true, where: "Apparaît sur : la section <b>Ils parlent d'IFSA</b> de l'accueil. Vous pouvez créer, modifier, masquer ou supprimer n'importe quel témoignage.", link: "index.html#temoignages" },
     { id: "zones", label: "Zones d'images", ic: "pin", admin: true, where: "Chaque zone est une <b>photo précise d'une page du site</b>. Tant qu'aucune image n'est choisie, le site affiche son emplacement d'exemple.", link: "index.html" }
   ];
-  var ICO = { news: '<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M8 8h7M8 12h7M8 16h4"/>', cal: '<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>', img: '<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>', vid: '<rect width="18" height="14" x="3" y="5" rx="2"/><path d="m10 9 5 3-5 3z"/>', pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>', plus: '<path d="M12 5v14M5 12h14"/>', trash: '<path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>', edit: '<path d="M12 20h9"/><path d="M16.4 3.6a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>', eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>', up: '<path d="m18 15-6-6-6 6"/>', down: '<path d="m6 9 6 6 6-6"/>', ext: '<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>' };
+  var ICO = { chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>', news: '<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M8 8h7M8 12h7M8 16h4"/>', cal: '<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>', img: '<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>', vid: '<rect width="18" height="14" x="3" y="5" rx="2"/><path d="m10 9 5 3-5 3z"/>', pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>', plus: '<path d="M12 5v14M5 12h14"/>', trash: '<path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>', edit: '<path d="M12 20h9"/><path d="M16.4 3.6a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>', eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>', up: '<path d="m18 15-6-6-6 6"/>', down: '<path d="m6 9 6 6 6-6"/>', ext: '<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>' };
   var ic = function (n) { return '<svg class="sc-i" viewBox="0 0 24 24" aria-hidden="true">' + (ICO[n] || "") + "</svg>"; };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var httpsUrl = function (u) { u = String(u || "").trim(); return /^https:\/\//i.test(u) ? u.replace(/["'<>()\s\\]/g, function (c) { return encodeURIComponent(c); }) : ""; };
   var fmtD = function (d) { return d ? new Date(String(d).length <= 10 ? d + "T12:00:00" : d).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" }) : ""; };
-  var C = { sb: null, role: "", toast: function () {}, root: null, uid: null, base: "" }, S = { tab: "news", edit: null, busy: false, loaded: false, err: "", d: { news: [], events: [], gal: [], vids: [], slides: [], testi: [], zones: [], hero: null, courses: [], sites: [] } };
+  var C = { sb: null, role: "", toast: function () {}, root: null, uid: null, base: "" }, S = { tab: "news", edit: null, busy: false, loaded: false, err: "", d: { news: [], events: [], gal: [], vids: [], slides: [], testi: [], zones: [], hero: null, courses: [], sites: [], chat: [], miss: [] } };
 
   var css = document.createElement("style");
   css.textContent = ".sc{--scn:var(--navy,#0B1F4B);--scg:var(--gold,#C9A24B);--scm:var(--mut,#5B667C);--scl:var(--line,#E1E6F2);--scc:var(--card,#fff);--sci:var(--ink,#1B2437)}.sc *{box-sizing:border-box}.sc-i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.sc-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px}.sc-tabs button{flex:none;display:inline-flex;gap:7px;align-items:center;border:1.5px solid var(--scl);background:var(--scc);color:var(--sci);border-radius:12px;padding:10px 14px;font-weight:600;font-size:.88rem;cursor:pointer}.sc-tabs button[aria-selected=true]{background:var(--scn);color:#E8CF8E;border-color:var(--scn)}.sc-where{background:rgba(201,162,75,.14);border:1px solid rgba(201,162,75,.45);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:.9rem;color:var(--sci);display:flex;gap:10px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}.sc-where a{display:inline-flex;gap:6px;align-items:center;font-weight:700;color:var(--scn);text-decoration:underline}.sc-card{background:var(--scc);border:1px solid var(--scl);border-radius:18px;padding:16px;margin-bottom:14px}.sc-card h3{margin:0 0 10px;font-size:1.05rem}.sc label{display:grid;gap:5px;font-weight:700;font-size:.84rem;margin-bottom:12px;color:var(--scn)}.sc input,.sc select,.sc textarea{width:100%;padding:11px 13px;border:1.5px solid var(--scl);border-radius:12px;background:transparent;color:var(--sci);font:inherit;font-weight:500;font-size:16px}.sc textarea{min-height:130px;resize:vertical}.sc .sc-ck{display:flex;gap:10px;align-items:center;font-weight:600}.sc .sc-ck input{width:20px;height:20px}.sc-r2{display:grid;gap:12px;grid-template-columns:1fr 1fr}@media(max-width:560px){.sc-r2{grid-template-columns:1fr}}.sc-h{font-weight:500;color:var(--scm);font-size:.8rem;margin:-6px 0 12px}.sc-btn{display:inline-flex;gap:7px;align-items:center;justify-content:center;border:1.5px solid var(--scl);background:var(--scc);color:var(--sci);border-radius:12px;padding:9px 14px;font-weight:600;font-size:.84rem;cursor:pointer;min-height:40px;text-decoration:none}.sc-btn.p{background:linear-gradient(135deg,#C9A24B,#DDB863);color:#0B1F4B;border-color:transparent;font-weight:700}.sc-btn.d{color:#B3261E}.sc-btn[disabled]{opacity:.55;cursor:wait}.sc-row{display:flex;gap:12px;align-items:flex-start;background:var(--scc);border:1px solid var(--scl);border-radius:16px;padding:12px;margin-bottom:10px}.sc-th{width:84px;height:64px;border-radius:12px;object-fit:cover;flex:none;background:rgba(11,31,75,.08)}.sc-th.ph{display:grid;place-items:center;color:var(--scm);font-size:.7rem;text-align:center}.sc-tx{flex:1;min-width:0}.sc-tx b{display:block;word-break:break-word}.sc-tx small{display:block;color:var(--scm)}.sc-ac{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.sc-bd{display:inline-block;border-radius:99px;padding:2px 10px;font-size:.72rem;font-weight:700;margin-right:6px;background:rgba(11,31,75,.08);color:var(--scn)}.sc-bd.ok{background:#E3F4EA;color:#0E6B3A}.sc-bd.wt{background:rgba(201,162,75,.22);color:#8A6414}.sc-pv{display:flex;gap:12px;align-items:center;border:1px dashed var(--scl);border-radius:14px;padding:10px;margin:0 0 12px}.sc-pv img,.sc-pv .sc-th{width:96px;height:72px}.sc-empty{text-align:center;color:var(--scm);padding:26px 10px}.sc-gal{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}.sc-gi{background:var(--scc);border:1px solid var(--scl);border-radius:16px;overflow:hidden}.sc-gi img{width:100%;height:120px;object-fit:cover;display:block}.sc-gi div{padding:10px}.sc-zp{margin:18px 0 8px;font-size:1rem;color:var(--scn)}.sc-err{background:#FDECEC;color:#A12B2B;border-radius:12px;padding:11px 14px;margin-bottom:12px;font-size:.88rem}.sc-load{text-align:center;padding:40px;color:var(--scm)}";
@@ -80,12 +81,15 @@
     jobs.push(sb.from("site_settings").select("value").eq("key", "hero_config").maybeSingle());
     jobs.push(sb.from("online_courses").select("*, online_lessons(*)").order("position", { ascending: true }));
     jobs.push(C.role === "admin" ? sb.from("sites").select("*").order("position", { ascending: true }) : Promise.resolve(null));
+    jobs.push(sb.from("chat_kb").select("*").order("created_at", { ascending: false }));
+    jobs.push(sb.from("chat_unanswered").select("*").order("n", { ascending: false }).limit(30));
     var r = await Promise.all(jobs);
     S.d = { news: must(r[0]), events: must(r[1]), gal: must(r[2]), vids: must(r[3]), slides: r[4] && !r[4].error ? must(r[4]) : [], testi: r[5] ? must(r[5]) : [], zones: r[6] ? must(r[6]) : [] };
     S.d.hero = r[7] && !r[7].error && r[7].data ? r[7].data.value : null;
     S.d.courses = r[8] && !r[8].error ? (r[8].data || []).map(function (c) { c.lessons = (c.online_lessons || []).sort(function (a, b) { return a.position - b.position; }); return c; }) : [];
     S.d.coursesErr = r[8] && r[8].error ? r[8].error.message : "";
     S.d.sites = r[9] && !r[9].error ? (r[9].data || []) : [];
+    S.d.chat = r[10] && !r[10].error ? (r[10].data || []) : []; S.d.miss = r[11] && !r[11].error ? (r[11].data || []) : []; S.d.chatErr = r[10] && r[10].error ? r[10].error.message : "";
     S.loaded = true; S.err = "";
   }
   async function reload() { try { await load(); } catch (e) { S.err = "Chargement impossible : " + ((e && e.message) || "erreur"); } render(); }
@@ -279,24 +283,44 @@
     }
     if (window.IFSAMap) go(); else { var sc = document.createElement("script"); sc.src = site("ifsa-map.js"); sc.onload = go; sc.onerror = function () { host.textContent = "La carte n'a pas pu se charger : saisissez la latitude et la longitude à la main."; }; document.head.appendChild(sc); }
   }
+
+  function vChat() {
+    var e = S.edit && S.edit.t === "chat" ? S.edit.row : (S.pre || null), d = S.d.chat, v = function (k) { return esc(e && e[k]); };
+    var form = '<form class="sc-card" data-f="chat"><h3>' + (e && e.id ? "Modifier la réponse" : "Nouvelle question-réponse") + "</h3>" +
+      '<label>Question type<input id="sc-kq" maxlength="200" required placeholder="Ex. Quels sont les frais d\'inscription ?" value="' + v("question") + '"></label>' +
+      '<label>Mots-clés (séparés par des virgules)<input id="sc-kk" maxlength="300" placeholder="frais, scolarite, combien, prix, cout" value="' + v("keywords") + '"></label>' +
+      '<div class="sc-h" style="margin:-4px 0 8px">Pensez aux mots que les visiteurs écrivent vraiment, au pluriel et au singulier. Sans accents. Plus il y a de mots-clés justes, plus la réponse est servie directement, sans IA.</div>' +
+      '<label>Réponse<textarea id="sc-ka" maxlength="700" required>' + v("answer") + "</textarea></label>" +
+      '<div class="sc-r2"><label>Texte du lien (facultatif)<input id="sc-kl" maxlength="40" placeholder="Voir les admissions" value="' + v("link_label") + '"></label><label>Lien (facultatif)<input id="sc-ku" maxlength="200" placeholder="admissions.html" value="' + v("link_url") + '"></label></div>' +
+      '<label class="sc-ck"><input type="checkbox" id="sc-kb"' + (!e || e.active !== false ? " checked" : "") + "> Active</label>" +
+      '<div class="sc-ac"><button class="sc-btn p" type="submit">' + ic(e && e.id ? "edit" : "plus") + (e && e.id ? "Enregistrer" : "Ajouter") + "</button>" + (e ? '<button class="sc-btn" type="button" data-a="cancel">Annuler</button>' : "") + "</div></form>";
+    var err = S.d.chatErr ? '<div class="sc-err">Chatbot indisponible : ' + esc(S.d.chatErr) + " — exécutez supabase-update-7b.sql.</div>" : "";
+    var miss = S.d.miss.length ? '<div class="sc-card"><h3>Questions restées sans réponse</h3><div class="sc-h" style="margin:0 0 8px">Les plus posées en premier. « Répondre » préremplit le formulaire ci-dessus.</div>' + S.d.miss.map(function (m) {
+      return '<div class="sc-row"><div class="sc-tx"><b>' + esc(m.q) + "</b><small>Posée " + esc(m.n) + ' fois</small><div class="sc-ac"><button class="sc-btn" data-a="kbmiss" data-id="' + esc(m.id) + '">' + ic("edit") + 'Répondre</button><button class="sc-btn d" data-a="del" data-t="miss" data-id="' + esc(m.id) + '">' + ic("trash") + "Ignorer</button></div></div></div>"; }).join("") + "</div>" : "";
+    return err + form + miss + (d.length ? d.map(function (k) {
+      return '<div class="sc-row"><div class="sc-tx"><b>' + esc(k.question) + "</b><small>" + esc(String(k.answer).slice(0, 110)) + "…</small>" + badge(k.active, "Active", "Désactivée") +
+        '<div class="sc-ac"><button class="sc-btn" data-a="edit" data-t="chat" data-id="' + esc(k.id) + '">' + ic("edit") + 'Modifier</button><button class="sc-btn" data-a="kbtog" data-id="' + esc(k.id) + '">' + (k.active ? "Désactiver" : "Activer") + '</button><button class="sc-btn d" data-a="del" data-t="chat" data-id="' + esc(k.id) + '">' + ic("trash") + "</button></div></div></div>"; }).join("") : '<div class="sc-empty">Aucune réponse enregistrée. Ajoutez-en quelques-unes : frais, documents à fournir, dates de rentrée…</div>');
+  }
   function render() {
     var root = C.root; if (!root) return;
     var tabs = TABS.filter(function (t) { return !t.admin || C.role === "admin"; }); if (!tabs.some(function (t) { return t.id === S.tab; })) S.tab = tabs[0].id;
-    var t = tabs.filter(function (x) { return x.id === S.tab; })[0], body = !S.loaded ? '<div class="sc-load">Chargement…</div>' : ({ news: vNews, events: vEvents, gal: vGal, vids: vVids, zones: vZones, slides: function () { return heroCard() + vSlides(); }, testi: vTesti, courses: vCourses, sites: vSites })[S.tab]();
+    var t = tabs.filter(function (x) { return x.id === S.tab; })[0], body = !S.loaded ? '<div class="sc-load">Chargement…</div>' : ({ news: vNews, events: vEvents, gal: vGal, vids: vVids, zones: vZones, slides: function () { return heroCard() + vSlides(); }, testi: vTesti, courses: vCourses, sites: vSites, chat: vChat })[S.tab]();
     root.innerHTML = '<div class="sc"><div class="sc-tabs" role="tablist">' + tabs.map(function (x) { return '<button type="button" role="tab" data-a="tab" data-id="' + x.id + '" aria-selected="' + (x.id === S.tab) + '">' + ic(x.ic) + esc(x.label) + "</button>"; }).join("") + "</div>" +
       '<div class="sc-where"><span>' + t.where + "</span>" + viewLink(t.link, "Ouvrir la page du site") + "</div>" + (S.err ? '<div class="sc-err">' + esc(S.err) + "</div>" : "") + body + "</div>";
     afterRender();
   }
 
   /* ---------- actions ---------- */
-  var tbl = { news: "news", events: "events", gal: "gallery_items", vids: "video_links", slides: "home_slides", testi: "testimonials", courses: "online_courses" };
+  var tbl = { news: "news", events: "events", gal: "gallery_items", vids: "video_links", slides: "home_slides", testi: "testimonials", courses: "online_courses", chat: "chat_kb", miss: "chat_unanswered" };
   function find(t, id) { return (S.d[t] || []).filter(function (r) { return r.id === id; })[0]; }
   async function onClick(e) {
     var b = e.target.closest("[data-a]"); if (!b) return; var a = b.dataset.a, id = b.dataset.id, t = b.dataset.t, sb = C.sb;
     if (a === "tab") { S.tab = id; S.edit = null; render(); return; }
     if (a === "lsadd") { var w = C.root.querySelector("#sc-lsw"); w.insertAdjacentHTML("beforeend", lessonRow(null, w.children.length)); return; }
     if (a === "lsdel") { var rw = b.closest("[data-ls]"), wr = rw.parentNode; if (wr.children.length > 1) rw.remove(); else rw.querySelectorAll("input").forEach(function (i) { i.value = ""; }); return; }
-    if (a === "cancel") { S.edit = null; render(); return; }
+    if (a === "kbmiss") { var m = find("miss", id); if (m) { S.pre = { question: m.q, keywords: m.q_norm || "", answer: "", active: true }; S.edit = null; render(); C.root.scrollIntoView && C.root.scrollIntoView({ behavior: "smooth", block: "start" }); } return; }
+    if (a === "kbtog") { var kk = find("chat", id); if (!kk) return; await run(b, async function () { must(await sb.from("chat_kb").update({ active: !kk.active }).eq("id", id)); }, kk.active ? "Réponse désactivée." : "Réponse activée."); return; }
+    if (a === "cancel") { S.pre = null; S.edit = null; render(); return; }
     if (a === "edit") { var row = find(t, id); if (row) { S.edit = { t: t, row: row }; render(); C.root.scrollIntoView && C.root.scrollIntoView({ behavior: "smooth", block: "start" }); } return; }
     if (a === "pub") { var r = find(t, id); if (!r) return; await run(b, async function () { var v = !r.published; must(await sb.from(tbl[t]).update({ published: v }).eq("id", id)); }, r.published ? "Contenu masqué du site." : "Publié : visible sur le site (rechargez la page du site pour le voir)."); return; }
     if (a === "act") { var v1 = find("vids", id); if (!v1) return; await run(b, async function () { must(await sb.from("video_links").update({ active: !v1.active }).eq("id", id)); }, v1.active ? "Vidéo masquée." : "Vidéo affichée sur le site."); return; }
@@ -370,6 +394,15 @@
         must(await sb.from("sites").update({ lat: +la.toFixed(6), lng: +lo.toFixed(6), zoom: +q("sc-zm").value || 17, address: q("sc-ad").value.trim() || null, phone: q("sc-ph").value.trim() || null, hours: q("sc-hr").value.trim() || null, description: q("sc-de").value.trim() || null }).eq("id", se.id));
         S.edit = null; S.picker = null;
       }, "Position enregistrée : la carte du site est à jour."); return;
+    }
+    if (kind === "chat") {
+      var ke = S.edit && S.edit.t === "chat" ? S.edit.row : null, kq = q("sc-kq").value.trim(), ka = q("sc-ka").value.trim();
+      if (kq.length < 3 || ka.length < 3) { C.toast("Indiquez la question et la réponse.", true); return; }
+      await run(btn, async function () {
+        var row = { question: kq, keywords: q("sc-kk").value.trim().toLowerCase(), answer: ka, link_label: q("sc-kl").value.trim() || null, link_url: q("sc-ku").value.trim() || null, active: q("sc-kb").checked };
+        if (ke) must(await sb.from("chat_kb").update(row).eq("id", ke.id)); else { must(await sb.from("chat_kb").insert(row)); if (S.pre) { var mm = S.d.miss.filter(function (x) { return x.q === S.pre.question; })[0]; if (mm) await sb.from("chat_unanswered").delete().eq("id", mm.id); } }
+        S.edit = null; S.pre = null;
+      }, "Réponse enregistrée : le chatbot l'utilise (jusqu'à 5 min de délai).") ; return;
     }
     if (kind === "course") {
       var ce = S.edit && S.edit.t === "courses" ? S.edit.row : null, ct = q("sc-ct").value.trim(), cf = q("sc-cc").files[0], les = [], badL = "";
