@@ -43,7 +43,7 @@
   var thumbUrl = function (c) { if (c.cover) return c.cover; var y = c.aud === "public" && !c.locked && c.lessons[0] && c.lessons[0].yt; return y ? "https://i.ytimg.com/vi/" + y + "/hqdefault.jpg" : ""; };
   function thumb(c, big) {
     var u = thumbUrl(c), h = HUE[facIdx(c)];
-    return '<span class="cx-th">' + (u ? '<img loading="lazy" src="' + X(u) + '" alt="">' : '<span class="cx-art" style="background:linear-gradient(150deg,' + h[0] + "," + h[1] + ')"><b>' + X(initials(c.title)) + "</b></span>") +
+    return '<span class="cx-th">' + (u ? '<img loading="lazy" src="' + X(u) + '" alt="" onerror="this.remove()">' : '<span class="cx-art" style="background:linear-gradient(150deg,' + h[0] + "," + h[1] + ')"><b>' + X(initials(c.title)) + "</b></span>") +
       (c.locked ? '<span class="cx-lockc">' + ic("lock") + "</span>" : '<span class="cx-play">' + ic("play") + "</span>") +
       (c.aud !== "public" ? '<span class="cx-pill tl">' + ic("lock") + (c.locked ? "Verrouillé" : "Réservé") + " · " + X(AUD[c.aud] || "") + "</span>" : "") +
       (totMin(c) ? '<span class="cx-pill br">' + totMin(c) + " min</span>" : "") +
@@ -89,7 +89,7 @@
   function drawFeat() {
     var lm = lastMap(), c = C.filter(function (x) { return !x.locked && lm[x.id] && pct(x) < 100; }).sort(function (a, b) { return lm[b.id] - lm[a.id]; })[0], resumed = !!c;
     if (!c) c = C.filter(function (x) { return !x.locked && x.lessons.length; })[0] || C[0];
-    var el = $("cxFeat");
+    var el = $("cxFeat"); if (!el) return;
     if (!c) { el.innerHTML = '<div class="cx-feat-empty"><div>' + ic("book") + "<p>Les premiers cours arrivent bientôt.</p></div></div>"; return; }
     el.innerHTML = '<div class="cx-k"><span>' + (resumed ? "Reprendre où vous étiez" : "À la une") + "</span><span>" + c.lessons.length + " leçon" + (c.lessons.length > 1 ? "s" : "") + "</span></div>" + thumb(c) + "<h3>" + X(c.title) + "</h3><p>" + X(c.fac + (c.an ? " · Année " + c.an : "")) + "</p>" +
       '<button type="button" class="cx-btn gold" data-id="' + X(c.id) + '">' + (c.locked ? ic("lock") + " Voir le cours" : ic("play", "fill") + (resumed ? " Reprendre" : " Regarder")) + "</button>";
@@ -102,7 +102,7 @@
     $("fa").onchange = function (e) { f.an = e.target.value; R(); }; $("fr").onchange = function (e) { f.sort = e.target.value; R(); };
     if (LOGGED) { $("fsW").hidden = false; $("fst").onchange = function (e) { f.stat = e.target.value; R(); }; }
     function openFrom(e) { var b = e.target.closest("[data-id]"); if (b) openRoom(b.dataset.id); }
-    $("cxGrid").onclick = openFrom; $("cxResumeG").onclick = openFrom; $("cxFeat").onclick = openFrom;
+    $("cxGrid").onclick = openFrom; $("cxResumeG").onclick = openFrom; if ($("cxFeat")) $("cxFeat").onclick = openFrom;
     if (LOGGED) { var m = $("cxMy"); if (m) m.hidden = false; $("cxCtaBand").hidden = true; $("cxHeroCta").innerHTML = '<a class="cx-btn glass" href="' + ({ student: "espace-etudiant.html", teacher: "espace-enseignant.html", manager: "manager.html", admin: "admin.html" }[ROLE] || "connexion.html") + '">Mon espace</a>'; }
   }
   function load() {
@@ -412,10 +412,37 @@
     });
   }
 
+  /* ================= FENÊTRE « VOUS AVEZ QUITTÉ LA LEÇON » ================= */
+  var away = { at: 0, was: false, idle: 0 };
+  function showPop(title, txt, go) {
+    var p = $("cxPop"); $("cxPopT").textContent = title; $("cxPopP").textContent = txt; $("cxPopGo").textContent = go; p.hidden = false; requestAnimationFrame(function () { p.classList.add("on"); }); setTimeout(function () { $("cxPopGo").focus(); }, 50);
+  }
+  function hidePop() { var p = $("cxPop"); p.classList.remove("on"); setTimeout(function () { p.hidden = true; }, 250); }
+  function popOpen() { return !$("cxPop").hidden; }
+  function initAway() {
+    $("cxPopGo").onclick = function () { hidePop(); armAway(); if (yp && cur && !cur.locked && away.was) { try { yp.playVideo(); } catch (e) { /* ignoré */ } } away.was = false; };
+    $("cxPopX").onclick = function () { hidePop(); away.was = false; closeRoom(); };
+    d.addEventListener("visibilitychange", function () {
+      if (!room || room.hidden || !cur) return;
+      if (d.hidden) { away.at = Date.now(); away.was = st.playing; if (st.playing) { try { yp.pauseVideo(); } catch (e) { /* ignoré */ } } }
+      else if (away.at) {
+        var m = Math.round((Date.now() - away.at) / 60000), t = m < 1 ? "quelques secondes" : m + " min"; away.at = 0;
+        showPop("Vous avez quitté la leçon", "Vous étiez absent(e) depuis " + t + ". La vidéo a été mise en pause.", away.was ? "Reprendre la leçon" : "Continuer");
+      }
+    });
+    ["pointerdown", "keydown", "touchstart"].forEach(function (ev) { d.addEventListener(ev, armAway, { passive: true }); });
+    setInterval(function () {
+      if (!room || room.hidden || popOpen() || d.hidden) return;
+      if (Date.now() - away.idle > 10 * 60000 && !st.playing) { away.was = false; showPop("Êtes-vous toujours là ?", "Vous êtes inactif depuis plusieurs minutes.", "Je suis là"); }
+    }, 30000);
+    armAway();
+  }
+  function armAway() { away.idle = Date.now(); }
+
   /* ================= DÉMARRAGE ================= */
   function boot() {
     if (!window.IFSA) { setTimeout(boot, 60); return; }
-    initLib(); initRoom(); load();
+    initLib(); initRoom(); initAway(); load();
     addEventListener("hashchange", function () { var h = location.hash; if (h.indexOf("#cours-") === 0 && loaded) openRoom(h.slice(7), true); });
   }
   boot();

@@ -1278,17 +1278,11 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
   <!-- ===== CONTENU DE LA PAGE ===== -->
   <main id="main">
     <section class="cx-hero" aria-labelledby="cxH1">
-      <span class="cx-blob a"></span><span class="cx-blob b"></span><span class="cx-blob c"></span>
-      <div class="cx-wrap">
-        <div>
-          <span class="cx-eyebrow"><i></i>Campus numérique IFSA</span>
-          <h1 id="cxH1">Apprenez où vous voulez, <em>à votre rythme</em></h1>
-          <p class="cx-lead">Cours vidéo des sept facultés d'IFSA University : leçons structurées, progression suivie, notes personnelles et échanges avec la communauté.</p>
-          <div class="cx-search" role="search"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input id="q" type="search" placeholder="Rechercher un cours, une matière, un enseignant…" aria-label="Rechercher un cours"><button type="button" id="cxSearchBtn">Explorer</button></div>
-          <div class="cx-stats"><div class="cx-stat"><b id="sC">–</b><span>Cours</span></div><div class="cx-stat"><b id="sL">–</b><span>Leçons vidéo</span></div><div class="cx-stat"><b id="sF">–</b><span>Facultés</span></div></div>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px" id="cxHeroCta"><a class="cx-btn gold" href="connexion.html"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5M15 12H3"/></svg>Se connecter</a><a class="cx-btn glass" href="admissions.html">Rejoindre IFSA</a></div>
-        </div>
-        <aside class="cx-feat" id="cxFeat" aria-live="polite"><div class="cx-feat-empty"><div><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><p>Chargement…</p></div></div></aside>
+      <span class="cx-blob a"></span><span class="cx-blob b"></span>
+      <div class="cx-wrap cx-hero-in">
+        <h1 id="cxH1">Cours <em>en ligne</em></h1>
+        <div class="cx-search" role="search"><svg class="cx-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input id="q" type="search" placeholder="Rechercher un cours…" aria-label="Rechercher un cours"><button type="button" id="cxSearchBtn">Explorer</button></div>
+        <div class="cx-stats"><span><b id="sC">–</b> cours</span><span><b id="sL">–</b> leçons</span><span><b id="sF">–</b> facultés</span></div>
       </div>
     </section>
 
@@ -1309,13 +1303,8 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
       </div>
     </section>
 
-    <section class="cx-why"><div class="cx-wrap"><div class="cx-g">
-      <article><div class="ico"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 20h.01"/></svg></div><h3>Qualité adaptable</h3><p>Réglez la qualité de la vidéo et voyez la consommation de données avant de regarder.</p></article>
-      <article><div class="ico"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div><h3>Progression suivie</h3><p>Chaque leçon terminée est enregistrée : reprenez exactement où vous vous êtes arrêté.</p></article>
-      <article><div class="ico"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3>Questions &amp; échanges</h3><p>Commentez chaque cours, posez vos questions et recevez les réponses de la communauté.</p></article>
-      <article><div class="ico"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Cours protégés</h3><p>Les cours réservés restent dans la plateforme : lien non copiable, accès selon votre profil.</p></article>
-    </div></div></section>
-    <section class="cx-cta" id="cxCtaBand"><div class="cx-wrap"><h2>Plus de cours dans votre espace étudiant</h2><p>Connectez-vous pour accéder aux cours de votre faculté, suivre votre progression, prendre des notes et participer aux discussions.</p><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="cx-btn gold" href="connexion.html">Se connecter</a><a class="cx-btn glass" href="inscription.html">S'inscrire à IFSA</a></div></div></section>
+    
+    <section class="cx-cta" id="cxCtaBand"><div class="cx-wrap"><h2>Plus de cours dans votre espace étudiant</h2><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="cx-btn gold" href="connexion.html">Se connecter</a><a class="cx-btn glass" href="inscription.html">S'inscrire</a></div></div></section>
   </main>
 
   <!-- ===== SALLE DE COURS ===== -->
@@ -1365,6 +1354,7 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
       <aside class="cx-rside cx-glass" aria-label="Leçons du cours"><h3>Contenu du cours <span id="sideN"></span></h3><div class="cx-bar2"><i id="sideBar" style="width:0"></i></div><ol class="cx-pls" id="pls"></ol></aside>
     </div>
   </div>
+  <div class="cx-pop" id="cxPop" role="alertdialog" aria-modal="true" aria-labelledby="cxPopT" hidden><div class="cx-pop-c"><div class="ic-w"><svg class="cx-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><h3 id="cxPopT">Vous avez quitté la leçon</h3><p id="cxPopP">La vidéo a été mise en pause.</p><div class="bt"><button type="button" class="cx-btn gold" id="cxPopGo">Reprendre la leçon</button><button type="button" class="cx-btn glass" id="cxPopX">Fermer le cours</button></div></div></div>
   <div class="cx-toast" id="cxToast" role="status" aria-live="polite"></div>
 
   <!-- ===== FOOTER ===== -->

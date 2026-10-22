@@ -351,3 +351,26 @@ html.cx-lock,html.cx-lock body{overflow:hidden}
 @media (max-height:520px) and (orientation:landscape){.cx-rbar{padding-block:6px}.cx-rbody{padding:10px}}
 @media(prefers-reduced-motion:reduce){.cx-blob,.cx-eyebrow i,.cx-wm,.cx-spin,.cx-skel{animation:none}.cx-card,.cx-room,.cx-feat{transition:none}}
 @media print{.cx-room{display:none!important}}
+
+/* ===== v2 : en-tête compact, fenêtre « vous avez quitté » ===== */
+.cx-hero{padding:142px 0 40px}
+.cx-hero .cx-wrap.cx-hero-in{display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;grid-template-columns:none}
+.cx-hero h1{font-size:clamp(2.1rem,5vw,3.2rem);margin:0}
+.cx-hero .cx-search{width:100%;max-width:560px}
+.cx-hero .cx-stats{margin:0;gap:8px;justify-content:center}
+.cx-hero .cx-stats span{padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);font-size:.82rem;color:#CBD5EC;font-weight:600}
+.cx-hero .cx-stats b{color:var(--cx-gold2)}
+.cx-lib{padding-top:26px}
+.cx-cta{padding:44px 0}.cx-cta h2{margin-bottom:16px}
+.cx-th>img{background:#0B1F4B}
+.cx-pop{position:fixed;inset:0;z-index:700;display:grid;place-items:center;padding:20px;background:rgba(3,8,24,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .25s}
+.cx-pop[hidden]{display:none}.cx-pop.on{opacity:1}
+.cx-pop-c{width:min(420px,100%);text-align:center;padding:30px 26px;border-radius:26px;color:#E8EEFB;background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.26);box-shadow:0 30px 80px rgba(0,0,0,.5);transform:scale(.94);transition:transform .3s var(--cx-ease)}
+.cx-pop.on .cx-pop-c{transform:none}
+.cx-pop .ic-w{width:62px;height:62px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;background:rgba(201,162,75,.2);color:var(--cx-gold2)}
+.cx-pop .ic-w .cx-ic{width:30px;height:30px}
+.cx-pop h3{color:#fff;font-size:1.3rem;margin-bottom:6px}.cx-pop p{color:#C3CFEA;margin-bottom:20px}
+.cx-pop .bt{display:grid;gap:10px}.cx-pop .cx-btn{justify-content:center;width:100%}
+@media(max-width:640px){.cx-hero{padding:104px 0 30px}}
+
+.cx-bar{top:98px}@media(max-width:1020px){.cx-bar{top:84px}}@media(max-width:640px){.cx-bar{position:static}}
