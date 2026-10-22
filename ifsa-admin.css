@@ -1,0 +1,53 @@
+/* IFSA University — finition de l'interface administrateur et direction (cartes, menu, boutons, tableaux de bord) */
+body{background:radial-gradient(900px 420px at 100% -80px,rgba(201,162,75,.10),transparent 70%),radial-gradient(800px 420px at -10% 10%,rgba(47,91,211,.07),transparent 70%),var(--bg)}
+/* carte titre de page */
+main>.wrap>.card:first-child,main .pg-head,.pghd{background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--card) 86%,#C9A24B));border:1px solid color-mix(in srgb,var(--line,#E1E6F2) 80%,transparent);box-shadow:0 10px 34px rgba(11,31,75,.08)}
+/* menu latéral */
+.tabs.grp{border:1px solid color-mix(in srgb,var(--line,#E1E6F2) 85%,transparent);background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:22px;padding:14px 12px;box-shadow:0 10px 34px rgba(11,31,75,.07)}
+.tabs.grp .tg{margin:18px 10px 8px!important;color:var(--mut)}
+.tabs.grp button{position:relative;transition:background .2s,color .2s,transform .2s}
+.tabs.grp button:hover{transform:translateX(2px)}
+.tabs.grp button[aria-selected=true]{box-shadow:0 8px 20px rgba(11,31,75,.22)}
+.tabs.grp button[aria-selected=true]::before{content:"";position:absolute;left:-12px;top:22%;bottom:22%;width:4px;border-radius:0 4px 4px 0;background:var(--gold,#C9A24B)}
+/* indicateurs */
+.kc{position:relative;overflow:hidden;border:1px solid color-mix(in srgb,var(--line,#E1E6F2) 80%,transparent);transition:transform .25s,box-shadow .25s}
+.kc::after{content:"";position:absolute;right:-26px;top:-26px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,75,.22),transparent 70%)}
+.kc:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(11,31,75,.13)}
+.kc b{font-variant-numeric:tabular-nums}
+/* listes de personnes et contenus */
+.it{border:1px solid color-mix(in srgb,var(--line,#E1E6F2) 75%,transparent);transition:transform .2s,box-shadow .2s,border-color .2s}
+.it:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(11,31,75,.12);border-color:rgba(201,162,75,.5)}
+.it .av{background:linear-gradient(135deg,#14306F,#0B1F4B);box-shadow:0 4px 12px rgba(11,31,75,.25)}
+/* formulaires */
+.fm,.sc-card{border:1px solid color-mix(in srgb,var(--line,#E1E6F2) 80%,transparent);box-shadow:0 6px 22px rgba(11,31,75,.06)}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--gold,#C9A24B)!important;box-shadow:0 0 0 4px rgba(201,162,75,.2)}
+/* boutons */
+.bt,.sc-btn{transition:transform .15s,box-shadow .2s,background .2s,color .2s}
+.bt:active,.sc-btn:active{transform:scale(.97)}
+.bt.g,.sc-btn.p{background:linear-gradient(135deg,var(--gold,#C9A24B),#DDB863);color:#0B1F4B;border-color:transparent;box-shadow:0 6px 16px rgba(201,162,75,.35)}
+.bt.g:hover,.sc-btn.p:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(201,162,75,.45);background:linear-gradient(135deg,var(--gold,#C9A24B),#DDB863);color:#0B1F4B}
+.sc-btn.d{color:#B91C1C}.sc-btn.d:hover{background:#B91C1C;color:#fff;border-color:#B91C1C}
+.sc-tabs button{transition:.2s}.sc-tabs button:hover{border-color:var(--gold,#C9A24B)}
+.sc-where{background:linear-gradient(135deg,rgba(201,162,75,.16),rgba(201,162,75,.06))}
+/* badges */
+.bd,.sc-bd{letter-spacing:.01em}
+.sg-lg{padding:10px 0;border-bottom:1px solid color-mix(in srgb,var(--line,#E1E6F2) 70%,transparent)}
+.sg-lg:last-child{border:0}.sg-lg time{font-variant-numeric:tabular-nums}
+/* défilement doux et barres fines */
+.tabs.grp,.sc-tabs,.cv-sub{scrollbar-width:thin}
+@media(max-width:860px){.tabs.grp button[aria-selected=true]::before{display:none}}
+[data-theme="dark"] .tabs.grp,[data-theme="dark"] .fm,[data-theme="dark"] .sc-card,[data-theme="dark"] .it,[data-theme="dark"] .kc{border-color:#243256}
+[data-theme="dark"] .bt.g,[data-theme="dark"] .sc-btn.p{color:#0B1F4B}
+@media(prefers-reduced-motion:reduce){.it,.kc,.bt,.sc-btn,.tabs.grp button{transition:none!important}}
+/* thème sombre : gestion du contenu */
+[data-theme="dark"] .sc{--sci:#E4EAF7;--scm:#A0AECB;--scl:#243256;--scc:#101B3B}
+[data-theme="dark"] .sc :is(.cv-k b,.cv-bd>b,.sc-where a,.sc-card h3,.sc label,.cv-opt h4,.cv-sw,.sc-bd,.cv-mb h4,.sc-btn,.cv-sub button,.cv-fl button){color:#E4EAF7}
+[data-theme="dark"] .sc .cv-k.g b{color:#5FD38D}[data-theme="dark"] .sc .cv-k.o b{color:#F0C86A}
+[data-theme="dark"] .sc .cv-sub{background:rgba(255,255,255,.07)}
+[data-theme="dark"] .sc .cv-sub button.on{background:#14306F}
+[data-theme="dark"] .sc .cv-fl button.on,[data-theme="dark"] .sc .sc-btn.p{background:linear-gradient(135deg,#C9A24B,#DDB863);color:#0B1F4B}
+[data-theme="dark"] .sc .cv-chips span,[data-theme="dark"] .sc .cv-kv div,[data-theme="dark"] .sc .cv-note{background:rgba(255,255,255,.07)}
+[data-theme="dark"] .sc .cv-k{background:linear-gradient(160deg,#101B3B,rgba(201,162,75,.1))}
+[data-theme="dark"] .cv-md{background:#101B3B;color:#E4EAF7}
+[data-theme="dark"] .sc .sc-tabs button[aria-selected=true]{background:#14306F;color:#E8CF8E}
+[data-theme="dark"] .sc .sc-btn.d{color:#FCA5A5}

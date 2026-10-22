@@ -1231,26 +1231,6 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 @media(max-width:860px){.rec{grid-template-columns:1fr}.rec .ph-img{min-height:260px}.totop{left:12px;bottom:16px}}
 @media print{.totop,#prog,.cb-fab,.cb,#hdr{display:none!important}}
 
-.tb{display:flex;gap:12px;flex-wrap:wrap;align-items:center;background:var(--card);border-radius:20px;padding:14px;box-shadow:0 6px 24px rgba(11,31,75,.08);margin-bottom:12px}
-.tb .sr{position:relative;flex:1;min-width:220px}.tb .sr .ic{position:absolute;left:16px;top:50%;margin-top:-9px;width:18px;height:18px;color:var(--mut)}.tb input{border-radius:99px;padding:12px 18px 12px 42px}
-.tb select{border-radius:99px;padding:12px 16px;width:auto;min-width:150px}.chp{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}.chp button{border:0;border-radius:99px;padding:9px 16px;font:600 .84rem inherit;font-family:inherit;background:var(--card);color:var(--navy);cursor:pointer;box-shadow:0 3px 12px rgba(11,31,75,.08);transition:.2s}.chp button.on{background:var(--navy);color:var(--gold2)}
-.cnt{font-size:.88rem;color:var(--mut);margin-bottom:18px}
-.cc{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:0 4px 18px rgba(11,31,75,.07);cursor:pointer;border:0;padding:0;text-align:left;display:flex;flex-direction:column;transition:.28s;font-family:inherit;color:inherit}.cc:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(11,31,75,.16)}
-.th{aspect-ratio:16/9;position:relative;background:linear-gradient(150deg,var(--navy2),var(--navy) 70%);display:grid;place-items:center;overflow:hidden}.th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.th .pl{position:relative;width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.4);color:#fff;display:grid;place-items:center;transition:.25s}.cc:hover .pl{background:var(--gold);color:var(--navy);transform:scale(1.1)}.th .pl .ic{width:22px;height:22px}
-.th .lk{position:absolute;top:12px;right:12px;background:rgba(7,26,69,.8);color:var(--gold2);padding:5px 10px;border-radius:99px;font-size:.72rem;font-weight:700;display:flex;gap:5px;align-items:center}.th .lk .ic{width:13px;height:13px}
-.cb2{padding:18px;display:grid;gap:8px}.cb2 h3{font-size:1.1rem}.cb2 .m{font-size:.8rem;color:var(--mut)}.pr{height:6px;border-radius:9px;background:#E1E6F2;overflow:hidden}.pr i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2))}
-.pv{margin-bottom:44px;scroll-margin-top:100px}.pv-h{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:18px}.pv-h h2{font-size:clamp(1.3rem,2.6vw,1.9rem)}.pv-h>div{flex:1;min-width:200px}
-.pb{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:99px;padding:10px 18px;font:600 .86rem inherit;font-family:inherit;cursor:pointer;background:var(--card);color:var(--navy);box-shadow:0 3px 12px rgba(11,31,75,.1);transition:.2s}.pb:hover{background:var(--navy);color:var(--gold2)}.pb .ic{width:16px;height:16px}.pb[aria-pressed=true]{background:var(--navy);color:var(--gold2)}
-.pv-g{display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}.pbox{aspect-ratio:16/9;background:#050E26;border-radius:20px;overflow:hidden;box-shadow:0 18px 50px rgba(7,26,69,.3);position:relative}.pbox iframe,.pbox #ytp{position:absolute;inset:0;width:100%;height:100%}
-.pp{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#B8C6E6;padding:20px;background:radial-gradient(500px 300px at 50% 0,rgba(201,162,75,.25),transparent 70%)}.pp .ic{width:46px;height:46px;color:var(--gold);margin-bottom:10px}
-.pv-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}.pv-bar label{display:flex;gap:8px;align-items:center;font-size:.84rem;font-weight:600;color:var(--navy);margin-left:auto}.pv-bar select{width:auto;padding:8px 12px;border-radius:99px}
-.pv-i{background:var(--card);border-radius:var(--r);padding:22px;box-shadow:0 4px 18px rgba(11,31,75,.06)}.pv-i p{color:var(--mut);font-size:.92rem;margin:6px 0 14px}.pv-i textarea{min-height:90px}
-.pv-l{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:0 4px 18px rgba(11,31,75,.06)}.pv-l h3{font-size:1.05rem;margin-bottom:10px}.pv-l ol{list-style:none;display:grid;gap:6px;max-height:520px;overflow:auto}
-.pv-l li button{width:100%;display:flex;gap:12px;align-items:center;text-align:left;border:0;border-radius:14px;padding:12px;background:var(--bg);font:500 .88rem inherit;font-family:inherit;color:var(--ink);cursor:pointer;transition:.2s}.pv-l li button:hover{background:#E4EAF7}.pv-l li.on button{background:var(--navy);color:#fff}.pv-l .n{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--navy);font-size:.78rem;font-weight:700}.pv-l li.ok .n{background:var(--green);color:#fff}.pv-l .n .ic{width:14px;height:14px}
-.cine .pv-g{grid-template-columns:1fr}.cine .pv-l ol{max-height:none;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
-@media(max-width:960px){.pv-g{grid-template-columns:1fr}.pv-l ol{max-height:340px}.pv-bar label{margin-left:0}}
-@media(max-width:560px){.tb select{flex:1;min-width:130px}.pb{padding:9px 14px}}
-
 /* menu : icônes (mobile et sous-menus), regroupements */
 #nav .ni{display:none}
 #nav .ni svg{width:20px;height:20px}
@@ -1258,6 +1238,7 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 </style>
 <meta name="theme-color" content="#071A45"><meta property="og:type" content="website"><meta property="og:site_name" content="IFSA University"><meta property="og:title" content="Cours en ligne — IFSA University"><meta property="og:description" content="Cours vidéo d'IFSA University accessibles en ligne, par faculté et par niveau."><meta property="og:image" content="https://i.postimg.cc/8zMT8g8M/No-background.png"><meta property="og:locale" content="fr_FR">
   <link rel="stylesheet" href="ifsa-plus.css">
+  <link rel="stylesheet" href="cours.css">
   <link rel="preconnect" href="https://i.ytimg.com" crossorigin>
 </head>
 <body data-page="contact.html">
@@ -1278,7 +1259,7 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
       </div>
       <div class="dd">
         <a href="vie-universitaire.html" class="on"><span class="ni" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></span>Vie étudiante</a><button class="dd-t" type="button" aria-expanded="false" aria-label="Afficher le sous-menu : Vie étudiante"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>
-        <div class="dd-m"><a href="inscription.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.4 3.6a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span> Pré-inscription en ligne</a><a href="vie-universitaire.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></span> Vie universitaire</a><a href="services-etudiants.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.9 4.9 4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M4.9 19.1l4.3-4.3"/></svg></span> Services aux étudiants</a><a href="cours.html" aria-current="page"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></span> Cours en ligne</a><a href="bibliotheque.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 6 4 14M12 6v14M8 8v12M4 4v16"/></svg></span> Bibliothèque</a></div>
+        <div class="dd-m"><a href="inscription.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.4 3.6a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span> Pré-inscription en ligne</a><a href="vie-universitaire.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></span> Vie universitaire</a><a href="cours.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="14" x="3" y="5" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></span> Cours en ligne</a><a href="services-etudiants.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.9 4.9 4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M4.9 19.1l4.3-4.3"/></svg></span> Services aux étudiants</a><a href="cours.html" aria-current="page"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></span> Cours en ligne</a><a href="bibliotheque.html"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 6 4 14M12 6v14M8 8v12M4 4v16"/></svg></span> Bibliothèque</a></div>
       </div>
       <div class="dd">
         <a href="actualites.html"><span class="ni" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></svg></span>Actualités</a><button class="dd-t" type="button" aria-expanded="false" aria-label="Afficher le sous-menu : Actualités"><span aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>
@@ -1295,25 +1276,96 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
   </header>
 
   <!-- ===== CONTENU DE LA PAGE ===== -->
-  <main id="main"><section class="hero page-hero"><div class="wrap"><h1>Cours en ligne</h1><p>Suivez les cours d'IFSA en vidéo, gratuitement et sans quitter le site.</p></div></section>
-    <section><div class="wrap" id="top">
-      <div class="pv" id="pv" hidden>
-        <div class="pv-h"><button type="button" class="pb" id="pbk"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Retour aux cours</button><div><span class="tag" id="pt"></span><h2 id="ph"></h2></div><button type="button" class="pb" id="pc" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 9h20"/></svg> Mode cinéma</button></div>
-        <div class="pv-g"><div>
-          <div class="pbox" id="pbox"><div id="ytp"></div><div class="pp" id="pp" hidden><div><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg><p>Vidéo à ajouter<br><small>Collez l'identifiant YouTube de la leçon dans les données du cours.</small></p></div></div></div>
-          <div class="pv-bar"><button type="button" class="pb" id="pprev"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Précédente</button><button type="button" class="pb" id="pdone"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Marquer comme terminée</button><button type="button" class="pb" id="pnext">Suivante <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button><label>Vitesse <select id="psp"><option value="0.75">0,75×</option><option value="1" selected>1×</option><option value="1.25">1,25×</option><option value="1.5">1,5×</option><option value="2">2×</option></select></label></div>
-          <div class="pv-i"><h3 id="lt"></h3><p id="pd"></p><div id="nt" hidden><label for="nta" style="font-weight:600;color:var(--navy);font-size:.88rem">Mes notes sur cette leçon</label><textarea id="nta" placeholder="Écrivez vos notes ici, elles sont enregistrées automatiquement."></textarea></div></div>
-        </div><aside class="pv-l" aria-label="Liste des leçons"><h3>Leçons</h3><ol id="pls"></ol></aside></div>
+  <main id="main">
+    <section class="cx-hero" aria-labelledby="cxH1">
+      <span class="cx-blob a"></span><span class="cx-blob b"></span><span class="cx-blob c"></span>
+      <div class="cx-wrap">
+        <div>
+          <span class="cx-eyebrow"><i></i>Campus numérique IFSA</span>
+          <h1 id="cxH1">Apprenez où vous voulez, <em>à votre rythme</em></h1>
+          <p class="cx-lead">Cours vidéo des sept facultés d'IFSA University : leçons structurées, progression suivie, notes personnelles et échanges avec la communauté.</p>
+          <div class="cx-search" role="search"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input id="q" type="search" placeholder="Rechercher un cours, une matière, un enseignant…" aria-label="Rechercher un cours"><button type="button" id="cxSearchBtn">Explorer</button></div>
+          <div class="cx-stats"><div class="cx-stat"><b id="sC">–</b><span>Cours</span></div><div class="cx-stat"><b id="sL">–</b><span>Leçons vidéo</span></div><div class="cx-stat"><b id="sF">–</b><span>Facultés</span></div></div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px" id="cxHeroCta"><a class="cx-btn gold" href="connexion.html"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5M15 12H3"/></svg>Se connecter</a><a class="cx-btn glass" href="admissions.html">Rejoindre IFSA</a></div>
+        </div>
+        <aside class="cx-feat" id="cxFeat" aria-live="polite"><div class="cx-feat-empty"><div><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><p>Chargement…</p></div></div></aside>
       </div>
-      <div class="tb" id="tb" role="search"><div class="sr"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input id="q" type="search" placeholder="Rechercher un cours, une matière…" aria-label="Rechercher un cours"></div></div>
-      <div class="chp" id="fc" role="group" aria-label="Filtrer par faculté"></div>
-      <p class="cnt" id="cnt" aria-live="polite"></p>
-      <div class="grid3" id="cg"></div>
-      <p id="nc" hidden style="text-align:center;color:var(--mut);padding:40px 0">Aucun cours ne correspond à votre recherche.</p>
-    </div></section>
-    <section class="dark cta-band" id="cta"><div class="wrap"><h2>Plus de cours dans l'espace étudiant</h2><p>Connectez-vous pour accéder à tous les cours, suivre votre progression et prendre des notes.</p><a class="btn btn-gold" href="inscription.html">S'inscrire à IFSA</a></div></section>
-  
+    </section>
+
+    <section class="cx-lib" id="cxLib">
+      <div class="cx-wrap">
+        <div class="cx-bar">
+          <div class="cx-chips" id="cxChips" role="group" aria-label="Filtrer par faculté"></div>
+          <div class="cx-tools">
+            <select id="fa" aria-label="Année"><option value="Toutes">Toutes les années</option><option value="1">Année 1</option><option value="2">Année 2</option><option value="3">Année 3</option></select>
+            <span id="fsW" hidden><select id="fst" aria-label="Statut"><option value="Toutes">Tous les statuts</option><option value="new">Non commencés</option><option value="wip">En cours</option><option value="ok">Terminés</option></select></span>
+            <select id="fr" aria-label="Tri"><option value="az">Ordre alphabétique</option><option value="an">Par année</option><option value="pg">Par progression</option></select>
+            <span class="cx-cnt" id="cxCnt" aria-live="polite"></span>
+          </div>
+        </div>
+        <div id="cxResume" hidden><div class="cx-sec"><div><h2>Reprendre</h2><p>Là où vous vous êtes arrêté(e).</p></div></div><div class="cx-resume" id="cxResumeG"></div></div>
+        <div class="cx-sec"><div><h2>Tous les cours</h2><p>Choisissez un cours pour ouvrir sa salle de classe.</p></div></div>
+        <div class="cx-grid" id="cxGrid"></div>
+      </div>
+    </section>
+
+    <section class="cx-why"><div class="cx-wrap"><div class="cx-g">
+      <article><div class="ico"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 20h.01"/></svg></div><h3>Qualité adaptable</h3><p>Réglez la qualité de la vidéo et voyez la consommation de données avant de regarder.</p></article>
+      <article><div class="ico"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div><h3>Progression suivie</h3><p>Chaque leçon terminée est enregistrée : reprenez exactement où vous vous êtes arrêté.</p></article>
+      <article><div class="ico"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3>Questions &amp; échanges</h3><p>Commentez chaque cours, posez vos questions et recevez les réponses de la communauté.</p></article>
+      <article><div class="ico"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Cours protégés</h3><p>Les cours réservés restent dans la plateforme : lien non copiable, accès selon votre profil.</p></article>
+    </div></div></section>
+    <section class="cx-cta" id="cxCtaBand"><div class="cx-wrap"><h2>Plus de cours dans votre espace étudiant</h2><p>Connectez-vous pour accéder aux cours de votre faculté, suivre votre progression, prendre des notes et participer aux discussions.</p><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="cx-btn gold" href="connexion.html">Se connecter</a><a class="cx-btn glass" href="inscription.html">S'inscrire à IFSA</a></div></div></section>
   </main>
+
+  <!-- ===== SALLE DE COURS ===== -->
+  <div class="cx-room" id="room" role="dialog" aria-modal="true" aria-labelledby="rmT" hidden>
+    <div class="cx-room-bg"></div>
+    <header class="cx-rbar">
+      <button type="button" class="cx-ib" id="rmBack"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span class="t">Retour aux cours</span></button>
+      <div class="cx-rt"><span class="f" id="rmF"></span><h2 id="rmT"></h2></div>
+      <div class="cx-ring" title="Progression du cours"><svg viewBox="0 0 48 48"><circle class="bg" cx="24" cy="24" r="20"/><circle class="fg" id="rmP" cx="24" cy="24" r="20" stroke-dasharray="126" stroke-dashoffset="126"/></svg><b id="rmPt">0%</b></div>
+      <button type="button" class="cx-ib" id="rmCine" aria-pressed="false"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"/><path d="M2 10h20"/></svg><span class="t">Mode cinéma</span></button>
+      <button type="button" class="cx-ib" id="rmX" aria-label="Fermer"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </header>
+    <div class="cx-rbody" id="rmBody">
+      <div class="cx-rmain">
+        <div class="cx-pl" id="pl">
+          <div class="cx-yt" id="ytw"><div id="ytp"></div></div>
+          <div class="cx-cover" id="cover"></div>
+          <div class="cx-wm" id="wm" hidden></div>
+          <div class="cx-shield" id="shield"></div>
+          <div class="cx-bez l" id="bzl">−10 s</div><div class="cx-bez r" id="bzr">+10 s</div>
+          <div class="cx-spin" id="spin"></div>
+          <button type="button" class="cx-big" id="big" aria-label="Lecture"><svg class="cx-ic fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+          <div class="cx-lkchip"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Écran verrouillé</div>
+          <div class="cx-lockui"><button type="button" class="cx-ubtn" id="ubtn" aria-label="Maintenir pour déverrouiller"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>Maintenir pour déverrouiller</button></div>
+          <div class="cx-menu" id="ms"></div><div class="cx-menu" id="mq"></div>
+          <div class="cx-ctl" id="ctl">
+            <div class="cx-seek" id="seek"><div class="tr"><div class="bf" id="sBf"></div><div class="pg" id="sPg"></div></div><div class="hd" id="sHd"></div><div class="tip" id="sTip">0:00</div></div>
+            <div class="cx-row">
+              <button type="button" class="cx-cb2" id="pp" aria-label="Lecture / pause"><svg class="cx-ic fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+              <button type="button" class="cx-cb2 dk" id="sb" aria-label="Reculer de 10 secondes"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button>
+              <button type="button" class="cx-cb2 dk" id="sf" aria-label="Avancer de 10 secondes"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></button>
+              <div class="cx-vol"><button type="button" class="cx-cb2" id="mu" aria-label="Son"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg></button><input type="range" id="vo" min="0" max="100" aria-label="Volume"></div>
+              <span class="cx-time" id="tm">0:00 / 0:00</span><span class="sp"></span>
+              <button type="button" class="cx-cb2" id="spb" aria-label="Vitesse"></button>
+              <button type="button" class="cx-cb2" id="qb" aria-label="Qualité de la vidéo"></button>
+              <button type="button" class="cx-cb2" id="rot" aria-label="Mode paysage"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="11" x="2" y="6.5" rx="2"/><path d="M18 12h.01"/></svg></button>
+              <button type="button" class="cx-cb2" id="lk" aria-label="Verrouiller l'écran"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></button>
+              <button type="button" class="cx-cb2 dk" id="cn" aria-label="Mode cinéma"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"/><path d="M2 10h20"/></svg></button>
+              <button type="button" class="cx-cb2" id="fs" aria-label="Plein écran"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="cx-lbar"><div class="tt"><small id="lsK"></small><h3 id="lsT"></h3></div><div class="cx-acts"><button type="button" class="cx-ib" id="bPrev"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span class="t">Précédente</span></button><button type="button" class="cx-ib" id="bDone"></button><button type="button" class="cx-ib" id="bNext"><span class="t">Suivante</span><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+        <div class="cx-tabs cx-glass" id="tabs" role="tablist"><button type="button" role="tab" data-t="about" aria-selected="true"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Aperçu</button><button type="button" role="tab" data-t="comm" id="tComm" aria-selected="false"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Commentaires <span class="n" id="cN" hidden>0</span></button><button type="button" role="tab" data-t="notes" id="tNotes" aria-selected="false"><svg class="cx-ic " viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M8 8h7M8 12h7M8 16h4"/></svg>Mes notes</button></div>
+        <div class="cx-panel cx-glass"><div id="p-about"></div><div id="p-comm" hidden></div><div id="p-notes" class="cx-notes" hidden><h4 style="font-size:1.1rem;margin-bottom:10px">Mes notes sur cette leçon</h4><textarea id="nta" placeholder="Écrivez vos notes ici : elles sont enregistrées automatiquement sur cet appareil." aria-label="Mes notes"></textarea><small id="noteS">Enregistrées automatiquement sur cet appareil.</small></div></div>
+      </div>
+      <aside class="cx-rside cx-glass" aria-label="Leçons du cours"><h3>Contenu du cours <span id="sideN"></span></h3><div class="cx-bar2"><i id="sideBar" style="width:0"></i></div><ol class="cx-pls" id="pls"></ol></aside>
+    </div>
+  </div>
+  <div class="cx-toast" id="cxToast" role="status" aria-live="polite"></div>
 
   <!-- ===== FOOTER ===== -->
   <footer>
@@ -1550,58 +1602,7 @@ function ask(q) {
   
 <script>/* ===== AJOUTS : progression de lecture + retour en haut ===== */(function(){var p=document.getElementById("prog"),t=document.getElementById("totop");function u(){var h=document.documentElement,m=h.scrollHeight-h.clientHeight;p.style.width=(m>0?h.scrollTop/m*100:0)+"%";t.classList.toggle("on",h.scrollTop>500)}addEventListener("scroll",u,{passive:true});u();t.onclick=function(){scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}})();</script>
 <script src="site-data.js"></script>
-<script>(function(){
-const MODE=(function(){try{return (sessionStorage.getItem("ifsa_auth")||localStorage.getItem("ifsa_auth"))?"etudiant":"public"}catch(e){return "public"}})();
-const FAC=["Sciences informatiques","Sciences comptables","Sciences administratives","Sciences de la gestion","Sciences de l'éducation","Sciences agronomiques","Sciences infirmières"];
-const AUD={"public":"Public","members":"Comptes connectés","student":"Étudiants","teacher":"Enseignants","staff":"Personnel"};
-const $=i=>document.getElementById(i),S=MODE==="etudiant";
-const X=t=>String(t==null?"":t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const IC={"play":"<path d=\"M8 5v14l11-7z\" fill=\"currentColor\"/>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","yt":"<path d=\"M14 3h7v7\"/><path d=\"M10 14 21 3\"/><path d=\"M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5\"/>"};
-const ic=n=>'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+IC[n]+'</svg>';
-const store={get(k,d){try{const v=localStorage.getItem("ifsa_"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("ifsa_"+k,JSON.stringify(v))}catch(e){}}};
-let C=[],f={q:"",fac:"Toutes",opt:"Toutes",an:"Toutes",stat:"Toutes",sort:"az"},cur=null,li=0,pl=null,loaded=false;
-const pct=c=>{const d=(store.get("done",{})[c.id]||[]).length;return c.locked||!c.lessons.length?0:Math.round(d/c.lessons.length*100)};
-const sel=(id,lab,opts)=>'<select id="'+id+'" aria-label="'+lab+'">'+opts.map(o=>'<option value="'+X(o[0])+'">'+X(o[1])+'</option>').join("")+'</select>';
-const nz=t=>String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-function norm(r){return {id:r.id,title:r.title,fac:r.faculty||"Autres",opt:r.opt||"",an:r.year||1,teacher:r.teacher||"",desc:r.description||"",locked:!!r.locked,aud:r.audience,allowYt:!!r.allow_youtube,cover:r.cover_url||"",lessons:(r.lessons||[]).map(l=>({t:l.t,yt:l.yt||"",dur:l.dur||""}))}}
-function tb(){let h="";if(S){const O=["Toutes"].concat(C.map(c=>c.opt).filter((v,i,a)=>v&&a.indexOf(v)==i));h=sel("fo","Option",O.map(o=>[o,o=="Toutes"?"Toutes les options":o]))+sel("fa","Année",[["Toutes","Toutes les années"],["1","Année 1"],["2","Année 2"],["3","Année 3"]])+sel("fs","Statut",[["Toutes","Tous les statuts"],["new","Non commencés"],["wip","En cours"],["ok","Terminés"]])+sel("fr","Tri",[["az","Ordre alphabétique"],["an","Par année"],["pg","Par progression"]])}
-$("tb").insertAdjacentHTML("beforeend",h);$("q").oninput=e=>{f.q=e.target.value;R()};if(S){[["fo","opt"],["fa","an"],["fs","stat"],["fr","sort"]].forEach(p=>{$(p[0]).onchange=e=>{f[p[1]]=e.target.value;R()}})}
-$("fc").innerHTML=["Toutes"].concat(FAC).map(x=>'<button type="button" class="'+(x=="Toutes"?"on":"")+'">'+(x=="Toutes"?"Toutes les facultés":x)+'</button>').join("");
-$("fc").onclick=e=>{const b=e.target.closest("button");if(!b)return;f.fac=b.textContent=="Toutes les facultés"?"Toutes":b.textContent;[].forEach.call($("fc").children,x=>x.classList.toggle("on",x==b));R()}}
-function skel(){$("cg").innerHTML=[1,2,3,4,5,6].map(()=>'<div class="ifx-skel" style="min-height:250px;margin:0"></div>').join("")}
-function R(){if(!loaded)return;let L=C.filter(c=>(f.fac=="Toutes"||c.fac==f.fac)&&(f.opt=="Toutes"||c.opt==f.opt)&&(f.an=="Toutes"||String(c.an)==f.an)&&nz(c.title+" "+c.opt+" "+c.fac+" "+c.desc).includes(nz(f.q)));
-if(S&&f.stat!="Toutes")L=L.filter(c=>{const p=pct(c);return f.stat=="new"?p==0:f.stat=="ok"?p==100:p>0&&p<100});
-L.sort((a,b)=>f.sort=="an"?a.an-b.an:f.sort=="pg"?pct(b)-pct(a):a.title.localeCompare(b.title,"fr"));
-$("cnt").textContent=L.length+" cours";$("nc").hidden=!!L.length;$("nc").textContent=C.length?"Aucun cours ne correspond à votre recherche.":"Les cours seront bientôt disponibles.";
-$("cg").innerHTML=L.map(c=>{const y=!c.locked&&c.lessons[0]&&c.lessons[0].yt,cv=c.cover||(y?"https://i.ytimg.com/vi/"+y+"/hqdefault.jpg":"");
-return '<button type="button" class="cc ifx-reveal'+(c.locked?" locked":"")+'" data-id="'+X(c.id)+'" aria-label="'+(c.locked?"Cours verrouillé : ":"Ouvrir le cours : ")+X(c.title)+'"><div class="th">'+(cv?'<img loading="lazy" src="'+X(cv)+'" alt="">':'')+(c.locked?'<span class="lk-big">'+ic("lock")+'</span>':'<span class="pl">'+ic("play")+'</span>')+(c.aud!=="public"?'<span class="lk">'+ic("lock")+' '+(c.locked?"Verrouillé":"Réservé")+' · '+X(AUD[c.aud]||"")+'</span>':'')+'</div><div class="cb2"><span class="tag">'+X(c.fac)+'</span><h3>'+X(c.title)+'</h3><p class="m">'+c.lessons.length+' leçon'+(c.lessons.length>1?'s':'')+(c.an?' · Année '+c.an:'')+(c.teacher?' · '+X(c.teacher):'')+'</p>'+(c.locked?'<p class="aud">'+ic("lock")+' Réservé aux '+X((AUD[c.aud]||"").toLowerCase())+'</p>':(S?'<div class="pr" aria-label="Progression"><i style="width:'+pct(c)+'%"></i></div><p class="m">'+pct(c)+' % terminé</p>':''))+'</div></button>'}).join("")}
-$("cg").onclick=e=>{const b=e.target.closest(".cc");if(b)open(b.dataset.id)};
-function api(cb){if(window.YT&&YT.Player)return cb();window.onYouTubeIframeAPIReady=cb;if(!$("ytapi")){const s=document.createElement("script");s.id="ytapi";s.src="https://www.youtube.com/iframe_api";document.head.appendChild(s)}}
-function play(id){api(()=>{if(pl&&pl.loadVideoById){pl.loadVideoById(id);return}pl=new YT.Player("ytp",{host:"https://www.youtube-nocookie.com",videoId:id,playerVars:{rel:0,modestbranding:1,playsinline:1,iv_load_policy:3},events:{onReady:()=>pl.setPlaybackRate(+$("psp").value),onStateChange:e=>{if(e.data===0){mark(true);if(li<cur.lessons.length-1)go(li+1)}}}})})}
-function mark(on){const d=store.get("done",{}),a=d[cur.id]||[];const i=a.indexOf(li);if(on&&i<0)a.push(li);if(!on&&i>-1)a.splice(i,1);d[cur.id]=a;store.set("done",d);list();bt();R()}
-const isDone=i=>(store.get("done",{})[cur.id]||[]).includes(i);
-function list(){$("pls").innerHTML=cur.lessons.map((l,i)=>'<li class="'+(i==li?"on ":"")+(isDone(i)?"ok":"")+'"><button type="button" data-i="'+i+'"><span class="n">'+(cur.locked?ic("lock"):isDone(i)?ic("check"):i+1)+'</span><span>'+X(l.t)+'</span></button></li>').join("")}
-function bt(){$("pdone").innerHTML=ic("check")+(isDone(li)?" Terminée — annuler":" Marquer comme terminée");$("pdone").hidden=cur.locked;$("pprev").disabled=li==0;$("pnext").disabled=li==cur.lessons.length-1}
-function wall(){const lg=!!(S);return '<div class="lk-wall"><div>'+ic("lock")+'<h3>Cours verrouillé</h3><p>Ce cours est réservé aux '+X((AUD[cur.aud]||"personnes autorisées").toLowerCase())+'.'+(lg?' Votre compte n\'y a pas accès.':' Connectez-vous avec un compte autorisé pour le regarder.')+'</p>'+(lg?'':'<a class="btn btn-gold" href="connexion.html">Se connecter</a>')+'</div></div>'}
-function go(i){li=i;const l=cur.lessons[i]||{t:"",yt:""};$("lt").textContent=l.t+(l.dur?" · "+l.dur:"");$("pd").textContent=cur.desc;list();bt();
-const box=$("pbox"),old=box.querySelector(".lk-wall");if(old)old.remove();box.classList.toggle("guard",cur.aud!=="public"&&!cur.locked);
-let yb=$("pyt");if(!yb){yb=document.createElement("a");yb.id="pyt";yb.className="pb pv-yt";yb.target="_blank";yb.rel="noopener noreferrer";$("pnext").after(yb)}
-if(cur.locked){$("pp").hidden=true;$("ytp").style.display="none";if(pl&&pl.pauseVideo)try{pl.pauseVideo()}catch(e){}box.insertAdjacentHTML("beforeend",wall());yb.hidden=true}
-else if(l.yt){$("pp").hidden=true;$("ytp").style.display="";play(l.yt);if(cur.allowYt){yb.href="https://www.youtube.com/watch?v="+l.yt;yb.innerHTML=ic("yt")+" Ouvrir sur YouTube";yb.hidden=false}else yb.hidden=true}
-else{$("pp").hidden=false;$("pp").querySelector("p").innerHTML="Vidéo bientôt disponible";$("ytp").style.display="none";yb.hidden=true;if(pl&&pl.pauseVideo)try{pl.pauseVideo()}catch(e){}}
-if(S&&!cur.locked){$("nt").hidden=false;const n=store.get("notes",{});$("nta").value=n[cur.id+"-"+i]||""}else $("nt").hidden=true}
-$("pls").onclick=e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)};
-$("pprev").onclick=()=>go(li-1);$("pnext").onclick=()=>go(li+1);$("pdone").onclick=()=>mark(!isDone(li));
-$("psp").onchange=e=>{if(pl&&pl.setPlaybackRate)pl.setPlaybackRate(+e.target.value)};
-$("nta").oninput=e=>{const n=store.get("notes",{});n[cur.id+"-"+li]=e.target.value;store.set("notes",n)};
-$("pc").onclick=()=>{const on=$("pv").classList.toggle("cine");$("pc").setAttribute("aria-pressed",on)};
-function open(id){cur=C.find(c=>c.id==id);if(!cur)return;$("pt").textContent=cur.fac+(cur.an?" · Année "+cur.an:"");$("ph").textContent=cur.title;$("pv").hidden=false;const d=store.get("done",{})[cur.id]||[];go(Math.max(0,Math.min(d.length,cur.lessons.length-1)));history.replaceState(null,"","#cours-"+id);$("pv").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}
-function close(){$("pv").hidden=true;if(pl&&pl.pauseVideo)try{pl.pauseVideo()}catch(e){}history.replaceState(null,"",location.pathname)}
-$("pbk").onclick=close;addEventListener("keydown",e=>{if(e.key=="Escape"&&!$("pv").hidden)close()});
-if(S)$("cta").hidden=true;tb();skel();
-function loadAll(){skel();IFSA.courses().then(rows=>{C=rows.map(norm);loaded=true;R();if(location.hash.indexOf("#cours-")==0)open(location.hash.slice(7))}).catch(()=>{$("cg").innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px 0;color:var(--mut)"><p>Les cours n\'ont pas pu se charger.</p><button type="button" class="btn btn-gold" id="rt" style="margin-top:12px">Réessayer</button></div>';$("rt").onclick=loadAll})}
-loadAll();
-})();</script>
+<script src="cours.js"></script>
 <script>/* ===== COMPTE CONNECTÉ : adapte le lien Connexion ===== */(function(){try{var a=JSON.parse(sessionStorage.getItem("ifsa_auth")||localStorage.getItem("ifsa_auth")||"null");if(!a)return;var f=(a.name||"").split(" ")[0],D={student:["Mon espace","espace-etudiant.html"],teacher:["Mon espace","espace-enseignant.html"],bursar:["Mon espace","espace-econome.html"],secretary:["Mon espace","espace-secretariat.html"],branch_director:["Espace directeur","espace-directeur.html"],user:["Bonjour, "+f+" · Quitter","connexion.html?logout=1"],manager:["Espace direction","manager.html"],admin:["Espace administrateur","admin.html"]}[a.role];if(!D)return;document.querySelectorAll('a[href="connexion.html"]').forEach(function(l){var _n=l.lastChild;if(_n&&_n.nodeType===3)_n.textContent=D[0];else l.textContent=D[0];l.href=D[1]})}catch(e){}})();</script>
 <script src="ifsa-plus.js" defer></script>
 </body>

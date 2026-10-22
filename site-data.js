@@ -90,6 +90,17 @@
       if (hasSession()) return timeout(getClient().then(function (c) { return c.rpc("get_online_courses"); })).then(function (r) { if (r.error) throw r.error; return r.data || []; });
       return once("courses7", function () { return timeout(rpcRest("get_online_courses", {})).then(function (r) { if (r.error) throw r.error; return r.data || []; }); });
     },
+    /* commentaires d'un cours (la base vérifie l'audience, l'activation et le compte) */
+    comments: function (id) {
+      var q = hasSession() ? getClient().then(function (c) { return c.rpc("get_course_comments", { p_course: id }); }) : rpcRest("get_course_comments", { p_course: id });
+      return timeout(q).then(function (r) { if (r.error) throw r.error; return r.data || { enabled: false, items: [] }; });
+    },
+    commentPost: function (id, body, parent) {
+      return timeout(getClient().then(function (c) { return c.rpc("post_course_comment", { p_course: id, p_body: body, p_parent: parent || null }); })).then(function (r) { if (r.error) throw r.error; return r.data; });
+    },
+    commentDelete: function (id) {
+      return timeout(getClient().then(function (c) { return c.rpc("delete_course_comment", { p_id: id }); })).then(function (r) { if (r.error) throw r.error; return true; });
+    },
     hasSession: hasSession,
     slides: function () { return once("slides", function () { return query("home_slides", function (q) { return q.select("*").eq("published", true).order("position", { ascending: true }).limit(12); }); }); },
     testimonials: function () { return once("testi", function () { return query("testimonials", function (q) { return q.select("*").eq("published", true).order("created_at", { ascending: false }).limit(30); }); }); },
