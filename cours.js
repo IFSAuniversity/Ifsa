@@ -100,10 +100,10 @@
     $("q").oninput = function (e) { f.q = e.target.value; R(); };
     $("cxSearchBtn").onclick = function () { $("cxLib").scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); };
     $("fa").onchange = function (e) { f.an = e.target.value; R(); }; $("fr").onchange = function (e) { f.sort = e.target.value; R(); };
-    if (LOGGED) { $("fsW").hidden = false; $("fst").onchange = function (e) { f.stat = e.target.value; R(); }; }
+    if (LOGGED && $("fsW") && $("fst")) { $("fsW").hidden = false; $("fst").onchange = function (e) { f.stat = e.target.value; R(); }; }
     function openFrom(e) { var b = e.target.closest("[data-id]"); if (b) openRoom(b.dataset.id); }
     $("cxGrid").onclick = openFrom; $("cxResumeG").onclick = openFrom; if ($("cxFeat")) $("cxFeat").onclick = openFrom;
-    if (LOGGED) { var m = $("cxMy"); if (m) m.hidden = false; $("cxCtaBand").hidden = true; $("cxHeroCta").innerHTML = '<a class="cx-btn glass" href="' + ({ student: "espace-etudiant.html", teacher: "espace-enseignant.html", manager: "manager.html", admin: "admin.html" }[ROLE] || "connexion.html") + '">Mon espace</a>'; }
+    if (LOGGED) { var m = $("cxMy"); if (m) m.hidden = false; var cb = $("cxCtaBand"); if (cb) cb.hidden = true; var hc = $("cxHeroCta"); if (hc) hc.innerHTML = '<a class="cx-btn glass" href="' + ({ student: "espace-etudiant.html", teacher: "espace-enseignant.html", manager: "manager.html", admin: "admin.html" }[ROLE] || "connexion.html") + '">Mon espace</a>'; }
   }
   /* liste vide : on demande à la base ce qu'elle voit pour ce compte, pour que la cause soit lisible */
   function diag() {
