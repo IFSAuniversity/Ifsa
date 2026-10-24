@@ -1659,15 +1659,18 @@ D={profile:Object.assign({email:u.email},p||{}),courses:[],classes:cls.map(c=>({
 /* ===== Cours en ligne de la filière de l'étudiant ===== */
 const OFAC=["Sciences informatiques","Sciences comptables","Sciences administratives","Sciences de la gestion","Sciences de l'éducation","Sciences agronomiques","Sciences infirmières"],OHUE=[["#2F5BD3","#0B1F4B"],["#0E9F6E","#064E3B"],["#7C3AED","#2E1065"],["#D97706","#78350F"],["#DB2777","#500724"],["#65A30D","#1A2E05"],["#0891B2","#083344"]];
 function onlineProg(id,n){try{const d=JSON.parse(localStorage.getItem("ifsa_done")||"{}")[id]||[];return n?Math.round(d.length/n*100):0}catch(e){return 0}}
+function onlineLast(){try{return JSON.parse(localStorage.getItem("ifsa_last")||"{}")||{}}catch(e){return {}}}
 async function loadOnline(){try{
+/* la base n'envoie que les cours que cet étudiant a le droit de voir (sa faculté, cours généraux, cours publics) */
 const rows=window.IFSA?await IFSA.courses():(sb?[]:[]);
-const fac=D.profile.faculte||"";
-D.courses=rows.filter(c=>!c.locked&&(!c.faculty||!fac||c.faculty===fac)).map(c=>({id:c.id,title:c.title,fac:c.faculty||"",year:c.year||0,teacher:c.teacher||"",n:(c.lessons||[]).length,p:onlineProg(c.id,(c.lessons||[]).length),aud:c.audience}))
-.sort((a,b)=>(a.year||9)-(b.year||9));
-D.onlineOther=rows.filter(c=>!c.locked&&c.faculty&&fac&&c.faculty!==fac).length}catch(e){D.courses=D.courses||[]}}
+const fac=D.profile.faculte||"",last=onlineLast();
+/* « Mes cours » = cours de ma faculté + cours généraux (sans faculté, ex. Histoire) + tout cours que je regarde ou ai commencé */
+D.courses=rows.filter(c=>!c.locked&&(!c.faculty||!fac||c.faculty===fac||last[c.id])).map(c=>({id:c.id,title:c.title,fac:c.faculty||"",year:c.year||0,teacher:c.teacher||"",n:(c.lessons||[]).length,p:onlineProg(c.id,(c.lessons||[]).length),aud:c.audience,seen:last[c.id]||0}))
+.sort((a,b)=>((b.seen&&b.p<100?1:0)-(a.seen&&a.p<100?1:0))||(b.seen&&a.seen?b.seen-a.seen:0)||(a.year||9)-(b.year||9));
+D.onlineOther=rows.filter(c=>!c.locked&&c.faculty&&fac&&c.faculty!==fac&&!last[c.id]).length}catch(e){D.courses=D.courses||[]}}
 const _load0=load;load=async function(){await _load0();await loadOnline()};
 const ocCard=c=>{const i=Math.max(0,OFAC.indexOf(c.fac)),h=OHUE[i],ini=c.title.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();
-return '<a class="oc" href="cours.html#cours-'+esc2(c.id)+'"><div class="t" style="background:linear-gradient(150deg,'+h[0]+','+h[1]+')">'+esc2(ini)+(c.year?'<em>Année '+c.year+'</em>':'')+(c.p?'<i style="width:'+c.p+'%"></i>':'')+'</div><div class="b"><small>'+esc2(c.fac||"Tous niveaux")+'</small><b>'+esc2(c.title)+'</b>'+(c.teacher?'<small>'+esc2(c.teacher)+'</small>':'')+'<small>'+(c.n||0)+' leçon'+(c.n>1?'s':'')+(c.aud!=="public"?' · Réservé':'')+'</small><span>'+(c.p>=100?'Terminé ✓':c.p?'Reprendre · '+c.p+' %':'Commencer')+' →</span></div></a>'};
+return '<a class="oc" href="cours.html#cours-'+esc2(c.id)+'"><div class="t" style="background:linear-gradient(150deg,'+h[0]+','+h[1]+')">'+esc2(ini)+(c.year?'<em>Année '+c.year+'</em>':'')+(c.p?'<i style="width:'+c.p+'%"></i>':'')+'</div><div class="b"><small>'+esc2(c.fac||"Tous niveaux")+'</small><b>'+esc2(c.title)+'</b>'+(c.teacher?'<small>'+esc2(c.teacher)+'</small>':'')+'<small>'+(c.n||0)+' leçon'+(c.n>1?'s':'')+(c.aud!=="public"?' · Réservé':'')+(c.seen&&c.p<100?' · En cours':'')+'</small><span>'+(c.p>=100?'Terminé ✓':c.p?'Reprendre · '+c.p+' %':'Commencer')+' →</span></div></a>'};
 const fmt=d=>d?new Date(d+"T12:00:00").toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"}):"—";
 const money=n=>n.toLocaleString("fr-FR")+" $HT";
 const avg=L=>{const c=L.reduce((s,x)=>s+x.credits,0);return c?L.reduce((s,x)=>s+x.score*x.credits,0)/c:0};

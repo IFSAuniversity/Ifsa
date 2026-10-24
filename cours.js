@@ -34,7 +34,7 @@
   var C = [], loaded = false, cur = null, li = 0;
   var f = { q: "", fac: "Toutes", an: "Toutes", stat: "Toutes", sort: "az" };
 
-  function norm(r) { return { id: r.id, title: r.title, fac: r.faculty || "Autres", opt: r.opt || "", an: r.year || 0, teacher: r.teacher || "", desc: r.description || "", locked: !!r.locked, aud: r.audience, allowYt: !!r.allow_youtube, cover: r.cover_url || "", comments: r.comments !== false, lessons: (r.lessons || []).map(function (l) { return { id: l.id, t: l.t, yt: l.yt || "", dur: l.dur || "" }; }) }; }
+  function norm(r) { return { id: r.id, title: r.title, fac: r.faculty || "Cours généraux", opt: r.opt || "", an: r.year || 0, teacher: r.teacher || "", desc: r.description || "", locked: !!r.locked, aud: r.audience, allowYt: !!r.allow_youtube, cover: r.cover_url || "", comments: r.comments !== false, lessons: (r.lessons || []).map(function (l) { return { id: l.id, t: l.t, yt: l.yt || "", dur: l.dur || "" }; }) }; }
   var guarded = function (c) { return c && c.aud !== "public" && !c.locked; };
   var done = function (c) { return store.get("done", {})[c.id] || []; };
   var pct = function (c) { return c.locked || !c.lessons.length ? 0 : Math.round(done(c).length / c.lessons.length * 100); };
@@ -112,7 +112,7 @@
   }
 
   /* ================= SALLE DE COURS ================= */
-  var room, pl = null, yp = null, ytReady = false, tick = null, vq = null, st = { playing: false, dur: 0, vol: 80, muted: false, speed: 1, idleT: 0, locked: false, ended: false, resumeAt: 0, saveT: 0 };
+  var room, pl = null, yp = null, ytReady = false, tick = null, vq = null, want = null, created = "", st = { playing: false, buf: false, loading: false, dur: 0, vol: 80, muted: false, speed: 1, idleT: 0, locked: false, ended: false, resumeAt: 0, saveT: 0, errT: 0, qDone: false, lt: "" };
   var prefs = store.get("pl", { q: "auto", speed: 1, vol: 80 });
   var QS = [
     { k: "auto", l: "Auto", h: 0, tag: "S'adapte à votre connexion" },
@@ -129,63 +129,122 @@
   var wake = null;
   function keepAwake(on) { try { if (on && navigator.wakeLock) navigator.wakeLock.request("screen").then(function (w) { wake = w; }).catch(function () {}); else if (!on && wake) { wake.release(); wake = null; } } catch (e) { /* facultatif */ } }
 
-  function ytApi(cb) {
+  /* --- API YouTube : chargée une seule fois (préchargée dès l'ouverture de la page), file d'attente unique --- */
+  var ytQ = [], ytFailCb = null;
+  function ytApi(cb, fail) {
     if (window.YT && YT.Player) return cb();
-    var prev = window.onYouTubeIframeAPIReady; window.onYouTubeIframeAPIReady = function () { if (prev) try { prev(); } catch (e) { /* ignore */ } cb(); };
-    if (!$("ytapi")) { var s = d.createElement("script"); s.id = "ytapi"; s.src = "https://www.youtube.com/iframe_api"; d.head.appendChild(s); }
+    ytQ.push(cb); ytFailCb = fail || ytFailCb;
+    if (window.__cxYT) return; window.__cxYT = 1;
+    var prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = function () { if (prev) try { prev(); } catch (e) { /* ignoré */ } var q = ytQ.splice(0); q.forEach(function (f) { try { f(); } catch (e) { /* ignoré */ } }); };
+    var sc = d.createElement("script"); sc.id = "ytapi"; sc.async = true; sc.src = "https://www.youtube.com/iframe_api";
+    sc.onerror = function () { window.__cxYT = 0; sc.remove(); ytQ = []; var f = ytFailCb; ytFailCb = null; if (f) f(); };
+    d.head.appendChild(sc);
   }
-  function layout() {
+
+  /* --- mise en page : l'iframe YouTube est agrandie en hauteur ; ses bandeaux (titre + nom de la chaîne en haut, logo en bas)
+         tombent dans deux marges noires, hors de la zone visible. Marges en pixels fixes : l'interface YouTube a une hauteur fixe. --- */
+  var layRaf = 0, layKey = "";
+  function layout() { if (layRaf) return; layRaf = requestAnimationFrame(function () { layRaf = 0; doLayout(); }); }
+  function doLayout() {
     var box = $("pl"), W = box.clientWidth, H = box.clientHeight; if (!W) return;
-    var q = QS[qi(prefs.q)], vh = q.h || Math.round(W * 9 / 16), vw = Math.round(vh * 16 / 9), c = .16, ih = Math.round(vh * (1 + 2 * c)), s = W / vw, w = $("ytw");
-    w.style.width = vw + "px"; w.style.height = ih + "px"; w.style.transform = "scale(" + s + ") translateY(" + Math.round(-c * vh) + "px)";
+    var w = $("ytw"), ifr = w.querySelector("iframe"), fake = box.classList.contains("cx-fake"), full = isFull() || fake;
+    var key = [W, H, full ? 1 : 0, prefs.q, ifr ? 1 : 0].join("|"); if (key === layKey) return; layKey = key;
+    var q = QS[qi(prefs.q)], vh = q.h || Math.round(W * 9 / 16), vw = Math.round(vh * 16 / 9), bar = Math.max(Math.round(vh * .22), 140), ih = vh + 2 * bar;
+    w.style.width = vw + "px"; w.style.height = ih + "px";
     /* l'iframe garde la taille logique choisie : YouTube sert la qualité adaptée à cette taille ; elle est agrandie à l'écran */
-    var ifr = w.querySelector("iframe"); if (ifr) { ifr.style.width = vw + "px"; ifr.style.height = ih + "px"; }
-    if (H && Math.abs(H - W * 9 / 16) > 2 && !isFull() && !$("pl").classList.contains("cx-fake")) { /* format 16/9 respecté par le conteneur */ }
-    if (isFull() || $("pl").classList.contains("cx-fake")) { /* plein écran : la vidéo est centrée dans la scène */
-      var sc = Math.min(W / vw, H / vh); w.style.transform = "translate(" + Math.round((W - vw * sc) / 2) + "px," + Math.round((H - vh * sc) / 2 - c * vh * sc) + "px) scale(" + sc + ")";
-    }
+    if (ifr) { ifr.style.width = vw + "px"; ifr.style.height = ih + "px"; }
+    if (full && H) { var sc = Math.min(W / vw, H / vh); w.style.transform = "translate(" + Math.round((W - vw * sc) / 2) + "px," + Math.round((H - vh * sc) / 2 - bar * sc) + "px) scale(" + sc + ")"; }
+    else w.style.transform = "scale(" + W / vw + ") translateY(" + -bar + "px)";
   }
   function applyQuality() { try { if (yp && yp.setPlaybackQuality) { var q = QS[qi(prefs.q)]; yp.setPlaybackQuality(q.yt || "default"); } } catch (e) { /* ignoré */ } layout(); drawQ(); }
+
+  /* --- chargement (anneau comme YouTube) et erreurs --- */
+  function busy() { var b = $("pl"); b.classList.toggle("loading", !!(st.loading || st.buf)); $("spin").classList.toggle("on", !!(st.loading || st.buf)); }
+  function setLoading(on, ms) {
+    st.loading = on; clearTimeout(st.errT); busy();
+    if (!on) return;
+    st.errT = setTimeout(function () {
+      if (!st.loading || st.playing) return; st.loading = false; busy();
+      if (want && want.auto && !st.userPlay) { $("cover").classList.remove("off", "wait"); } /* lecture automatique refusée par le navigateur : on propose le bouton lecture */
+      else showErr("La vidéo met trop de temps à charger. Vérifiez votre connexion puis réessayez.");
+    }, ms || 15000);
+  }
+  function showErr(msg, title) {
+    st.loading = false; st.buf = false; st.playing = false; busy(); loop(false); $("pl").classList.remove("playing");
+    var c = $("cover"); c.className = "cx-cover"; c.innerHTML = '<div class="cx-cv">' + ic("wifi") + "<h3>" + X(title || "Lecture impossible") + "</h3><p>" + X(msg) + '</p><div style="margin-top:14px"><button type="button" class="cx-btn gold" id="rtry">Réessayer</button></div></div>';
+    $("big").classList.add("off");
+    $("rtry").onclick = function () { var t = 0; try { t = yp && yp.getCurrentTime() || 0; } catch (e) { /* ignoré */ } goLesson(li, true, t); };
+  }
+  function onErr(e) {
+    var k = e && e.data, m = k === 100 ? "Cette vidéo n'est plus disponible." : (k === 101 || k === 150) ? "La lecture de cette vidéo n'est pas autorisée sur le site. Contactez l'administration." : "Une erreur de lecture est survenue. Vérifiez votre connexion et réessayez.";
+    showErr(m);
+  }
+  function applyWant() {
+    var w = want; if (!w || !yp || !ytReady) return; created = w.vid; st.qDone = false;
+    try { yp.setVolume(prefs.vol); yp.setPlaybackRate(prefs.speed); w.auto ? yp.loadVideoById({ videoId: w.vid, startSeconds: w.start }) : yp.cueVideoById({ videoId: w.vid, startSeconds: w.start }); } catch (e) { /* ignoré */ }
+    applyQuality();
+  }
   function initPlayer(vid, autoplay, start) {
+    want = { vid: vid, auto: !!autoplay, start: Math.floor(start || 0) }; st.userPlay = false; st.buf = false;
+    setLoading(true, ytReady ? 15000 : 20000);
     ytApi(function () {
-      if (yp && yp.loadVideoById) { try { autoplay ? yp.loadVideoById({ videoId: vid, startSeconds: start || 0 }) : yp.cueVideoById({ videoId: vid, startSeconds: start || 0 }); } catch (e) { /* ignoré */ } setTimeout(applyQuality, 400); return; }
+      if (!want) return;
+      if (yp) { if (ytReady) applyWant(); return; } /* en cours de création : onReady appliquera la dernière demande */
+      created = want.vid;
       yp = new YT.Player("ytp", {
-        host: "https://www.youtube-nocookie.com", videoId: vid, width: "100%", height: "100%",
-        playerVars: { controls: 0, disablekb: 1, fs: 0, rel: 0, modestbranding: 1, playsinline: 1, iv_load_policy: 3, cc_load_policy: 0, autoplay: autoplay ? 1 : 0, start: Math.floor(start || 0), origin: location.origin },
+        host: "https://www.youtube-nocookie.com", videoId: want.vid, width: "100%", height: "100%",
+        playerVars: { controls: 0, disablekb: 1, fs: 0, rel: 0, modestbranding: 1, playsinline: 1, iv_load_policy: 3, cc_load_policy: 0, autoplay: want.auto ? 1 : 0, start: want.start, origin: location.origin, enablejsapi: 1 },
         events: {
-          onReady: function () { ytReady = true; try { yp.setVolume(prefs.vol); yp.setPlaybackRate(prefs.speed); } catch (e) { /* ignoré */ } st.dur = yp.getDuration() || 0; layout(); applyQuality(); },
-          onStateChange: onState
+          onReady: function () {
+            ytReady = true; try { yp.setVolume(prefs.vol); yp.setPlaybackRate(prefs.speed); var f = yp.getIframe(); f.setAttribute("tabindex", "-1"); f.setAttribute("title", "Lecteur vidéo"); f.setAttribute("referrerpolicy", "strict-origin-when-cross-origin"); } catch (e) { /* ignoré */ }
+            st.dur = yp.getDuration() || 0; layKey = ""; layout();
+            if (want && want.vid !== created) applyWant(); else { applyQuality(); if (want && !want.auto) setLoading(false); }
+          },
+          onStateChange: onState, onError: onErr, onPlaybackQualityChange: function () { if ($("mq").classList.contains("on")) drawQ(); }
         }
       });
       setTimeout(layout, 50);
-    });
+    }, function () { showErr("Le lecteur n'a pas pu se charger. Vérifiez votre connexion puis réessayez.", "Lecteur indisponible"); });
   }
+  function loop(on) { clearInterval(tick); tick = on ? setInterval(uiTick, 250) : null; }
   function onState(e) {
-    var s = e.data; st.playing = s === 1; $("pl").classList.toggle("playing", st.playing);
-    $("spin").classList.toggle("on", s === 3); $("big").classList.toggle("off", s === 1 || s === 3);
-    $("pp").innerHTML = ic(st.playing ? "pause" : "play", "fill");
-    if (s === 1) { st.ended = false; $("cover").classList.add("off"); st.dur = yp.getDuration() || st.dur; keepAwake(true); setTimeout(applyQuality, 600); armIdle(); }
-    else { keepAwake(false); $("pl").classList.remove("idle"); }
+    var s = e.data; st.playing = s === 1; st.buf = s === 3; $("pl").classList.toggle("playing", st.playing);
+    $("pp").innerHTML = ic(st.playing ? "pause" : "play", "fill"); $("big").classList.toggle("off", s === 1 || s === 3);
+    if (s === 1) {
+      st.ended = false; st.userPlay = false; st.loading = false; clearTimeout(st.errT); $("cover").classList.add("off"); $("cover").classList.remove("wait"); st.dur = yp.getDuration() || st.dur; keepAwake(true); armIdle();
+      if (!st.qDone) { st.qDone = true; setTimeout(applyQuality, 300); }
+    } else { keepAwake(false); $("pl").classList.remove("idle"); }
+    if (s === 5) { st.loading = false; clearTimeout(st.errT); st.dur = yp.getDuration() || st.dur; }
+    if (s === 1 || s === 3) loop(true); else { loop(false); uiTick(); }
+    busy();
     if (s === 0) { st.ended = true; markDone(true); showEnd(); }
     if (s === 2 || s === 0) savePos();
-    if (s === 5) { st.dur = yp.getDuration() || st.dur; }
+  }
+  /* lecture demandée par la personne : la couverture reste en place (donc aucune interface YouTube visible) jusqu'à la première image */
+  function startPlay() {
+    if (!yp || !ytReady) return; var c = $("cover");
+    if (!c.classList.contains("off") || st.ended) { c.classList.add("wait"); st.userPlay = true; setLoading(true, 15000); }
+    try { yp.playVideo(); } catch (e) { /* ignoré */ }
   }
   function showEnd() {
     var c = $("cover"), last = li >= cur.lessons.length - 1;
-    c.className = "cx-cover"; c.innerHTML = '<div class="cx-cv">' + ic("check") + "<h3>Leçon terminée</h3><p>" + (last ? "Vous avez terminé ce cours. Bravo !" : "Prochaine leçon : " + X(cur.lessons[li + 1].t)) + '</p><div style="margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button type="button" class="cx-btn glass" id="rplay">Revoir</button>' + (last ? "" : '<button type="button" class="cx-btn gold" id="nplay">Leçon suivante ' + ic("arrow") + "</button>") + "</div></div>";
-    $("rplay").onclick = function () { c.classList.add("off"); try { yp.seekTo(0, true); yp.playVideo(); } catch (e) { /* ignoré */ } };
+    c.className = "cx-cover now"; c.innerHTML = '<div class="cx-cv">' + ic("check") + "<h3>Leçon terminée</h3><p>" + (last ? "Vous avez terminé ce cours. Bravo !" : "Prochaine leçon : " + X(cur.lessons[li + 1].t)) + '</p><div style="margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button type="button" class="cx-btn glass" id="rplay">Revoir</button>' + (last ? "" : '<button type="button" class="cx-btn gold" id="nplay">Leçon suivante ' + ic("arrow") + "</button>") + "</div></div>";
+    $("rplay").onclick = function () { try { yp.seekTo(0, true); } catch (e) { /* ignoré */ } startPlay(); };
     if (!last) $("nplay").onclick = function () { goLesson(li + 1, true); };
   }
   function uiTick() {
-    if (!yp || !yp.getCurrentTime || !cur || cur.locked) return;
+    if (!yp || !yp.getCurrentTime || !cur || cur.locked || d.hidden) return;
     var t = 0, dur = 0, ld = 0; try { t = yp.getCurrentTime() || 0; dur = yp.getDuration() || st.dur; ld = yp.getVideoLoadedFraction() || 0; } catch (e) { return; }
-    st.dur = dur; if (!$("seek").classList.contains("drag")) { var p = dur ? t / dur * 100 : 0; $("sPg").style.width = p + "%"; $("sHd").style.left = p + "%"; }
-    $("sBf").style.width = ld * 100 + "%"; $("tm").textContent = fmtT(t) + " / " + fmtT(dur);
+    st.dur = dur;
+    if (!$("seek").classList.contains("drag")) { var p = dur ? t / dur * 100 : 0; $("sPg").style.width = p + "%"; $("sHd").style.left = p + "%"; }
+    $("sBf").style.width = ld * 100 + "%";
+    var tx = fmtT(t) + " / " + fmtT(dur); if (tx !== st.lt) { st.lt = tx; $("tm").textContent = tx; }
     if (st.playing && Date.now() - st.saveT > 5000) { st.saveT = Date.now(); savePos(); }
   }
   function savePos() { try { if (!yp || !cur || cur.locked) return; var t = yp.getCurrentTime(), p = store.get("pos", {}); p[cur.id + "-" + li] = st.ended ? 0 : Math.floor(t); store.set("pos", p); var l = lastMap(); l[cur.id] = Date.now(); store.set("last", l); } catch (e) { /* ignoré */ } }
-  function toggle() { if (!yp || !yp.getPlayerState || st.locked) return; var s = yp.getPlayerState(); if (s === 1 || s === 3) yp.pauseVideo(); else { $("cover").classList.add("off"); yp.playVideo(); } }
-  function seekBy(n) { if (!yp || st.locked) return; try { yp.seekTo(Math.max(0, Math.min(st.dur || 1e9, yp.getCurrentTime() + n)), true); } catch (e) { /* ignoré */ } uiTick(); }
+  function toggle() { if (!yp || !yp.getPlayerState || !ytReady || st.locked) return; var s = yp.getPlayerState(); if (s === 1 || s === 3) yp.pauseVideo(); else startPlay(); }
+  function seekBy(n) { if (!yp || !ytReady || st.locked || !$("cover").classList.contains("off")) return; try { yp.seekTo(Math.max(0, Math.min(st.dur || 1e9, yp.getCurrentTime() + n)), true); } catch (e) { /* ignoré */ } uiTick(); }
   function armIdle() { clearTimeout(st.idleT); $("pl").classList.remove("idle"); if (!st.playing) return; st.idleT = setTimeout(function () { if (st.playing && !d.querySelector(".cx-menu.on")) $("pl").classList.add("idle"); }, 2800); }
   function closeMenus() { [].forEach.call(d.querySelectorAll(".cx-menu"), function (m) { m.classList.remove("on"); }); }
   function openMenu(id) { var m = $(id), was = m.classList.contains("on"); closeMenus(); if (!was) { m.classList.add("on"); if (id === "mq") drawQ(); } }
@@ -248,7 +307,7 @@
   }
   function closeRoom(fromBack) {
     if (!room || room.hidden) return;
-    try { if (yp && yp.pauseVideo) { savePos(); yp.pauseVideo(); } } catch (e) { /* ignoré */ }
+    try { if (yp && yp.pauseVideo) { savePos(); yp.pauseVideo(); } } catch (e) { /* ignoré */ } setLoading(false); loop(false);
     if (isFull()) try { d.exitFullscreen(); } catch (e) { /* ignoré */ } exitFake(); setLock(false); keepAwake(false);
     room.classList.remove("on"); root.classList.remove("cx-lock");
     setTimeout(function () { room.hidden = true; }, 380);
@@ -271,25 +330,28 @@
     $("bPrev").disabled = li <= 0; $("bNext").disabled = li >= cur.lessons.length - 1;
     var b = $("bDone"); b.hidden = cur.locked || !LOGGED; b.className = "cx-ib" + (ok ? " ok" : ""); b.innerHTML = ic("check") + '<span class="t">' + (ok ? "Terminée" : "Marquer comme terminée") + "</span>";
   }
-  function goLesson(i, auto) {
+  var cssUrl = function (u) { return String(u || "").replace(/["'()\s\\<>]/g, function (c) { return encodeURIComponent(c); }); };
+  function coverBg(c) { var h = HUE[facIdx(c)]; return c.cover && /^https:\/\//i.test(c.cover) ? "background:linear-gradient(180deg,rgba(5,11,30,.5),rgba(5,11,30,.88)),url(" + cssUrl(c.cover) + ") center/cover" : "background:radial-gradient(700px 360px at 50% 0,rgba(255,255,255,.16),transparent 70%),linear-gradient(150deg," + h[0] + "," + h[1] + ")"; }
+  function goLesson(i, auto, startAt) {
     if (i < 0 || i >= cur.lessons.length) return; savePos(); li = i; var l = cur.lessons[i], b = $("pl");
     drawSide(); drawLessonBar(); drawAbout(); loadNote();
     var w = b.querySelector(".cx-wall"); if (w) w.remove(); b.classList.toggle("guard", guarded(cur));
     $("wm").hidden = !guarded(cur); $("wm").textContent = guarded(cur) ? ((auth && (auth.name || auth.email)) || "IFSA") + " · " + new Date().toLocaleDateString("fr-FR") : "";
-    var c = $("cover"); c.className = "cx-cover"; st.ended = false;
+    var c = $("cover"); c.className = "cx-cover"; c.style.cssText = coverBg(cur); st.ended = false; st.playing = false; st.buf = false; st.lt = ""; layKey = ""; loop(false);
     $("pp").innerHTML = ic("play", "fill"); $("sPg").style.width = "0"; $("sHd").style.left = "0"; $("tm").textContent = "0:00 / " + (l.dur || "0:00"); $("big").classList.remove("off");
     if (cur.locked) {
-      try { if (yp && yp.pauseVideo) yp.pauseVideo(); } catch (e) { /* ignoré */ }
+      try { if (yp && yp.pauseVideo) yp.pauseVideo(); } catch (e) { /* ignoré */ } setLoading(false);
       c.innerHTML = ""; c.classList.add("off");
       b.insertAdjacentHTML("beforeend", '<div class="cx-wall"><div>' + ic("lock") + '<h3>Cours verrouillé</h3><p>Ce cours est réservé aux ' + X((AUD[cur.aud] || "personnes autorisées").toLowerCase()) + "." + (LOGGED ? " Votre compte n'y a pas accès." : " Connectez-vous avec un compte autorisé pour le regarder.") + "</p>" + (LOGGED ? "" : '<a class="cx-btn gold" href="connexion.html">Se connecter</a>') + "</div></div>");
       $("ctl").hidden = true; $("big").hidden = true; return;
     }
     $("ctl").hidden = false; $("big").hidden = false;
     if (l.yt) {
-      var pos = store.get("pos", {})[cur.id + "-" + i] || 0; c.innerHTML = '<div class="cx-cv start"><small>' + X(cur.fac) + "</small><h3>" + X(l.t) + "</h3><p>Appuyez sur lecture pour commencer.</p></div>"; if (!auto) c.classList.remove("off");
+      var pos = startAt != null ? startAt : store.get("pos", {})[cur.id + "-" + i] || 0; c.innerHTML = '<div class="cx-cv start"><small>' + X(cur.fac) + "</small><h3>" + X(l.t) + "</h3><p>Appuyez sur lecture pour commencer.</p></div>";
+      /* la couverture reste en place jusqu'à la première image : l'interface YouTube n'apparaît jamais */
+      if (auto) c.classList.add("wait");
       layout(); initPlayer(l.yt, !!auto, pos);
-      if (auto) c.classList.add("off");
-    } else { c.innerHTML = '<div class="cx-cv">' + ic("play", "fill") + "<h3>Vidéo bientôt disponible</h3><p>Cette leçon sera publiée prochainement.</p></div>"; $("ctl").hidden = true; $("big").hidden = true; try { if (yp && yp.pauseVideo) yp.pauseVideo(); } catch (e) { /* ignoré */ } }
+    } else { c.innerHTML = '<div class="cx-cv">' + ic("play", "fill") + "<h3>Vidéo bientôt disponible</h3><p>Cette leçon sera publiée prochainement.</p></div>"; $("ctl").hidden = true; $("big").hidden = true; setLoading(false); try { if (yp && yp.pauseVideo) yp.pauseVideo(); } catch (e) { /* ignoré */ } }
     drawQ();
   }
 
@@ -368,10 +430,12 @@
     var lastTap = 0, tapT;
     $("shield").addEventListener("click", function (e) {
       if (st.locked) { b.classList.add("hint"); clearTimeout(tapT); tapT = setTimeout(function () { b.classList.remove("hint"); }, 2400); return; }
-      closeMenus(); var now = Date.now(), r = this.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+      closeMenus(); if (e.pointerType === "mouse") { toggle(); return; }
+      var now = Date.now(), r = this.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
       if (now - lastTap < 280 && (x < .35 || x > .65)) { clearTimeout(tapT); var back = x < .5; seekBy(back ? -10 : 10); var z = $(back ? "bzl" : "bzr"); z.classList.remove("go"); void z.offsetWidth; z.classList.add("go"); lastTap = 0; return; }
       lastTap = now; tapT = setTimeout(toggle, 260);
     });
+    $("shield").addEventListener("dblclick", function (e) { e.preventDefault(); toggleFull(false); });
     $("big").onclick = toggle; $("pp").onclick = toggle; $("sb").onclick = function () { seekBy(-10); }; $("sf").onclick = function () { seekBy(10); };
     $("mu").onclick = function () { if (!yp) return; var m = yp.isMuted(); m ? yp.unMute() : yp.mute(); $("mu").innerHTML = ic(m ? "vol" : "mute"); };
     $("vo").value = prefs.vol; $("vo").oninput = function () { prefs.vol = +this.value; store.set("pl", prefs); try { yp.setVolume(prefs.vol); if (prefs.vol > 0) yp.unMute(); } catch (e) { /* ignoré */ } };
@@ -391,7 +455,7 @@
     var sk = $("seek"), dragging = false;
     function pos(e) { var r = sk.getBoundingClientRect(), x = Math.max(0, Math.min(1, ((e.touches ? e.touches[0].clientX : e.clientX) - r.left) / r.width)); return x; }
     function prev(e) { var x = pos(e); $("sTip").style.left = x * 100 + "%"; $("sTip").textContent = fmtT(x * st.dur); return x; }
-    sk.addEventListener("pointerdown", function (e) { if (st.locked || !yp) return; dragging = true; sk.classList.add("drag"); sk.setPointerCapture(e.pointerId); var x = prev(e); $("sPg").style.width = x * 100 + "%"; $("sHd").style.left = x * 100 + "%"; });
+    sk.addEventListener("pointerdown", function (e) { if (st.locked || !yp || !ytReady || !$("cover").classList.contains("off")) return; dragging = true; sk.classList.add("drag"); sk.setPointerCapture(e.pointerId); var x = prev(e); $("sPg").style.width = x * 100 + "%"; $("sHd").style.left = x * 100 + "%"; });
     sk.addEventListener("pointermove", function (e) { var x = prev(e); if (dragging) { $("sPg").style.width = x * 100 + "%"; $("sHd").style.left = x * 100 + "%"; } });
     sk.addEventListener("pointerup", function (e) { if (!dragging) return; dragging = false; sk.classList.remove("drag"); var x = pos(e); try { yp.seekTo(x * st.dur, true); } catch (er) { /* ignoré */ } uiTick(); });
     d.addEventListener("click", function (e) { var inside = (e.composedPath ? e.composedPath() : []).some(function (n) { return n.classList && (n.classList.contains("cx-menu") || n.id === "qb" || n.id === "spb"); }); if (!inside) closeMenus(); });
@@ -399,7 +463,6 @@
     d.addEventListener("webkitfullscreenchange", function () { setTimeout(layout, 80); });
     addEventListener("orientationchange", function () { metrics(); setTimeout(layout, 200); });
     if (window.ResizeObserver) new ResizeObserver(layout).observe($("pl"));
-    tick = setInterval(uiTick, 300);
     /* protection : pas de copie, pas de menu contextuel, pas d'enregistrement du lien dans la salle */
     room.addEventListener("copy", function (e) { if (guarded(cur) && !e.target.closest("textarea")) e.preventDefault(); });
     room.addEventListener("contextmenu", function (e) { if (guarded(cur) && !e.target.closest("textarea,input")) e.preventDefault(); });
@@ -409,6 +472,8 @@
       if (tg === "TEXTAREA" || tg === "INPUT" || tg === "SELECT" || st.locked) return;
       if (e.key === " " || e.key === "k") { e.preventDefault(); toggle(); } else if (e.key === "ArrowLeft" || e.key === "j") seekBy(-10); else if (e.key === "ArrowRight" || e.key === "l") seekBy(10);
       else if (e.key === "m") $("mu").click(); else if (e.key === "f") toggleFull(false);
+      else if (e.key === "ArrowUp" || e.key === "ArrowDown") { e.preventDefault(); prefs.vol = Math.max(0, Math.min(100, prefs.vol + (e.key === "ArrowUp" ? 10 : -10))); $("vo").value = prefs.vol; store.set("pl", prefs); try { yp.setVolume(prefs.vol); if (prefs.vol > 0) yp.unMute(); } catch (x) { /* ignoré */ } }
+      else if (/^[0-9]$/.test(e.key) && st.dur) { try { yp.seekTo(st.dur * (+e.key) / 10, true); } catch (x) { /* ignoré */ } uiTick(); }
     });
   }
 
@@ -443,6 +508,10 @@
   function boot() {
     if (!window.IFSA) { setTimeout(boot, 60); return; }
     initLib(); initRoom(); initAway(); load();
+    /* préchargement du lecteur YouTube pendant que la personne parcourt la bibliothèque : la salle s'ouvre plus vite */
+    (window.requestIdleCallback || function (f) { return setTimeout(f, 1500); })(function () { try { ytApi(function () {}); } catch (e) { /* ignoré */ } });
+    addEventListener("offline", function () { if (room && !room.hidden) toast("Connexion perdue : la lecture reprendra dès son retour.", true); });
+    addEventListener("online", function () { if (room && !room.hidden) toast("Connexion rétablie."); });
     addEventListener("hashchange", function () { var h = location.hash; if (h.indexOf("#cours-") === 0 && loaded) openRoom(h.slice(7), true); });
   }
   boot();
