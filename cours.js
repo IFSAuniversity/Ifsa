@@ -105,10 +105,18 @@
     $("cxGrid").onclick = openFrom; $("cxResumeG").onclick = openFrom; if ($("cxFeat")) $("cxFeat").onclick = openFrom;
     if (LOGGED) { var m = $("cxMy"); if (m) m.hidden = false; $("cxCtaBand").hidden = true; $("cxHeroCta").innerHTML = '<a class="cx-btn glass" href="' + ({ student: "espace-etudiant.html", teacher: "espace-enseignant.html", manager: "manager.html", admin: "admin.html" }[ROLE] || "connexion.html") + '">Mon espace</a>'; }
   }
+  /* liste vide : on demande à la base ce qu'elle voit pour ce compte, pour que la cause soit lisible */
+  function diag() {
+    IFSA.client().then(function (c) { return c.rpc("course_debug"); }).then(function (r) {
+      var g = $("cxGrid").querySelector(".cx-empty"); if (!g) return;
+      var o = r && r.data, t = r && r.error ? "fonction course_debug absente : exécutez supabase-update-9a.sql (" + (r.error.message || "") + ")" : o ? "connecté : " + (o.connecte ? "oui" : "non") + " · rôle : " + (o.role_profil || "—") + " · statut : " + (o.statut || "—") + " · rôle actif : " + (o.role_actif || "aucun") + " · faculté : " + (o.faculte || "non renseignée") + " · cours publiés : " + o.cours_publies + " · cours publics : " + o.cours_publics + " · visibles pour vous : " + o.cours_visibles : "";
+      if (t) g.insertAdjacentHTML("beforeend", '<p style="font-size:.74rem;opacity:.7;margin-top:10px;max-width:520px">Diagnostic — ' + X(t) + "</p>");
+    }).catch(function () { /* diagnostic facultatif */ });
+  }
   function load() {
     $("cxGrid").innerHTML = [1, 2, 3, 4, 5, 6].map(function () { return '<div class="cx-skel"></div>'; }).join("");
-    IFSA.courses().then(function (rows) { C = rows.map(norm); loaded = true; R(); var h = location.hash; if (h.indexOf("#cours-") === 0) openRoom(h.slice(7), true); })
-      .catch(function () { $("cxGrid").innerHTML = '<div class="cx-empty">' + ic("wifi") + "<p>Les cours n'ont pas pu se charger.</p><button type=\"button\" class=\"cx-btn gold\" id=\"cxRetry\" style=\"margin-top:12px\">Réessayer</button></div>"; $("cxRetry").onclick = load; });
+    IFSA.courses().then(function (rows) { C = rows.map(norm); loaded = true; R(); if (!C.length) diag(); var h = location.hash; if (h.indexOf("#cours-") === 0) { openRoom(h.slice(7), true); if (!cur) toast("Ce cours n'est pas disponible pour votre compte.", true); } })
+      .catch(function (e) { var m = e && (e.message || e.details || e.code) || ""; $("cxGrid").innerHTML = '<div class="cx-empty">' + ic("wifi") + "<p>Les cours n'ont pas pu se charger.</p>" + (m ? '<p style="font-size:.78rem;opacity:.75">Détail : ' + X(m) + "</p>" : "") + "<button type=\"button\" class=\"cx-btn gold\" id=\"cxRetry\" style=\"margin-top:12px\">Réessayer</button></div>"; $("cxRetry").onclick = load; });
   }
 
   /* ================= SALLE DE COURS ================= */
