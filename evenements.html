@@ -1244,6 +1244,7 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 </style>
 <meta name="theme-color" content="#071A45"><meta property="og:type" content="website"><meta property="og:site_name" content="IFSA University"><meta property="og:title" content="Événements — IFSA University"><meta property="og:description" content="Les événements et rendez-vous d'IFSA University : portes ouvertes, conférences, cérémonies."><meta property="og:image" content="https://i.postimg.cc/8zMT8g8M/No-background.png"><meta property="og:locale" content="fr_FR">
   <link rel="stylesheet" href="ifsa-plus.css">
+<link rel="stylesheet" href="ifsa-modern.css?v=33">
 </head>
 <body data-page="contact.html">
   <a class="skip" href="#main">Aller au contenu</a>
@@ -1540,5 +1541,6 @@ IFSA.events().then(function(rows){E=rows.map(function(r){return [r.event_date,r.
 })();</script>
 <script>/* ===== COMPTE CONNECTÉ : adapte le lien Connexion ===== */(function(){try{var a=JSON.parse(sessionStorage.getItem("ifsa_auth")||localStorage.getItem("ifsa_auth")||"null");if(!a)return;var f=(a.name||"").split(" ")[0],D={student:["Mon espace","espace-etudiant.html"],teacher:["Mon espace","espace-enseignant.html"],bursar:["Mon espace","espace-econome.html"],secretary:["Mon espace","espace-secretariat.html"],branch_director:["Espace directeur","espace-directeur.html"],user:["Bonjour, "+f+" · Quitter","connexion.html?logout=1"],manager:["Espace direction","manager.html"],admin:["Espace administrateur","admin.html"]}[a.role];if(!D)return;document.querySelectorAll('a[href="connexion.html"]').forEach(function(l){var _n=l.lastChild;if(_n&&_n.nodeType===3)_n.textContent=D[0];else l.textContent=D[0];l.href=D[1]})}catch(e){}})();</script>
 <script src="ifsa-plus.js" defer></script>
+<script src="ifsa-modern.js?v=33" defer></script>
 </body>
 </html>

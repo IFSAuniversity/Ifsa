@@ -1280,6 +1280,7 @@ main{padding-top:0!important}
 .ap{padding-top:18px!important}
 .hd-app+main,.hd-app ~ main{min-height:70dvh}
 </style>
+<link rel="stylesheet" href="ifsa-modern.css?v=33">
 </head>
 <body data-page="contact.html">
   <a class="skip" href="#main">Aller au contenu</a>
@@ -1665,5 +1666,6 @@ IFX_HEADER({title:"Espace enseignant",name:G.profile.full_name||"Enseignant",rol
 try{const ok=await IFSACore.retry(load);if(!ok)return;const n=ME.full_name||"Enseignant";$("un").textContent=n;$("ua").textContent=ini(n);$("us").textContent="Enseignant · "+(SN[ME.site_id]||"");$("dt").textContent=new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});render()}catch(e){IFSACore.fail({login:"index.html"},e)}})();
 })();</script>
 <script src="ifsa-plus.js" defer></script>
+<script src="ifsa-modern.js?v=33" defer></script>
 </body>
 </html>

@@ -47,6 +47,7 @@ label{display:block;font-weight:700;font-size:.84rem;margin:0 0 6px}
 .state a{display:inline-block;margin-top:16px;color:var(--navy);font-weight:700}[data-theme="dark"] .state a{color:var(--gold2)}
 .sp{display:inline-block;width:22px;height:22px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--gold);animation:s .7s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
 </style>
+<link rel="stylesheet" href="ifsa-modern.css?v=33">
 </head>
 <body>
 <main class="card" id="c" aria-live="polite">
@@ -93,5 +94,6 @@ call({action:"check",token:T}).then(function(r){
 }).catch(function(){bad("Connexion impossible","Vérifiez votre réseau puis rechargez la page.")});
 })();
 </script>
+<script src="ifsa-modern.js?v=33" defer></script>
 </body>
 </html>

@@ -1239,6 +1239,7 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 <meta name="theme-color" content="#071A45"><meta property="og:type" content="website"><meta property="og:site_name" content="IFSA University"><meta property="og:title" content="Contact — IFSA University"><meta property="og:description" content="Contacter IFSA University : sites, téléphones, email."><meta property="og:image" content="https://i.postimg.cc/8zMT8g8M/No-background.png"><meta property="og:locale" content="fr_FR">
   <link rel="stylesheet" href="ifsa-plus.css">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin><link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
+<link rel="stylesheet" href="ifsa-modern.css?v=33">
 </head>
 <body data-page="contact.html">
   <a class="skip" href="#main">Aller au contenu</a>
@@ -1625,5 +1626,6 @@ document.getElementById('cf').onsubmit=e=>{e.preventDefault();const f=e.target;l
 <script src="ifsa-map.js" defer></script>
 <script>(function(){function go(){if(!window.IFSAMap)return setTimeout(go,60);var h=document.getElementById("ifsa-map");if(!h)return;if("IntersectionObserver"in window){new IntersectionObserver(function(e,o){if(e[0].isIntersecting){o.disconnect();IFSAMap.mount(h)}},{rootMargin:"400px"}).observe(h)}else IFSAMap.mount(h)}go()})();</script>
 <script src="ifsa-plus.js" defer></script>
+<script src="ifsa-modern.js?v=33" defer></script>
 </body>
 </html>

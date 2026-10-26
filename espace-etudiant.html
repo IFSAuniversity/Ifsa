@@ -1316,6 +1316,7 @@ main{padding-top:0!important}
 .oc-h{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px;padding:14px 16px;border-radius:16px;background:linear-gradient(135deg,rgba(201,162,75,.16),rgba(201,162,75,.05));border:1px solid rgba(201,162,75,.4)}
 .oc-h p{flex:1;min-width:200px;margin:0;font-size:.9rem}
 </style>
+<link rel="stylesheet" href="ifsa-modern.css?v=33">
 </head>
 <body data-page="contact.html">
   <a class="skip" href="#main">Aller au contenu</a>
@@ -1734,5 +1735,6 @@ try{await IFSACore.retry(load)}catch(e){IFSACore.fail({login:"connexion.html"},e
 const n=D.profile.full_name||"Étudiant";$("un").textContent=n;$("ua").textContent=n.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase();$("us").innerHTML=auth.demo?"Aperçu interne":esc2(D.profile.faculte||"Étudiant");if(!auth.demo){$("us").insertAdjacentHTML("afterend",'<div style="margin-top:6px">'+(D.profile.validated?'<span class="bdg">✓ Validé</span>':"")+(D.profile.badges||[]).map(b=>'<span class="bdg o">'+esc2(b)+"</span>").join("")+"</div>")}$("dt").textContent=new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});render()})();
 })();</script>
 <script src="ifsa-plus.js" defer></script>
+<script src="ifsa-modern.js?v=33" defer></script>
 </body>
 </html>
