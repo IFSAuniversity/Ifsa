@@ -72,17 +72,19 @@ button[aria-busy="true"]::after{content:"";width:1em;height:1em;margin-left:.5em
 #hdr.sm{box-shadow:var(--mx-sh2)}
 #hdr .logo,#hdr .logo span{color:var(--mx-navy)}
 #hdr .logo small{color:#6B7690}
+@media(min-width:1181px){
 #nav a{border-radius:10px;font-weight:600;color:#1B2A4E;transition:background-color .2s,color .2s}
 #nav a:hover,#nav a.on,#nav a[aria-current="page"]{background:var(--mx-blue-s);color:var(--mx-blue-d)}
+}
 .dd-m{border:1px solid var(--mx-line);border-radius:14px;box-shadow:var(--mx-sh2)}
 .dd-m a{border-radius:9px}
 [data-theme="dark"] #hdr{background:rgba(10,18,48,.92);border-color:#243256}
 [data-theme="dark"] #hdr .logo,[data-theme="dark"] #hdr .logo span{color:#fff}
 [data-theme="dark"] #hdr .logo small{color:var(--gold2)}
+@media(min-width:1181px){
 [data-theme="dark"] #nav a{color:#D5DEF2}
 [data-theme="dark"] #nav a:hover,[data-theme="dark"] #nav a.on,[data-theme="dark"] #nav a[aria-current="page"]{background:rgba(76,134,255,.16);color:#fff}
-#hdr.open{background:transparent;border-color:transparent;box-shadow:none}
-#hdr.open .logo,#hdr.open .logo span{color:#fff}
+}
 #burger{border-radius:12px;min-width:44px;min-height:44px}
 
 /* en-tête des espaces connectés (étudiant, professeur, administration) */
@@ -97,6 +99,43 @@ button[aria-busy="true"]::after{content:"";width:1em;height:1em;margin-left:.5em
 .theme-t{background:#E6ECF8!important;border:1px solid var(--mx-line)!important;box-shadow:none!important}
 .theme-t .i-sun{color:#B8741A}
 [data-theme="dark"] .theme-t{background:#14214A!important;border-color:#2A3A66!important}
+
+
+/* ===== MENU MOBILE / TABLETTE : panneau blanc, éléments lisibles, sélection en bleu clair ===== */
+@media(max-width:1180px){
+  #nav{background:#fff!important;gap:6px}
+  #hdr.open{background:transparent;border-color:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+  #hdr.open .logo,#hdr.open .logo span{color:var(--mx-navy)}
+  #hdr.open .logo small{color:#6B7690}
+  #hdr.open #burger{background:var(--mx-blue-s)}
+  #hdr.open #burger .bars::before,#hdr.open #burger .bars::after{background:var(--mx-navy)}
+  #nav>a,.dd>a{font:600 1.08rem 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--mx-navy);min-height:56px;border-radius:14px;
+    transition:background-color .2s,color .2s}
+  #nav a:hover,#nav a.on,#nav a[aria-current="page"],#nav a:active{background:#E3ECFF;color:#1741B8}
+  #nav .ni{width:40px;height:40px;border-radius:12px;background:#EEF3FF;color:var(--mx-blue-d);align-items:center;justify-content:center;opacity:1;margin-right:14px;flex:none}
+  #nav .ni svg{width:21px;height:21px}
+  #nav a.on .ni,#nav a[aria-current="page"] .ni{background:var(--mx-blue);color:#fff}
+  .dd-t{color:var(--mx-navy);border-radius:12px}
+  .dd-t:hover{background:#E3ECFF}
+  .dd-m{background:#F4F7FD;border:1px solid #E3E9F5;border-radius:14px;padding:6px;margin:2px 0 8px 12px}
+  .dd-m a{color:#26365E;min-height:50px;font-size:1rem;font-weight:600;border-radius:10px}
+  .dd-m a:hover,.dd-m a:active,.dd-m a[aria-current="page"]{background:#E3ECFF;color:#1741B8}
+  .dd-m a svg{color:var(--mx-blue-d)}
+  #nav>a.nav-cta{background:var(--mx-blue);color:#fff;justify-content:center;border-radius:14px;box-shadow:0 8px 20px rgba(37,99,235,.3);margin-top:18px}
+  #nav>a.nav-cta:hover{background:var(--mx-blue-d);color:#fff}
+  /* mode sombre : panneau sombre, texte clair, sélection bleutée */
+  [data-theme="dark"] #nav{background:#0A1230!important}
+  [data-theme="dark"] #hdr.open .logo,[data-theme="dark"] #hdr.open .logo span{color:#fff}
+  [data-theme="dark"] #hdr.open #burger{background:rgba(255,255,255,.1)}
+  [data-theme="dark"] #hdr.open #burger .bars::before,[data-theme="dark"] #hdr.open #burger .bars::after{background:#fff}
+  [data-theme="dark"] #nav>a,[data-theme="dark"] .dd>a,[data-theme="dark"] .dd-t{color:#E4EAF7}
+  [data-theme="dark"] #nav a:hover,[data-theme="dark"] #nav a.on,[data-theme="dark"] #nav a[aria-current="page"]{background:rgba(76,134,255,.2);color:#fff}
+  [data-theme="dark"] #nav .ni{background:rgba(255,255,255,.07);color:#9CC0FF}
+  [data-theme="dark"] .dd-m{background:#101B3B;border-color:#243256}
+  [data-theme="dark"] .dd-m a{color:#D5DEF2}
+  [data-theme="dark"] .dd-m a:hover{background:rgba(76,134,255,.2);color:#fff}
+  [data-theme="dark"] #nav>a.nav-cta{color:#06122E}
+}
 
 /* ===== 5. ACCUEIL ===== */
 .hs h1,.hs h2.hs-h{text-shadow:0 2px 24px rgba(0,0,0,.35);letter-spacing:-.015em}
@@ -275,6 +314,26 @@ td,th{vertical-align:middle}
 .cx-tabs .n,.cx-hdb,.cx-pls li.on .n,.cx-ib[aria-pressed=true],.cx-step button:hover:not(:disabled),.cx-big:hover,.cx-card:hover .cx-play{color:#fff}
 .cx-card,.cr-card,.crs,.course-card{border-radius:var(--mx-r);overflow:hidden;box-shadow:var(--mx-sh1);transition:transform .25s,box-shadow .25s}
 .cx-card:hover,.cr-card:hover,.crs:hover,.course-card:hover{transform:translateY(-4px);box-shadow:var(--mx-sh2)}
+
+
+/* salle de cours + bibliothèque : fini le beige / brun doré — surfaces blanches, sélection en bleu clair, texte foncé lisible */
+.cx-room{--r-acc:#1741B8;--r-accbg:#E3ECFF;--r-bg:#F4F7FD}
+[data-theme="dark"] .cx-room{--r-acc:#9CC0FF;--r-accbg:rgba(76,134,255,.2)}
+.cx-pls li.on button{background:var(--r-accbg);border-color:rgba(37,99,235,.45)}
+.cx-pls li.on button b,.cx-pls li.on button strong{color:var(--r-tx)}
+.cx-pls li button:hover{background:rgba(37,99,235,.07)}
+.cx-pls li.on .n{background:var(--mx-blue);border-color:var(--mx-blue);color:#fff}
+.cx-opt.on{border-color:var(--mx-blue);background:var(--r-accbg,#E3ECFF)}
+.cx-gate{border-color:rgba(37,99,235,.35)}
+.cx-pop .ic-w{background:var(--mx-blue-s);color:var(--mx-blue-d)}
+.cx-why .ico{background:var(--mx-blue-s);color:var(--mx-blue-d)}
+.cx-card:hover,.cx-card:focus-visible{border-color:rgba(37,99,235,.5)}
+.cx-lib::before{background:radial-gradient(500px 300px at 8% 10%,rgba(37,99,235,.08),transparent 70%)}
+.cx-cta::before{background:radial-gradient(600px 300px at 50% 0,rgba(76,134,255,.3),transparent 70%)}
+.cx-chip{border-color:var(--mx-line)}
+.cx-chip.on{background:var(--mx-blue);border-color:var(--mx-blue);color:#fff}
+.cx-chip.on i,.cx-chip.on em{color:#fff;opacity:.85}
+[data-theme="dark"] .cx-chip.on{color:#06122E}
 
 /* ===== 12. FENÊTRES ET MESSAGES ===== */
 dialog,.modal-box,.m-box,.mdl>div,.m.b>div{border-radius:20px}
