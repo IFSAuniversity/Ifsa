@@ -11,7 +11,7 @@
 <link rel="icon" href="https://i.postimg.cc/8zMT8g8M/No-background.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>/* Thème : appliqué avant l'affichage pour éviter tout flash */(function(){var r=document.documentElement,t='light';try{var v=localStorage.getItem('ifsa-theme');t=(v==='light'||v==='dark')?v:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}r.dataset.theme=t;r.classList.add('js');setTimeout(function(){r.classList.add('ifx-all')},7000)})();</script>
   <style>
 /* ==========================================================
@@ -1238,10 +1238,10 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 </style>
 <meta name="theme-color" content="#071A45"><meta property="og:type" content="website"><meta property="og:site_name" content="IFSA University"><meta property="og:title" content="Actualités — IFSA University"><meta property="og:description" content="Les actualités d'IFSA University."><meta property="og:image" content="https://i.postimg.cc/8zMT8g8M/No-background.png"><meta property="og:locale" content="fr_FR">
   <link rel="stylesheet" href="ifsa-plus.css">
-  <link rel="stylesheet" href="actualites.css">
 <link rel="stylesheet" href="ifsa-modern.css?v=33">
+<link rel="stylesheet" href="journal.css?v=33">
 </head>
-<body data-page="actualites.html">
+<body data-page="actualites.html" class="jn-page">
   <a class="skip" href="#main">Aller au contenu</a>
 
   <!-- ===== HEADER ===== -->
@@ -1277,36 +1277,39 @@ html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transit
 
   <!-- ===== CONTENU DE LA PAGE ===== -->
   <main id="main">
-    <header class="jr-mast">
+    <header class="jn-mast">
       <div class="wrap">
-        <div class="jr-mast-top"><span>Fondé en 2007</span><span>L'éducation aujourd'hui, le succès demain</span><span>Édition en ligne</span></div>
-        <h1 class="jr-t">Le Journal <em>d'IFSA</em></h1>
-        <p class="jr-sub">Annonces, campus, événements et vie académique : toute l'actualité de l'université.</p>
+        <div class="jn-top"><span>IFSA University</span><span id="jn-ed">Édition numérique</span><time id="jn-date"></time></div>
+        <h1 class="jn-t">Le Journal <em>d'IFSA</em></h1>
+        <p class="jn-sub" id="jn-sub">Annonces, campus, événements et vie académique : toute l'actualité de l'université.</p>
       </div>
     </header>
-    <section id="jr">
+    <section id="jn" class="jn" aria-busy="true">
       <div class="wrap">
-        <div class="jr-meta"><span id="jr-date"></span><span>IFSA University · Édition en ligne</span></div>
-        <div class="jr-bar">
-          <div class="jr-cats" id="jr-cats" role="group" aria-label="Filtrer par rubrique"></div>
-          <div class="jr-s"><input id="jr-q" type="search" placeholder="Rechercher un article…" aria-label="Rechercher un article"></div>
+        <div class="jn-bar">
+          <div class="jn-cats" id="jn-cats" role="group" aria-label="Filtrer par rubrique" hidden></div>
+          <form class="jn-s" id="jn-sf" role="search">
+            <label class="jn-sr" for="jn-q">Rechercher dans le journal</label>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="jn-q" type="search" placeholder="Rechercher un article…" autocomplete="off" enterkeyhint="search">
+          </form>
         </div>
-        <div class="jr-lead" id="jr-lead"></div>
-        <div class="jr-g" id="jr-g"></div>
-        <p class="jr-empty" id="jr-none" role="status" hidden>Aucune actualité publiée pour le moment.</p>
-        <div class="jr-more" id="jr-more" hidden><button class="btn btn-navy" type="button">Voir plus d'articles</button></div>
+        <p class="jn-count" id="jn-count" role="status" aria-live="polite"></p>
+        <div id="jn-out"><p class="jn-load">Chargement du journal…</p></div>
+        <div class="jn-empty" id="jn-none" role="status" hidden><p></p></div>
+        <div class="jn-more" id="jn-more" hidden><button class="jn-btn" type="button">Voir plus d'articles</button></div>
       </div>
     </section>
-    <section class="dark">
-      <div class="wrap grid2">
-        <div class="rv">
-          <h2>Restez informé(e)</h2>
-          <p>Les actualités d'IFSA par email : bientôt disponibles.</p>
+    <section class="jn-sub-band" aria-labelledby="jn-nl-t">
+      <div class="wrap jn-nl-w">
+        <div>
+          <p class="jn-flag">Lettre d'information</p>
+          <h2 id="jn-nl-t">Restez informé(e)</h2>
+          <p>Recevoir les actualités d'IFSA par email : ce service sera bientôt disponible.</p>
         </div>
-        <form class="rv nl-soon" id="nl" onsubmit="return false">
-          <span class="nl-badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/></svg> Bientôt disponible</span>
-          <div class="nl"><input type="email" disabled placeholder="Votre email" aria-label="Email"><button class="btn btn-gold" type="button" disabled>S'abonner</button></div>
-          <p id="nm" style="margin:0">L'envoi des actualités par email sera disponible très prochainement. En attendant, retrouvez-les ici et sur nos réseaux.</p>
+        <form class="jn-nl nl-soon" id="nl" onsubmit="return false" aria-describedby="nm">
+          <div class="nl"><label class="jn-sr" for="nlE">Votre adresse email</label><input id="nlE" type="email" disabled placeholder="Votre adresse email"><button class="jn-btn" type="button" disabled>S'abonner</button></div>
+          <p id="nm" role="status">L'envoi par email n'est pas encore ouvert : aucune inscription n'est enregistrée pour le moment. Retrouvez les actualités ici et sur nos réseaux.</p>
         </form>
       </div>
     </section>

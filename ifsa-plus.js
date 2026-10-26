@@ -198,37 +198,100 @@
     });
   }
 
-  /* ---------- 9. page Actualités : style journal ---------- */
+  /* ---------- 9. page Actualités : « Le Journal d'IFSA » (mise en page de journal) ---------- */
   function journal() {
-    var root = $("#jr"); if (!root) return;
-    var N = [], cat = "Tous", q = "", shown = 9, sm = {};
-    var lead = $("#jr-lead"), grid = $("#jr-g"), cats = $("#jr-cats"), none = $("#jr-none"), more = $("#jr-more");
-    function art(r, big) {
-      var h = el(big ? "h2" : "h3"), a = el("a", "", r.title); a.href = "article.html?id=" + encodeURIComponent(r.id); h.appendChild(a); return h;
+    var root = $("#jn"); if (!root) return;
+    var N = [], EV = [], cat = "Tous", q = "", shown = 8, sm = {}, cfg = {};
+    var out = $("#jn-out"), cats = $("#jn-cats"), none = $("#jn-none"), more = $("#jn-more"), count = $("#jn-count");
+    var T = function (v) { return String(v == null ? "" : v); };
+    var folded = function (v) { try { return T(v).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); } catch (e) { return T(v).toLowerCase(); } };
+    var isOff = function (r) { var c = folded(r.category); var kw = (cfg.official_kw || "annonce,communique,officiel").split(",").map(function (x) { return folded(x).trim(); }).filter(Boolean); return kw.some(function (k) { return c.indexOf(k) >= 0; }); };
+    var href = function (r) { return "article.html?id=" + encodeURIComponent(r.id); };
+    var imgUrl = function (r) { return r.image_url ? IFSA.url(r.image_url) : ""; };
+    function photo(r, cls, alt) {
+      var u = imgUrl(r); if (!u) return null;
+      var a = el("a", "jn-ph " + (cls || "")); a.href = href(r); if (!alt) { a.tabIndex = -1; a.setAttribute("aria-hidden", "true"); }
+      var i = el("img"); i.src = u; i.alt = alt || ""; i.loading = "lazy"; i.decoding = "async"; i.addEventListener("error", function () { a.remove(); }); a.appendChild(i); return a;
     }
-    function imgBox(r, cls) { var i = el("div", cls); if (r.image_url) { var u = IFSA.url(r.image_url); if (u) i.style.backgroundImage = 'url("' + u + '")'; } return i; }
-    function actions(r) { var w = el("div", "jr-act"); w.appendChild(likeBtn("news", r.id, sm[r.id])); var a = el("a", "jr-read", "Lire →"); a.href = "article.html?id=" + encodeURIComponent(r.id); w.appendChild(a); return w; }
+    function head(r, lvl, cls) { var h = el(lvl, cls || ""), a = el("a", "", r.title); a.href = href(r); h.appendChild(a); return h; }
+    function kick(r) { return el("span", "jn-kick", r.category || "Actualités"); }
+    function when(r) { var t = el("time", "jn-date", fmtT((r.published_at || "").slice(0, 10))); if (r.published_at) t.setAttribute("datetime", String(r.published_at).slice(0, 10)); return t; }
+    function foot(r) { var w = el("div", "jn-foot"); w.appendChild(when(r)); var rd = el("a", "jn-read", "Lire l’article →"); rd.href = href(r); rd.setAttribute("aria-label", "Lire l’article : " + r.title); w.appendChild(rd); w.appendChild(likeBtn("news", r.id, sm[r.id])); return w; }
+    function lead(r) {
+      var f = el("article", "jn-lead"), ph = photo(r, "jn-lead-ph", r.title); if (ph) f.appendChild(ph); else f.classList.add("nophoto");
+      var t = el("div", "jn-lead-tx"); var tg = el("div", "jn-tags"); tg.appendChild(el("span", "jn-flag", "À la une")); tg.appendChild(kick(r)); t.appendChild(tg); t.appendChild(head(r, "h2", "jn-h1"));
+      if (r.summary) t.appendChild(el("p", "jn-sum", r.summary)); t.appendChild(foot(r)); f.appendChild(t); return f;
+    }
+    function brief(r) { var a = el("article", "jn-brief"), ph = photo(r, "jn-brief-ph"); if (ph) a.appendChild(ph); var t = el("div"); t.appendChild(kick(r)); t.appendChild(head(r, "h3")); t.appendChild(when(r)); a.appendChild(t); return a; }
+    function card(r) { var a = el("article", "jn-card"), ph = photo(r, "jn-card-ph"); if (ph) a.appendChild(ph); a.appendChild(kick(r)); a.appendChild(head(r, "h3")); if (r.summary) a.appendChild(el("p", "jn-sum", r.summary)); a.appendChild(foot(r)); return a; }
+    function row(r) { var a = el("article", "jn-row"), ph = photo(r, "jn-row-ph"); if (ph) a.appendChild(ph); else a.classList.add("nophoto"); var t = el("div"); t.appendChild(kick(r)); t.appendChild(head(r, "h3")); if (r.summary) t.appendChild(el("p", "jn-sum", r.summary)); t.appendChild(foot(r)); a.appendChild(t); return a; }
+    function sect(title, id) { var s = el("section", "jn-sec"); if (id) s.id = id; var h = el("h2", "jn-sh", title); s.appendChild(h); return s; }
+
+    function asideBlocks(off) {
+      var A = el("aside", "jn-aside"); A.setAttribute("aria-label", "Annonces et agenda");
+      if (cfg.show_official !== false && off.length) {
+        var b = el("section", "jn-box jn-official"); b.appendChild(el("h2", "jn-sh", "Annonces officielles"));
+        off.slice(0, 4).forEach(function (r) { var it = el("article", "jn-off"); it.appendChild(when(r)); it.appendChild(head(r, "h3")); if (r.summary) it.appendChild(el("p", "", r.summary)); b.appendChild(it); });
+        A.appendChild(b);
+      }
+      var today = new Date().toISOString().slice(0, 10), up = EV.filter(function (e) { return e.event_date >= today; }).slice(0, 4);
+      if (cfg.show_events !== false && up.length) {
+        var e = el("section", "jn-box jn-events"); e.appendChild(el("h2", "jn-sh", "À l’agenda"));
+        up.forEach(function (ev) {
+          var D = new Date(ev.event_date + "T12:00:00"), it = el("article", "jn-ev"), dt = el("time", "jn-ev-d"); dt.setAttribute("datetime", ev.event_date);
+          dt.appendChild(el("b", "", String(D.getDate()))); dt.appendChild(el("span", "", D.toLocaleDateString("fr-FR", { month: "short" }).replace(".", "")));
+          var tx = el("div"); tx.appendChild(el("h3", "", ev.title)); if (ev.place) tx.appendChild(el("span", "jn-ev-p", ev.place)); if (ev.description) tx.appendChild(el("p", "", ev.description));
+          it.appendChild(dt); it.appendChild(tx); e.appendChild(it);
+        });
+        var all = el("a", "jn-all", "Tous les événements →"); all.href = "evenements.html"; e.appendChild(all); A.appendChild(e);
+      }
+      return A.children.length ? A : null;
+    }
+
     function draw() {
-      var L = N.filter(function (r) { return (cat === "Tous" || r.category === cat) && (!q || (r.title + " " + (r.summary || "")).toLowerCase().indexOf(q) >= 0); });
-      lead.textContent = ""; grid.textContent = ""; none.hidden = !!L.length; more.hidden = true; if (!L.length) return;
-      var f = L[0], rest = L.slice(1, shown);
-      var im = imgBox(f, "im"); im.appendChild(el("span", "jr-kick", f.category || "Actualités")); im.lastChild.style.cssText = "position:absolute;top:16px;left:16px";
-      var tx = el("div"); tx.appendChild(el("span", "jr-kick", "À la une")); tx.appendChild(art(f, true)); if (f.summary) tx.appendChild(el("p", "", f.summary));
-      var by = el("div", "jr-by"); by.appendChild(el("span", "", fmtT(f.published_at))); tx.appendChild(by); tx.appendChild(actions(f)); lead.appendChild(im); lead.appendChild(tx);
-      rest.forEach(function (r) {
-        var c = el("article", "jr-card"); c.appendChild(imgBox(r, "im")); var by2 = el("div", "jr-by"); by2.appendChild(el("span", "jr-kick", r.category || "Actualités")); by2.appendChild(el("span", "", fmtT(r.published_at))); c.appendChild(by2);
-        c.appendChild(art(r)); if (r.summary) c.appendChild(el("p", "", r.summary)); c.appendChild(actions(r)); grid.appendChild(c);
-      });
-      more.hidden = L.length - 1 <= shown;
+      out.textContent = ""; more.hidden = true; none.hidden = true; count.textContent = ""; var bar = $(".jn-bar"); if (bar) bar.hidden = !N.length;
+      if (!N.length) { none.hidden = false; none.querySelector("p").textContent = "Le journal n’a pas encore publié d’article. Revenez bientôt : les prochaines publications apparaîtront ici."; return; }
+      var filtering = cat !== "Tous" || !!q;
+      var L = N.filter(function (r) { return (cat === "Tous" || r.category === cat) && (!q || folded(r.title + " " + (r.summary || "") + " " + (r.body || "") + " " + (r.category || "")).indexOf(q) >= 0); });
+      if (filtering) {
+        count.textContent = L.length ? L.length + (L.length > 1 ? " articles" : " article") + (cat !== "Tous" ? " dans « " + cat + " »" : "") + (q ? " pour « " + $("#jn-q").value.trim() + " »" : "") : "";
+        if (!L.length) { none.hidden = false; none.querySelector("p").textContent = "Aucun article ne correspond à votre recherche" + (cat !== "Tous" ? " dans « " + cat + " »" : "") + ". Essayez d’autres mots ou une autre rubrique."; return; }
+        var s = sect(cat !== "Tous" ? cat : "Résultats de la recherche"), g = el("div", "jn-rows"); L.slice(0, shown).forEach(function (r) { g.appendChild(row(r)); }); s.appendChild(g); out.appendChild(s);
+        more.hidden = L.length <= shown; return;
+      }
+      var off = N.filter(isOff), main = N.filter(function (r) { return !isOff(r); });
+      if (!main.length) { main = off; off = []; }
+      var front = el("section", "jn-front"); front.setAttribute("aria-label", "À la une"); front.appendChild(lead(main[0]));
+      var side = main.slice(1, 5); if (side.length) { var sd = el("div", "jn-side"); side.forEach(function (r) { sd.appendChild(brief(r)); }); front.appendChild(sd); }
+      out.appendChild(front);
+      var rest = main.slice(5), A = asideBlocks(off), wrap = el("div", "jn-cols" + (A ? "" : " solo"));
+      if (rest.length) {
+        var s2 = sect("Dernières actualités", "jn-latest"), shownRest = rest.slice(0, shown), cg = el("div", "jn-cards"), rg = el("div", "jn-rows");
+        shownRest.forEach(function (r, i) { (i < 3 ? cg : rg).appendChild(i < 3 ? card(r) : row(r)); });
+        s2.appendChild(cg); if (rg.children.length) s2.appendChild(rg); wrap.appendChild(s2); more.hidden = rest.length <= shown;
+      }
+      if (A) wrap.appendChild(A);
+      if (wrap.children.length) out.appendChild(wrap);
     }
     function filters() {
       var set = ["Tous"]; N.forEach(function (r) { if (r.category && set.indexOf(r.category) < 0) set.push(r.category); });
-      cats.textContent = ""; set.forEach(function (c) { var b = el("button", "", c); b.type = "button"; b.setAttribute("aria-pressed", c === cat); b.addEventListener("click", function () { cat = c; shown = 9; $$("button", cats).forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); draw(); }); cats.appendChild(b); });
+      cats.textContent = ""; cats.hidden = set.length < 3;
+      set.forEach(function (c) { var b = el("button", "", c); b.type = "button"; b.setAttribute("aria-pressed", String(c === cat)); b.addEventListener("click", function () { cat = c; shown = 8; $$("button", cats).forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); }); draw(); }); cats.appendChild(b); });
     }
-    $("#jr-q").addEventListener("input", function (e) { q = e.target.value.trim().toLowerCase(); shown = 9; draw(); });
-    $("button", more).addEventListener("click", function () { shown += 9; draw(); });
-    (function () { var n = $("#jr-date"); function tick() { var D = new Date(); n.textContent = D.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) + " · " + D.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }); } tick(); setInterval(tick, 20000); })();
-    IFSA.news().then(function (rows) { N = rows; return withStats("news", rows.map(function (r) { return r.id; })); }).then(function (m) { sm = m || {}; filters(); draw(); markOk("#jr-lead,#jr-g"); }).catch(function () { markOk("#jr-lead,#jr-g"); none.hidden = false; none.textContent = "Les actualités sont momentanément indisponibles."; });
+    var tmr = 0;
+    $("#jn-q").addEventListener("input", function (e) { var v = e.target.value; clearTimeout(tmr); tmr = setTimeout(function () { q = folded(v.trim()); shown = 8; draw(); }, 120); });
+    $("#jn-sf").addEventListener("submit", function (e) { e.preventDefault(); });
+    $("button", more).addEventListener("click", function () { shown += 8; draw(); });
+    (function () { var n = $("#jn-date"); if (!n) return; var D = new Date(); n.textContent = D.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }); n.setAttribute("datetime", D.toISOString().slice(0, 10)); })();
+    function applyCfg(c) {
+      cfg = c && typeof c === "object" ? c : {};
+      var sub = $("#jn-sub"), ed = $("#jn-ed"); if (sub && cfg.subtitle) sub.textContent = String(cfg.subtitle).slice(0, 200); if (ed && cfg.edition) ed.textContent = String(cfg.edition).slice(0, 40);
+    }
+    Promise.all([IFSA.config("journal_config").catch(function () { return null; }), IFSA.events().catch(function () { return []; }), IFSA.news()]).then(function (r) {
+      applyCfg(r[0]); EV = r[1] || []; N = r[2] || [];
+      return withStats("news", N.map(function (x) { return x.id; })).catch(function () { return {}; });
+    }).then(function (m) { sm = m || {}; filters(); draw(); root.setAttribute("aria-busy", "false"); })
+      .catch(function () { root.setAttribute("aria-busy", "false"); none.hidden = false; none.querySelector("p").textContent = "Les actualités sont momentanément indisponibles. Réessayez dans quelques instants."; });
   }
 
   /* ---------- 10. j'aime sur la page d'un article ---------- */

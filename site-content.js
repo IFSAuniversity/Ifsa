@@ -3,9 +3,9 @@
 (function () {
   "use strict";
   var BUCKET = "media", MAXSIDE = 1600, MAXRAW = 25 * 1024 * 1024;
-  var CATS = { news: ["Admissions", "Campus", "Événements", "Académique"], events: ["Admissions", "Conférence", "Cérémonie", "Autre"], gal: ["Campus", "Étudiants", "Cérémonies", "Événements"] };
+  var CATS = { news: ["Admissions", "Campus", "Événements", "Académique", "Vie universitaire", "Facultés et recherche", "Vie étudiante", "Annonces officielles"], events: ["Admissions", "Conférence", "Cérémonie", "Autre"], gal: ["Campus", "Étudiants", "Cérémonies", "Événements"] };
   var TABS = [
-    { id: "news", label: "Actualités", ic: "news", where: "Apparaît sur : la page <b>Actualités</b> (liste, article à la une, page de chaque article) et les 3 dernières sur l'<b>accueil</b>.", link: "actualites.html" },
+    { id: "news", label: "Actualités", ic: "news", where: "Apparaît sur : <b>Le Journal d'IFSA</b> (page Actualités : article à la une, colonne secondaire, dernières actualités, annonces officielles) et la page de chaque article, ainsi que les 3 dernières sur l'<b>accueil</b>. Le premier article publié est « à la une » ; une photo paysage (1200 × 800) est recommandée.", link: "actualites.html" },
     { id: "events", label: "Événements", ic: "cal", where: "Apparaît sur : la page <b>Événements</b> (à venir et passés) et l'<b>agenda de l'accueil</b> (les 3 prochains).", link: "evenements.html" },
     { id: "gal", label: "Galerie", ic: "img", where: "Apparaît sur : la page <b>Galerie</b> (photos classées par catégorie, avec agrandissement).", link: "galerie.html" },
     { id: "vids", label: "Vidéos", ic: "vid", where: "Apparaît sur : l'<b>accueil</b> (section « En vidéo », 3 vidéos au plus, celle à la une en premier) et la page <b>Galerie</b> (toutes les vidéos actives).", link: "galerie.html" },
@@ -87,8 +87,10 @@
     jobs.push(sb.from("audit_log").select("*").eq("target_type", "online_course").order("created_at", { ascending: false }).limit(120));
     jobs.push(sb.from("course_comments").select("id,course_id,parent_id,user_id,body,created_at").order("created_at", { ascending: false }).limit(150));
     jobs.push(sb.rpc("course_comment_counts"));
+    jobs.push(sb.from("site_settings").select("value").eq("key", "journal_config").maybeSingle());
     var r = await Promise.all(jobs);
     S.d = { news: must(r[0]), events: must(r[1]), gal: must(r[2]), vids: must(r[3]), slides: r[4] && !r[4].error ? must(r[4]) : [], testi: r[5] ? must(r[5]) : [], zones: r[6] ? must(r[6]) : [] };
+    S.d.journal = r[15] && !r[15].error && r[15].data ? r[15].data.value : null;
     S.d.hero = r[7] && !r[7].error && r[7].data ? r[7].data.value : null;
     S.d.courses = r[8] && !r[8].error ? (r[8].data || []).map(function (c) { c.lessons = (c.online_lessons || []).sort(function (a, b) { return a.position - b.position; }); return c; }) : [];
     S.d.coursesErr = r[8] && r[8].error ? r[8].error.message : "";
@@ -222,6 +224,17 @@
   }
 
   /* ---------- réglages de la bannière (chiffres clés, appel, durée) ---------- */
+  function journalCard() {
+    var c = S.d.journal || {}, def = "Annonces, campus, événements et vie académique : toute l'actualité de l'université.";
+    return '<form class="sc-card" data-f="journal"><h3>Réglages du Journal d\'IFSA</h3><div class="sc-h" style="margin:0 0 8px">Texte et blocs de l\'en-tête de la page <b>Actualités</b>. Les articles eux-mêmes se gèrent plus bas.</div>' +
+      '<label>Sous-titre du journal<input id="sc-jsub" maxlength="200" value="' + esc(c.subtitle || "") + '" placeholder="' + esc(def) + '"></label>' +
+      '<div class="sc-r2"><label>Mention d\'édition<input id="sc-jed" maxlength="40" value="' + esc(c.edition || "") + '" placeholder="Édition numérique"></label>' +
+      '<label>Rubriques « annonces officielles » (mots-clés, séparés par des virgules)<input id="sc-jkw" maxlength="120" value="' + esc(c.official_kw || "") + '" placeholder="annonce, communiqué, officiel"></label></div>' +
+      '<label class="sc-ck"><input type="checkbox" id="sc-jof"' + (c.show_official !== false ? " checked" : "") + '> Afficher le bloc « Annonces officielles » (articles dont la catégorie contient un des mots-clés)</label>' +
+      '<label class="sc-ck"><input type="checkbox" id="sc-jev"' + (c.show_events !== false ? " checked" : "") + '> Afficher le bloc « À l\'agenda » (les 4 prochains événements)</label>' +
+      '<div class="sc-ac"><button class="sc-btn p" type="submit">' + ic("edit") + 'Enregistrer les réglages</button></div></form>';
+  }
+
   function heroCard() {
     var c = S.d.hero || { stats: [{ n: "2007", l: "Année de fondation" }, { n: "4", l: "Sites de formation" }, { n: "7", l: "Facultés" }], call_label: "Une question ? Appelez-nous", call_phone: "33 53 24 15", show_stats: true, show_call: true, duration: 6.5 }, st = c.stats || [];
     var rows = [0, 1, 2, 3].map(function (i) { var x = st[i] || {}; return '<div class="sc-r2"><label>Chiffre clé ' + (i + 1) + '<input id="sc-hn' + i + '" maxlength="12" value="' + esc(x.n) + '" placeholder="ex. 2007"></label><label>Légende<input id="sc-hl' + i + '" maxlength="40" value="' + esc(x.l) + '" placeholder="ex. Année de fondation"></label></div>'; }).join("");
@@ -382,7 +395,7 @@
   function render() {
     var root = C.root; if (!root) return;
     var tabs = TABS.filter(function (t) { return !t.admin || C.role === "admin"; }); if (!tabs.some(function (t) { return t.id === S.tab; })) S.tab = tabs[0].id;
-    var t = tabs.filter(function (x) { return x.id === S.tab; })[0], body = !S.loaded ? '<div class="sc-load">Chargement…</div>' : ({ news: vNews, events: vEvents, gal: vGal, vids: vVids, zones: vZones, slides: function () { return heroCard() + vSlides(); }, testi: vTesti, courses: vCourses, sites: vSites, chat: vChat })[S.tab]();
+    var t = tabs.filter(function (x) { return x.id === S.tab; })[0], body = !S.loaded ? '<div class="sc-load">Chargement…</div>' : ({ news: function () { return journalCard() + vNews(); }, events: vEvents, gal: vGal, vids: vVids, zones: vZones, slides: function () { return heroCard() + vSlides(); }, testi: vTesti, courses: vCourses, sites: vSites, chat: vChat })[S.tab]();
     root.innerHTML = '<div class="sc"><div class="sc-tabs" role="tablist">' + tabs.map(function (x) { return '<button type="button" role="tab" data-a="tab" data-id="' + x.id + '" aria-selected="' + (x.id === S.tab) + '">' + ic(x.ic) + esc(x.label) + "</button>"; }).join("") + "</div>" +
       '<div class="sc-where"><span>' + t.where + "</span>" + viewLink(t.link, "Ouvrir la page du site") + "</div>" + (S.err ? '<div class="sc-err">' + esc(S.err) + "</div>" : "") + body + "</div>";
     afterRender();
@@ -472,6 +485,13 @@
         if (sd) must(await sb.from("home_slides").update(row).eq("id", sd.id)); else must(await sb.from("home_slides").insert(row));
         if (old && old !== url) await drop(old); S.edit = null;
       }, sd ? "Diapo modifiée." : "Diapo ajoutée à la bannière."); return;
+    }
+    if (kind === "journal") {
+      await run(btn, async function () {
+        var val = { subtitle: q("sc-jsub").value.trim(), edition: q("sc-jed").value.trim(), official_kw: q("sc-jkw").value.trim(), show_official: q("sc-jof").checked, show_events: q("sc-jev").checked };
+        must(await sb.from("site_settings").upsert({ key: "journal_config", value: val, updated_at: new Date().toISOString() }, { onConflict: "key" }));
+        S.d.journal = val;
+      }, "Réglages du journal enregistrés."); return;
     }
     if (kind === "hero") {
       var stats = [0, 1, 2, 3].map(function (i) { return { n: q("sc-hn" + i).value.trim(), l: q("sc-hl" + i).value.trim() }; }).filter(function (x) { return x.n; });
