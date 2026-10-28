@@ -64,6 +64,7 @@
     events: function () { return once("events", function () { return query("events", function (q) { return q.select("*").eq("published", true).order("event_date", { ascending: true }).limit(200); }); }); },
     gallery: function () { return once("gallery", function () { return query("gallery_items", function (q) { return q.select("*").eq("published", true).order("position", { ascending: true }).order("created_at", { ascending: false }).limit(200); }); }); },
     videos: function () { return once("videos", function () { return query("video_links", function (q) { return q.select("*").eq("active", true).order("featured", { ascending: false }).order("position", { ascending: true }).limit(60); }); }); },
+    library: function () { return once("library1", function () { return query("library_resources", function (q) { return q.select("*").eq("published", true).order("created_at", { ascending: false }).limit(500); }); }); },
     zones: function () { return once("zones", function () { return query("site_images", function (q) { return q.select("key,image_url,alt"); }); }); },
     /* ---- ajouts 5a : bannière, témoignages, j'aime, session ---- */
     /* partenaires : [] tant que l'admin n'a pas activé la section ou ajouté de partenaire */

@@ -115,6 +115,8 @@
   }
   function load() {
     $("cxGrid").innerHTML = [1, 2, 3, 4, 5, 6].map(function () { return '<div class="cx-skel"></div>'; }).join("");
+    /* progression par compte : fusion discrète avec la copie du serveur (sans compte ou sans table : rien ne change) */
+    if (window.IFSAProgress && LOGGED) IFSAProgress.pull().then(function (ch) { if (ch && loaded && !cur) R(); });
     IFSA.courses().then(function (rows) { C = rows.map(norm); loaded = true; R(); if (!C.length) diag(); var h = location.hash; if (h.indexOf("#cours-") === 0) { openRoom(h.slice(7), true); if (!cur) toast("Ce cours n'est pas disponible pour votre compte.", true); } })
       .catch(function (e) { var m = e && (e.message || e.details || e.code) || ""; $("cxGrid").innerHTML = '<div class="cx-empty">' + ic("wifi") + "<p>Les cours n'ont pas pu se charger.</p>" + (m ? '<p style="font-size:.78rem;opacity:.75">Détail : ' + X(m) + "</p>" : "") + "<button type=\"button\" class=\"cx-btn gold\" id=\"cxRetry\" style=\"margin-top:12px\">Réessayer</button></div>"; $("cxRetry").onclick = load; });
   }
@@ -250,7 +252,7 @@
     var tx = fmtT(t) + " / " + fmtT(dur); if (tx !== st.lt) { st.lt = tx; $("tm").textContent = tx; }
     if (st.playing && Date.now() - st.saveT > 5000) { st.saveT = Date.now(); savePos(); }
   }
-  function savePos() { try { if (!yp || !cur || cur.locked) return; var t = yp.getCurrentTime(), p = store.get("pos", {}); p[cur.id + "-" + li] = st.ended ? 0 : Math.floor(t); store.set("pos", p); var l = lastMap(); l[cur.id] = Date.now(); store.set("last", l); } catch (e) { /* ignoré */ } }
+  function savePos() { try { if (!yp || !cur || cur.locked) return; var t = yp.getCurrentTime(), p = store.get("pos", {}); p[cur.id + "-" + li] = st.ended ? 0 : Math.floor(t); store.set("pos", p); var l = lastMap(); l[cur.id] = Date.now(); store.set("last", l); if (window.IFSAProgress) IFSAProgress.touch(cur.id, li); } catch (e) { /* ignoré */ } }
   function toggle() { if (!yp || !yp.getPlayerState || !ytReady || st.locked) return; var s = yp.getPlayerState(); if (s === 1 || s === 3) yp.pauseVideo(); else startPlay(); }
   function seekBy(n) { if (!yp || !ytReady || st.locked || !$("cover").classList.contains("off")) return; try { yp.seekTo(Math.max(0, Math.min(st.dur || 1e9, yp.getCurrentTime() + n)), true); } catch (e) { /* ignoré */ } uiTick(); }
   function armIdle() { clearTimeout(st.idleT); $("pl").classList.remove("idle"); if (!st.playing) return; st.idleT = setTimeout(function () { if (st.playing && !d.querySelector(".cx-menu.on")) $("pl").classList.add("idle"); }, 2800); }
@@ -330,7 +332,7 @@
     $("pls").innerHTML = cur.lessons.map(function (l, i) { var ok = dn.indexOf(i) > -1; return '<li class="' + (i === li ? "on " : "") + (ok ? "ok" : "") + '"><button type="button" data-i="' + i + '"><span class="n">' + (cur.locked ? ic("lock") : ok ? ic("check") : i + 1) + '</span><span class="t">' + X(l.t) + "<small>" + (l.dur ? X(l.dur) : "Leçon " + (i + 1)) + "</small></span></button></li>"; }).join("") || '<li style="color:#9FB0D6;padding:10px">Aucune leçon pour le moment.</li>';
   }
   function markDone(on) {
-    var dd = store.get("done", {}), a = dd[cur.id] || [], i = a.indexOf(li); if (on && i < 0) a.push(li); if (!on && i > -1) a.splice(i, 1); dd[cur.id] = a; store.set("done", dd); drawSide(); drawLessonBar();
+    var dd = store.get("done", {}), a = dd[cur.id] || [], i = a.indexOf(li); if (on && i < 0) a.push(li); if (!on && i > -1) a.splice(i, 1); dd[cur.id] = a; store.set("done", dd); if (window.IFSAProgress) IFSAProgress.touch(cur.id); drawSide(); drawLessonBar();
   }
   function drawLessonBar() {
     var l = cur.lessons[li] || { t: "" }, ok = done(cur).indexOf(li) > -1;

@@ -1,4 +1,4 @@
-/* IFSA University — modernisation des interfaces (v33)
+/* IFSA University — modernisation des interfaces (v34)
    Couche de design commune, chargée EN DERNIER sur chaque page.
    Elle ne change ni le HTML, ni les scripts, ni les données : uniquement l'apparence.
    Pour revenir à l'ancien aspect : retirer la ligne <link ... ifsa-modern.css> d'une page.
@@ -384,6 +384,50 @@ footer a:hover{color:#fff}
   .ap .ap-sb button span{display:block}
   .ap .ap-sb button[aria-current=page]{box-shadow:none}
 }
+
+/* ===== 14b. v34 : raccourcis, examens, carte étudiante, bibliothèque ===== */
+.ap-qa{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;margin:0 0 20px}
+.ap-qa button,.ap-qa a{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 8px;border:1px solid var(--mx-line);border-radius:var(--mx-r);background:var(--mx-surface);color:var(--mx-navy);font:inherit;font-weight:700;font-size:.84rem;text-align:center;text-decoration:none;cursor:pointer;box-shadow:var(--mx-sh1);min-height:84px;justify-content:center;transition:transform .2s,box-shadow .2s}
+.ap-qa button:hover,.ap-qa a:hover{transform:translateY(-2px);box-shadow:var(--mx-sh2)}
+.ap-qa .ic{width:26px;height:26px;padding:5px;box-sizing:content-box;border-radius:10px;background:var(--mx-blue-s);color:var(--mx-blue-d)}
+[data-theme="dark"] .ap-qa button,[data-theme="dark"] .ap-qa a{color:#E4EAF7}
+.ap-exd{flex:none;width:58px;border-radius:14px;background:var(--mx-blue-s);color:var(--mx-blue-d);text-align:center;padding:8px 4px;line-height:1.1}
+.ap-exd b{display:block;font-size:1.4rem;color:inherit}
+.ap-exd span{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.ap-ex{align-items:flex-start}
+/* carte étudiante */
+.idc{width:min(100%,520px);margin:0 auto 18px;border-radius:22px;padding:20px;color:#fff;background:radial-gradient(420px 220px at 95% -10%,rgba(76,134,255,.5),transparent 70%),linear-gradient(135deg,#0B2557,#071A45);box-shadow:var(--mx-sh2);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.idc-h{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.idc-h img{background:#fff;border-radius:10px;padding:3px;object-fit:contain}
+.idc-h b{display:block;line-height:1.2}.idc-h small{color:#C3CFEA}
+.idc-b{display:flex;gap:16px;align-items:flex-end;justify-content:space-between}
+.idc-in{min-width:0;flex:1}
+.idc-n{display:block;font-size:1.3rem;font-weight:800;margin-bottom:10px;overflow-wrap:anywhere}
+.idc dl{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin:0}
+.idc dt{font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;color:#9CC0FF;font-weight:700}
+.idc dd{margin:0;font-weight:600;font-size:.9rem;overflow-wrap:anywhere}
+.idc-q{flex:none;width:112px;height:112px;background:#fff;border-radius:12px;padding:4px;overflow:hidden}
+.idc-ft{margin-top:14px;font-size:.74rem;color:#C3CFEA}
+.idc-a{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+@media(max-width:420px){.idc-b{flex-direction:column;align-items:stretch}.idc-q{align-self:center;width:132px;height:132px}}
+@media print{body.pr-card *{visibility:hidden}body.pr-card .idc,body.pr-card .idc *{visibility:visible}body.pr-card .idc{position:absolute;left:0;top:0;width:90mm;box-shadow:none}}
+/* bibliothèque */
+.lib-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.lib-bar input[type=search]{flex:1 1 260px;border-radius:99px;padding:14px 22px}
+.lib-bar select{flex:0 1 200px;border-radius:99px}
+.lib-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.lib-chips button{border:1.5px solid var(--mx-line);background:var(--mx-surface);color:var(--mx-navy);border-radius:99px;padding:8px 16px;font:inherit;font-weight:700;font-size:.86rem;cursor:pointer;min-height:40px}
+.lib-chips button[aria-pressed=true]{background:var(--mx-blue);border-color:var(--mx-blue);color:#fff}
+[data-theme="dark"] .lib-chips button:not([aria-pressed=true]){color:#E4EAF7}
+.lib-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.lib-c{display:flex;flex-direction:column;gap:8px;padding:18px;border:1px solid var(--mx-line);border-radius:var(--mx-r);background:var(--mx-surface);box-shadow:var(--mx-sh1);color:var(--ink)}
+.lib-c img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px;background:var(--mx-blue-s)}
+.lib-c h3{margin:0;font-size:1.02rem;line-height:1.3}
+.lib-c small{color:var(--mut)}
+.lib-c p{margin:0;font-size:.88rem;color:var(--mut)}
+.lib-k{align-self:flex-start;padding:3px 11px;border-radius:99px;font-size:.72rem;font-weight:800;background:var(--mx-blue-s);color:var(--mx-blue-d)}
+.lib-c .btn{margin-top:auto;align-self:flex-start}
+.lib-empty{padding:28px;border:1.5px dashed var(--mx-line);border-radius:var(--mx-r);text-align:center;color:var(--mut)}
 
 /* ===== 15. MOUVEMENT RÉDUIT ===== */
 @media(prefers-reduced-motion:reduce){

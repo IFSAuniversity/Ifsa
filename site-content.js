@@ -3,7 +3,7 @@
 (function () {
   "use strict";
   var BUCKET = "media", MAXSIDE = 1600, MAXRAW = 25 * 1024 * 1024;
-  var CATS = { news: ["Admissions", "Campus", "Événements", "Académique", "Vie universitaire", "Facultés et recherche", "Vie étudiante", "Annonces officielles"], events: ["Admissions", "Conférence", "Cérémonie", "Autre"], gal: ["Campus", "Étudiants", "Cérémonies", "Événements"] };
+  var CATS = { news: ["Admissions", "Campus", "Événements", "Académique", "Vie universitaire", "Facultés et recherche", "Vie étudiante", "Annonces officielles"], events: ["Admissions", "Conférence", "Cérémonie", "Autre"], gal: ["Campus", "Étudiants", "Cérémonies", "Événements"], lib: ["Livre", "Manuel", "Mémoire", "Article", "Revue", "Document", "Autre"] };
   var TABS = [
     { id: "news", label: "Actualités", ic: "news", where: "Apparaît sur : <b>Le Journal d'IFSA</b> (page Actualités : article à la une, colonne secondaire, dernières actualités, annonces officielles) et la page de chaque article, ainsi que les 3 dernières sur l'<b>accueil</b>. Le premier article publié est « à la une » ; une photo paysage (1200 × 800) est recommandée.", link: "actualites.html" },
     { id: "events", label: "Événements", ic: "cal", where: "Apparaît sur : la page <b>Événements</b> (à venir et passés) et l'<b>agenda de l'accueil</b> (les 3 prochains).", link: "evenements.html" },
@@ -11,6 +11,7 @@
     { id: "vids", label: "Vidéos", ic: "vid", where: "Apparaît sur : l'<b>accueil</b> (section « En vidéo », 3 vidéos au plus, celle à la une en premier) et la page <b>Galerie</b> (toutes les vidéos actives).", link: "galerie.html" },
     { id: "slides", label: "Bannière d'accueil", ic: "img", where: "Apparaît sur : la <b>grande bannière en haut de l'accueil</b> (diaporama). Chaque diapo = une image, un titre et un texte. Un voile sombre garde le texte lisible.", link: "index.html" },
     { id: "courses", label: "Cours en ligne", ic: "vid", where: "Apparaît sur : la page <b>Cours en ligne</b> et dans l'espace des étudiants concernés. Cliquez sur une carte pour l'<b>aperçu</b>, puis modifiez, masquez ou supprimez. Choisissez <b>qui peut regarder</b>, activez ou non les <b>commentaires</b>, et suivez l'<b>historique</b> des changements.", link: "cours.html" },
+    { id: "lib", label: "Bibliothèque", ic: "news", where: "Apparaît sur : la page <b>Bibliothèque</b> (catalogue avec recherche, catégories et filtre par faculté). Chaque ressource est une <b>fiche + un lien https</b> vers le document. N'ajoutez que des documents que l'université a le droit de diffuser.", link: "bibliotheque.html" },
     { id: "chat", label: "Chatbot", ic: "chat", where: "Apparaît sur : le <b>chatbot</b> du site. Ajoutez des questions-réponses : elles sont servies <b>sans IA</b> (zéro quota) et servent de source fiable à l'IA. Les questions restées sans réponse apparaissent plus bas : transformez-les en réponses.", link: "index.html" },
     { id: "sites", label: "Sites et carte", ic: "pin", admin: true, where: "Apparaît sur : la <b>carte</b> de la page Contact. Placez l'épingle de chaque site à l'endroit exact (clic, glisser, recherche d'adresse ou lien Google Maps).", link: "contact.html#carte" },
     { id: "testi", label: "Témoignages", ic: "news", admin: true, where: "Apparaît sur : la section <b>Ils parlent d'IFSA</b> de l'accueil. Vous pouvez créer, modifier, masquer ou supprimer n'importe quel témoignage.", link: "index.html#temoignages" },
@@ -21,7 +22,7 @@
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var httpsUrl = function (u) { u = String(u || "").trim(); return /^https:\/\//i.test(u) ? u.replace(/["'<>()\s\\]/g, function (c) { return encodeURIComponent(c); }) : ""; };
   var fmtD = function (d) { return d ? new Date(String(d).length <= 10 ? d + "T12:00:00" : d).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" }) : ""; };
-  var C = { sb: null, role: "", toast: function () {}, root: null, uid: null, base: "" }, S = { tab: "news", edit: null, busy: false, loaded: false, err: "", d: { news: [], events: [], gal: [], vids: [], slides: [], testi: [], zones: [], hero: null, courses: [], sites: [], chat: [], miss: [] } };
+  var C = { sb: null, role: "", toast: function () {}, root: null, uid: null, base: "" }, S = { tab: "news", edit: null, busy: false, loaded: false, err: "", d: { news: [], events: [], gal: [], vids: [], slides: [], testi: [], zones: [], hero: null, courses: [], sites: [], chat: [], miss: [], lib: [], libErr: "" } };
 
   var css = document.createElement("style");
   css.textContent = ".sc{--scn:var(--navy,#0B1F4B);--scg:var(--gold,#C9A24B);--scm:var(--mut,#5B667C);--scl:var(--line,#E1E6F2);--scc:var(--card,#fff);--sci:var(--ink,#1B2437)}.sc *{box-sizing:border-box}.sc-i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.sc-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px}.sc-tabs button{flex:none;display:inline-flex;gap:7px;align-items:center;border:1.5px solid var(--scl);background:var(--scc);color:var(--sci);border-radius:12px;padding:10px 14px;font-weight:600;font-size:.88rem;cursor:pointer}.sc-tabs button[aria-selected=true]{background:var(--scn);color:#E8CF8E;border-color:var(--scn)}.sc-where{background:rgba(201,162,75,.14);border:1px solid rgba(201,162,75,.45);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:.9rem;color:var(--sci);display:flex;gap:10px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}.sc-where a{display:inline-flex;gap:6px;align-items:center;font-weight:700;color:var(--scn);text-decoration:underline}.sc-card{background:var(--scc);border:1px solid var(--scl);border-radius:18px;padding:16px;margin-bottom:14px}.sc-card h3{margin:0 0 10px;font-size:1.05rem}.sc label{display:grid;gap:5px;font-weight:700;font-size:.84rem;margin-bottom:12px;color:var(--scn)}.sc input,.sc select,.sc textarea{width:100%;padding:11px 13px;border:1.5px solid var(--scl);border-radius:12px;background:transparent;color:var(--sci);font:inherit;font-weight:500;font-size:16px}.sc textarea{min-height:130px;resize:vertical}.sc .sc-ck{display:flex;gap:10px;align-items:center;font-weight:600}.sc .sc-ck input{width:20px;height:20px}.sc-r2{display:grid;gap:12px;grid-template-columns:1fr 1fr}@media(max-width:560px){.sc-r2{grid-template-columns:1fr}}.sc-h{font-weight:500;color:var(--scm);font-size:.8rem;margin:-6px 0 12px}.sc-btn{display:inline-flex;gap:7px;align-items:center;justify-content:center;border:1.5px solid var(--scl);background:var(--scc);color:var(--sci);border-radius:12px;padding:9px 14px;font-weight:600;font-size:.84rem;cursor:pointer;min-height:40px;text-decoration:none}.sc-btn.p{background:linear-gradient(135deg,#C9A24B,#DDB863);color:#0B1F4B;border-color:transparent;font-weight:700}.sc-btn.d{color:#B3261E}.sc-btn[disabled]{opacity:.55;cursor:wait}.sc-row{display:flex;gap:12px;align-items:flex-start;background:var(--scc);border:1px solid var(--scl);border-radius:16px;padding:12px;margin-bottom:10px}.sc-th{width:84px;height:64px;border-radius:12px;object-fit:cover;flex:none;background:rgba(11,31,75,.08)}.sc-th.ph{display:grid;place-items:center;color:var(--scm);font-size:.7rem;text-align:center}.sc-tx{flex:1;min-width:0}.sc-tx b{display:block;word-break:break-word}.sc-tx small{display:block;color:var(--scm)}.sc-ac{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.sc-bd{display:inline-block;border-radius:99px;padding:2px 10px;font-size:.72rem;font-weight:700;margin-right:6px;background:rgba(11,31,75,.08);color:var(--scn)}.sc-bd.ok{background:#E3F4EA;color:#0E6B3A}.sc-bd.wt{background:rgba(201,162,75,.22);color:#8A6414}.sc-pv{display:flex;gap:12px;align-items:center;border:1px dashed var(--scl);border-radius:14px;padding:10px;margin:0 0 12px}.sc-pv img,.sc-pv .sc-th{width:96px;height:72px}.sc-empty{text-align:center;color:var(--scm);padding:26px 10px}.sc-gal{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}.sc-gi{background:var(--scc);border:1px solid var(--scl);border-radius:16px;overflow:hidden}.sc-gi img{width:100%;height:120px;object-fit:cover;display:block}.sc-gi div{padding:10px}.sc-zp{margin:18px 0 8px;font-size:1rem;color:var(--scn)}.sc-err{background:#FDECEC;color:#A12B2B;border-radius:12px;padding:11px 14px;margin-bottom:12px;font-size:.88rem}.sc-load{text-align:center;padding:40px;color:var(--scm)}";
@@ -88,8 +89,10 @@
     jobs.push(sb.from("course_comments").select("id,course_id,parent_id,user_id,body,created_at").order("created_at", { ascending: false }).limit(150));
     jobs.push(sb.rpc("course_comment_counts"));
     jobs.push(sb.from("site_settings").select("value").eq("key", "journal_config").maybeSingle());
+    jobs.push(sb.from("library_resources").select("*").order("created_at", { ascending: false }));
     var r = await Promise.all(jobs);
     S.d = { news: must(r[0]), events: must(r[1]), gal: must(r[2]), vids: must(r[3]), slides: r[4] && !r[4].error ? must(r[4]) : [], testi: r[5] ? must(r[5]) : [], zones: r[6] ? must(r[6]) : [] };
+    S.d.lib = r[16] && !r[16].error ? (r[16].data || []) : []; S.d.libErr = r[16] && r[16].error ? r[16].error.message : "";
     S.d.journal = r[15] && !r[15].error && r[15].data ? r[15].data.value : null;
     S.d.hero = r[7] && !r[7].error && r[7].data ? r[7].data.value : null;
     S.d.courses = r[8] && !r[8].error ? (r[8].data || []).map(function (c) { c.lessons = (c.online_lessons || []).sort(function (a, b) { return a.position - b.position; }); return c; }) : [];
@@ -151,6 +154,24 @@
         '<div class="sc-ac"><button class="sc-btn" data-a="edit" data-t="events" data-id="' + esc(v.id) + '">' + ic("edit") + 'Modifier</button><button class="sc-btn" data-a="pub" data-t="events" data-id="' + esc(v.id) + '">' + (v.published ? "Masquer" : "Publier") + "</button>" +
         (v.published ? viewLink("evenements.html") : "") + '<button class="sc-btn d" data-a="del" data-t="events" data-id="' + esc(v.id) + '">' + ic("trash") + "</button></div></div></div>";
     }).join("") : '<div class="sc-empty">Aucun événement. Ajoutez le premier ci-dessus.</div>');
+  }
+  function vLib() {
+    var e = S.edit && S.edit.t === "lib" ? S.edit.row : null, d = S.d.lib;
+    if (S.d.libErr) return '<div class="sc-err">Le catalogue n\'est pas encore activé : exécutez <b>supabase-update-10a.sql</b> dans Supabase (SQL Editor). Détail : ' + esc(S.d.libErr) + "</div>";
+    var form = '<form class="sc-card" data-f="lib"><h3>' + (e ? "Modifier la ressource" : "Nouvelle ressource") + "</h3>" +
+      '<label>Titre<input id="sc-lt" maxlength="200" required value="' + esc(e && e.title) + '"></label>' +
+      '<div class="sc-r2"><label>Auteur(s)<input id="sc-la" maxlength="200" value="' + esc(e && e.author) + '"></label><label>Catégorie<select id="sc-lc">' + opts(CATS.lib, e && e.category) + "</select></label></div>" +
+      '<label>Faculté concernée (facultatif)<select id="sc-lf"><option value="">Toutes / générale</option>' + opts(FACS, e && e.faculty) + "</select></label>" +
+      '<label>Lien vers la ressource (https://…)<input id="sc-lu" type="url" required placeholder="https://" value="' + esc(e && e.url) + '"></label>' +
+      '<label>Image de couverture (lien https, facultatif)<input id="sc-lv" type="url" placeholder="https://" value="' + esc(e && e.cover_url) + '"></label>' +
+      '<label>Description (facultatif)<textarea id="sc-ld" maxlength="1500">' + esc(e && e.description) + "</textarea></label>" +
+      '<label class="sc-ck"><input type="checkbox" id="sc-lp"' + (!e || e.published ? " checked" : "") + "> Publié (visible dans le catalogue)</label>" +
+      '<div class="sc-ac"><button class="sc-btn p" type="submit">' + ic(e ? "edit" : "plus") + (e ? "Enregistrer" : "Ajouter au catalogue") + "</button>" + (e ? '<button class="sc-btn" type="button" data-a="cancel">Annuler</button>' : "") + "</div></form>";
+    return form + (d.length ? d.map(function (v) {
+      return '<div class="sc-row"><div class="sc-tx"><b>' + esc(v.title) + "</b><small>" + esc(v.category) + (v.author ? " · " + esc(v.author) : "") + (v.faculty ? " · " + esc(v.faculty) : "") + "</small>" + badge(v.published, "Publié", "Masqué") +
+        '<div class="sc-ac"><button class="sc-btn" data-a="edit" data-t="lib" data-id="' + esc(v.id) + '">' + ic("edit") + 'Modifier</button><button class="sc-btn" data-a="pub" data-t="lib" data-id="' + esc(v.id) + '">' + (v.published ? "Masquer" : "Publier") + "</button>" +
+        (v.published ? viewLink("bibliotheque.html") : "") + '<button class="sc-btn d" data-a="del" data-t="lib" data-id="' + esc(v.id) + '">' + ic("trash") + "</button></div></div></div>";
+    }).join("") : '<div class="sc-empty">Aucune ressource. Ajoutez la première ci-dessus : le catalogue public est vide tant que rien n\'est publié.</div>');
   }
   function vGal() {
     var d = S.d.gal;
@@ -395,14 +416,14 @@
   function render() {
     var root = C.root; if (!root) return;
     var tabs = TABS.filter(function (t) { return !t.admin || C.role === "admin"; }); if (!tabs.some(function (t) { return t.id === S.tab; })) S.tab = tabs[0].id;
-    var t = tabs.filter(function (x) { return x.id === S.tab; })[0], body = !S.loaded ? '<div class="sc-load">Chargement…</div>' : ({ news: function () { return journalCard() + vNews(); }, events: vEvents, gal: vGal, vids: vVids, zones: vZones, slides: function () { return heroCard() + vSlides(); }, testi: vTesti, courses: vCourses, sites: vSites, chat: vChat })[S.tab]();
+    var t = tabs.filter(function (x) { return x.id === S.tab; })[0], body = !S.loaded ? '<div class="sc-load">Chargement…</div>' : ({ news: function () { return journalCard() + vNews(); }, events: vEvents, gal: vGal, vids: vVids, zones: vZones, slides: function () { return heroCard() + vSlides(); }, testi: vTesti, courses: vCourses, sites: vSites, chat: vChat, lib: vLib })[S.tab]();
     root.innerHTML = '<div class="sc"><div class="sc-tabs" role="tablist">' + tabs.map(function (x) { return '<button type="button" role="tab" data-a="tab" data-id="' + x.id + '" aria-selected="' + (x.id === S.tab) + '">' + ic(x.ic) + esc(x.label) + "</button>"; }).join("") + "</div>" +
       '<div class="sc-where"><span>' + t.where + "</span>" + viewLink(t.link, "Ouvrir la page du site") + "</div>" + (S.err ? '<div class="sc-err">' + esc(S.err) + "</div>" : "") + body + "</div>";
     afterRender();
   }
 
   /* ---------- actions ---------- */
-  var tbl = { news: "news", events: "events", gal: "gallery_items", vids: "video_links", slides: "home_slides", testi: "testimonials", courses: "online_courses", chat: "chat_kb", miss: "chat_unanswered" };
+  var tbl = { news: "news", events: "events", gal: "gallery_items", vids: "video_links", slides: "home_slides", testi: "testimonials", courses: "online_courses", chat: "chat_kb", miss: "chat_unanswered", lib: "library_resources" };
   function find(t, id) { return (S.d[t] || []).filter(function (r) { return r.id === id; })[0]; }
   async function onClick(e) {
     var b = e.target.closest("[data-a]"); if (!b) return; var a = b.dataset.a, id = b.dataset.id, t = b.dataset.t, sb = C.sb;
@@ -465,6 +486,16 @@
         var row = { event_date: dt, title: et, place: q("sc-ep").value.trim() || null, category: q("sc-ec").value || null, description: q("sc-ex").value.trim() || null, published: q("sc-eb").checked };
         if (ee) must(await sb.from("events").update(row).eq("id", ee.id)); else must(await sb.from("events").insert(row)); S.edit = null;
       }, ee ? "Événement modifié." : "Événement enregistré."); return;
+    }
+    if (kind === "lib") {
+      var le = S.edit && S.edit.t === "lib" ? S.edit.row : null, lt = q("sc-lt").value.trim(), lu = q("sc-lu").value.trim(), lv = q("sc-lv").value.trim();
+      if (lt.length < 3) { C.toast("Donnez un titre à la ressource.", true); return; }
+      if (!/^https:\/\/\S+$/i.test(lu)) { C.toast("Le lien doit commencer par https://", true); return; }
+      if (lv && !/^https:\/\/\S+$/i.test(lv)) { C.toast("L'image de couverture doit être un lien https://", true); return; }
+      await run(btn, async function () {
+        var row = { title: lt, author: q("sc-la").value.trim() || null, category: q("sc-lc").value || "Livre", faculty: q("sc-lf").value || null, url: lu, cover_url: lv || null, description: q("sc-ld").value.trim() || null, published: q("sc-lp").checked };
+        if (le) must(await sb.from("library_resources").update(row).eq("id", le.id)); else must(await sb.from("library_resources").insert(row)); S.edit = null;
+      }, le ? "Ressource modifiée." : "Ressource ajoutée au catalogue."); return;
     }
     if (kind === "gal") {
       var files = [].slice.call(q("sc-gf").files); if (!files.length) { C.toast("Choisissez au moins une photo.", true); return; }
