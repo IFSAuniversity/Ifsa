@@ -269,7 +269,7 @@ const card=r=>'<div class="it"><div class="av">'+ic("alert")+'</div><div class="
 (r.status==="handled"?'<p style="margin-top:6px;font-size:.86rem;color:var(--mut)">Décision du directeur'+(r.handled_at?" ("+esc(fmtD(r.handled_at))+")":"")+' : '+esc(r.director_note||"—")+'</p>':"")+
 (isDir?'<div class="ac">'+(r.status==="open"?'<button class="bt p" type="button" data-act="dis-done" data-id="'+esc(r.id)+'">'+ic("check")+'Marquer comme traité</button>':'<button class="bt" type="button" data-act="dis-open" data-id="'+esc(r.id)+'">Rouvrir</button>')+'</div>':"")+'</div></div>';
 return '<div class="pg-h"><div><h1>Discipline</h1><p>'+(isDir?"Signalements transmis par le secrétariat de votre site.":"Signalez un étudiant de votre site au directeur d'antenne.")+'</p></div>'+(!isDir?'<button class="bt p" type="button" data-act="dis-new">'+ic("plus")+'Nouveau signalement</button>':"")+'</div>'+
-'<div class="bar"><div class="chips">'+[["open","À traiter"],["handled","Traités"],["all","Tous"]].map(c=>'<button class="chip" type="button" data-act="dis-f" data-f="'+c[0]+'" aria-pressed="'+(f===c[0])+'">'+c[1]+'</button>').join("")+'</div></div>'+
+'<div class="bar tb"><div class="chips">'+[["open","À traiter"],["handled","Traités"],["all","Tous"]].map(c=>'<button class="chip" type="button" data-act="dis-f" data-f="'+c[0]+'" aria-pressed="'+(f===c[0])+'">'+c[1]+'</button>').join("")+'</div></div>'+
 (list.length?list.map(card).join(""):empty("shield",f==="open"?"Aucun signalement à traiter.":"Aucun signalement."))}
 const DIS_ACT={
 "dis-f":(b,d)=>{S.f.dis=d.f;draw()},
@@ -340,14 +340,14 @@ const L=sortPay(S.d.pay).filter(p=>f==="all"||(f==="pending"?p.status!=="paid":f
 return L.length?L.map(p=>payRow(p,true)).join(""):empty("wallet","Aucun paiement dans cette liste.")}
 function vPay(){const f=S.f.pay||"all";
 return '<div class="pg-h"><div><h1>Paiements</h1><p>Seuls les étudiants de '+esc(S.siteName)+' apparaissent ici. Chaque étudiant voit ses propres paiements dans son espace.</p></div><button class="bt p" type="button" data-act="pnew">'+ic("plus")+'Nouveau paiement</button></div>'+
-'<div class="bar"><div class="chips">'+[["all","Tous"],["pending","En attente"],["late","En retard"],["paid","Payés"]].map(c=>'<button class="chip" type="button" data-act="pf" data-f="'+c[0]+'" aria-pressed="'+(f===c[0])+'">'+c[1]+'</button>').join("")+'</div></div>'+
-'<div class="bar"><div class="sr">'+ic("search")+'<input type="search" data-in="q" placeholder="Rechercher un étudiant, un matricule, un libellé" value="'+esc(S.f.q_pay||"")+'" aria-label="Rechercher"></div></div><div id="lst">'+payList()+'</div>'}
+'<div class="bar tb"><div class="chips">'+[["all","Tous"],["pending","En attente"],["late","En retard"],["paid","Payés"]].map(c=>'<button class="chip" type="button" data-act="pf" data-f="'+c[0]+'" aria-pressed="'+(f===c[0])+'">'+c[1]+'</button>').join("")+'</div></div>'+
+'<div class="bar tb"><div class="sr">'+ic("search")+'<input type="search" data-in="q" placeholder="Rechercher un étudiant, un matricule, un libellé" value="'+esc(S.f.q_pay||"")+'" aria-label="Rechercher"></div></div><div id="lst">'+payList()+'</div>'}
 /* ----- Étudiants ----- */
 function stuList(){const q=nz(S.f.q_stu||""),L=S.d.students.filter(s=>!q||nz([s.full_name,s.matricule,s.email].join(" ")).includes(q));
 return L.length?L.map(s=>{const P=S.d.pay.filter(p=>p.student_id===s.id),pd=sum(P.filter(p=>p.status==="paid")),pn=sum(P.filter(p=>p.status!=="paid"));
 return '<div class="it"><div class="av">'+esc(init(s.full_name))+'</div><div class="tx"><b>'+esc(s.full_name)+'</b><small>'+esc(s.matricule||"")+(s.faculte?" · "+esc(s.faculte):"")+(s.annee?" · "+s.annee+"e année":"")+'</small><div><span class="bd ok">Payé '+money(pd)+'</span><span class="bd '+(pn?"wa":"")+'">Reste '+money(pn)+'</span>'+stBadge(s.status)+'</div>'+
 '<div class="ac"><button class="bt" type="button" data-act="sf" data-id="'+esc(s.id)+'">Situation</button><button class="bt p" type="button" data-act="pnew" data-id="'+esc(s.id)+'">'+ic("plus")+'Paiement</button></div></div></div>'}).join(""):empty("cap","Aucun étudiant.")}
-function vStu(){return '<div class="pg-h"><div><h1>Étudiants</h1><p>'+S.d.students.length+' étudiant(s) à '+esc(S.siteName)+'. Les comptes sont gérés par le directeur d\'antenne.</p></div></div><div class="bar"><div class="sr">'+ic("search")+'<input type="search" data-in="q" placeholder="Rechercher un nom, un matricule" value="'+esc(S.f.q_stu||"")+'" aria-label="Rechercher"></div></div><div id="lst">'+stuList()+'</div>'}
+function vStu(){return '<div class="pg-h"><div><h1>Étudiants</h1><p>'+S.d.students.length+' étudiant(s) à '+esc(S.siteName)+'. Les comptes sont gérés par le directeur d\'antenne.</p></div></div><div class="bar tb"><div class="sr">'+ic("search")+'<input type="search" data-in="q" placeholder="Rechercher un nom, un matricule" value="'+esc(S.f.q_stu||"")+'" aria-label="Rechercher"></div></div><div id="lst">'+stuList()+'</div>'}
 
 /* ----- Calendrier : examens, échéances, mise en règle ----- */
 const KINDS={exam:"Examens",deadline:"Échéance de paiement",registration:"Inscriptions / réinscriptions",other:"Autre"};

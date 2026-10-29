@@ -204,6 +204,12 @@ input[readonly]{background:#F3F5FA}
 [data-theme="dark"] .stp .on,[data-theme="dark"] .stp .ok{color:#fff}
 .bar{height:8px;background:#E3E8F3}
 .bar span{background:linear-gradient(90deg,var(--mx-blue),#5B9BFF)}
+/* barres de recherche / filtres des espaces du personnel : la règle .bar ci-dessus (barre de progression) les écrasait à 8 px de haut et les collait au titre */
+.bar.tb{height:auto;background:none;border-radius:0;padding:0;margin:20px 0 18px;overflow:visible;gap:12px}
+.bar.tb .sr{min-width:200px}
+.bar.tb .sr input{min-height:48px}
+.bar.tb select{min-height:48px}
+.pg-h+.bar.tb{margin-top:22px}
 .chk{border:1.5px solid var(--mx-line);background:var(--mx-surface)}
 .chk.bad{border-color:var(--mx-err);background:#FFF6F5}
 .em{color:var(--mx-err);font-weight:600}
